@@ -32,8 +32,8 @@ body.has-earth{background:transparent;}
   will-change:transform;transform:translateZ(0);backface-visibility:hidden;
 }
 .has-earth .hero-q{background:transparent;}
-.has-earth .whatis{background:color-mix(in srgb, var(--bg-alt) 88%, transparent);}
-.has-earth .compare,
+.has-earth .whatis,
+.has-earth .compare{background:color-mix(in srgb, var(--bg-alt) 88%, transparent);}
 .has-earth .services,
 .has-earth .usecases,
 .has-earth .newsroom-teaser,
@@ -197,8 +197,8 @@ body.cw-dismissed .cw-dock{display:none;}
 .how-more{display:flex;justify-content:center;margin-top:40px;}
 
 /* ===== Services: Go Now button in each expanded panel ===== */
-.svc-go{margin-top:14px;padding:9px 18px;font-size:13px;}
-.svc-go svg{width:14px;height:14px;}
+/* Go Now in Services uses the universal .btn size (R2); only the top margin is bespoke */
+.svc-go{margin-top:14px;}
 
 /* ===== Responsive hero ===== */
 @media(max-width:960px){

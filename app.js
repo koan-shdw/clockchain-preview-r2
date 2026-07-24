@@ -34,6 +34,35 @@
     window.addEventListener('resize',function(){if(window.innerWidth>860&&document.body.classList.contains('menu-open'))setMenu(false);});
   }
 
+  /* theme toggle: daylight (light) <-> eclipse (dark), persisted in localStorage.
+     The pre-paint script in <head> has already applied the stored/OS preference
+     to <html data-variant>; here we build the switch and keep it in sync. The
+     globe reads --accent / --bg from CSS each frame, so it recolours itself. */
+  var navRight=document.querySelector('.nav-right');
+  if(navRight){
+    var MOON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+    var SUN='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+    var themeBtn=document.createElement('button');
+    themeBtn.className='nav-theme';
+    themeBtn.type='button';
+    navRight.insertBefore(themeBtn, navRight.querySelector('.nav-burger'));
+    var curVariant=function(){return document.documentElement.getAttribute('data-variant')==='eclipse'?'eclipse':'daylight';};
+    var syncTheme=function(){
+      var dark=curVariant()==='eclipse';
+      themeBtn.innerHTML=dark?SUN:MOON;
+      themeBtn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');
+      themeBtn.setAttribute('aria-pressed',dark?'true':'false');
+      themeBtn.title=dark?'Light mode':'Dark mode';
+    };
+    themeBtn.addEventListener('click',function(){
+      var next=curVariant()==='eclipse'?'daylight':'eclipse';
+      document.documentElement.setAttribute('data-variant',next);
+      try{localStorage.setItem('cc-theme',next);}catch(e){}
+      syncTheme();
+    });
+    syncTheme();
+  }
+
   /* scroll progress bar: rAF-throttled, recalculated on resize/orientation */
   var progressEl=document.getElementById('scroll-progress');
   if(progressEl){
