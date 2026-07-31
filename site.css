@@ -243,7 +243,24 @@ body.cw-dismissed .cw-dock{display:none;}
 .compare{position:relative;z-index:1;padding:0 24px var(--band-sm);}
 .compare .container{max-width:1120px;}
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-@media(max-width:860px){.compare-grid{grid-template-columns:1fr;}}
+/* R2 #5/#6/#18: side-by-side boxes, one shared column template so both tables align */
+.cmp-t-time .cw-row,.cmp-t-chain .cw-row{grid-template-columns:1fr 1fr 1.3fr 1.1fr;}
+.cmp-t-chain .cw-row>span:last-child,.cmp-t-time .cw-row>span:last-child{text-align:right;}
+.cmp-verify{font-weight:600;font-size:12px;text-align:right;}
+.cmp-verify.yes{color:var(--accent);}
+.cmp-verify.no{color:var(--fg-3);}
+.cmp-verify.yes::before{content:"\2713 ";}
+.cmp-verify.no::before{content:"\2715 ";}
+/* R2 #7: mobile, the two boxes stack centered */
+@media(max-width:860px){
+  .compare .container{padding-left:0;padding-right:0;}
+  .compare-grid{grid-template-columns:1fr;justify-items:center;}
+  .cmp-card{width:100%;max-width:600px;min-width:0;}
+}
+@media(max-width:640px){
+  .cmp-card{padding:16px 14px;}
+  .cmp-t-time .cw-row,.cmp-t-chain .cw-row{font-size:10.5px;gap:6px;}
+}
 .cmp-card{
   background:var(--surface);border:1px solid var(--line-2);border-radius:16px;
   box-shadow:var(--shadow);padding:20px 22px;

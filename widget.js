@@ -19,7 +19,7 @@
         ms: ms,
         height: Math.floor(ms / 1000) - GENESIS,
         /* simulated source offsets vs Clockchain consensus time, in ms */
-        offsets: { clockchain: 0, utc: 57, ntp: -55 }
+        offsets: { clockchain: 0, utc: 57, ntp: -55, gps: 12 }
       };
     }
   };
@@ -53,6 +53,8 @@
   };
   var srcEls = document.querySelectorAll('[data-cw-src]');
   var offEls = document.querySelectorAll('[data-cw-off]');
+  var chainEls = document.querySelectorAll('[data-cw-chain]'); /* blockchain compare: current time per chain */
+  var blockEls = document.querySelectorAll('[data-cw-block]'); /* blockchain compare: live Clockchain height */
 
   /* total logs anchored: a large, continuously rising number.
      Simulated: ~7.4 logs/second from a fixed epoch so it only ever climbs. */
@@ -86,6 +88,7 @@
         var t = st.ms;
         if(k === 'utc') t += st.offsets.utc;
         else if(k === 'ntp') t += st.offsets.ntp;
+        else if(k === 'gps') t += st.offsets.gps;
         else if(k === 'tai') t += TAI_OFFSET_S * 1000;
         n.textContent = fmtTime(t);
       });
@@ -94,6 +97,13 @@
         if(k === 'clockchain'){ n.textContent = 'consensus'; return; }
         if(k === 'tai'){ n.textContent = '+37 s'; return; }
         n.textContent = fmtOffset(st.offsets[k]);
+      });
+      chainEls.forEach(function(n){
+        var off = parseInt(n.getAttribute('data-cw-chain'), 10) || 0;
+        n.textContent = fmtTime(st.ms + off * 1000);
+      });
+      blockEls.forEach(function(n){
+        n.textContent = '#' + st.height.toLocaleString();
       });
     }
     raf = requestAnimationFrame(render);
