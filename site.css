@@ -351,3 +351,24 @@ body.cw-dismissed .cw-dock{display:none;}
 .legal-body li{margin-bottom:5px;}
 .legal-body a{color:var(--accent);}
 .legal-body .legal-foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--fg-3);}
+
+/* ===== Contact modal (7/31 notes #5/#6) ===== */
+.cm-overlay{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(8,12,18,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.cm-overlay[hidden]{display:none;}
+.cm-card{position:relative;width:100%;max-width:520px;max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--line-2);border-radius:18px;box-shadow:var(--shadow);padding:30px 28px;}
+.cm-close{position:absolute;top:14px;right:14px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:50%;background:none;color:var(--fg-2);cursor:pointer;transition:color .16s ease,border-color .16s ease;}
+.cm-close:hover{color:var(--fg);border-color:var(--accent);}
+.cm-close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;}
+.cm-title{font-family:var(--f-display);font-size:24px;letter-spacing:-0.01em;margin:0 0 6px;}
+.cm-sub{color:var(--fg-2);font-size:14px;margin:0 0 18px;}
+.cm-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.cm-field label{font-size:12px;font-family:var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);}
+.cm-field input,.cm-field textarea{width:100%;padding:11px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14.5px;}
+.cm-field input:focus,.cm-field textarea:focus{outline:none;border-color:var(--accent);}
+.cm-field textarea{min-height:110px;resize:vertical;}
+.cm-actions{display:flex;align-items:center;gap:14px;margin-top:18px;flex-wrap:wrap;}
+.cm-status{font-size:13px;color:var(--fg-2);}
+.cm-status.error{color:#d9534f;}
+.cm-success h4{font-family:var(--f-display);font-size:20px;margin:0 0 8px;}
+.cm-success p{color:var(--fg-2);font-size:14.5px;margin:0;}
+body.cm-lock{overflow:hidden;}

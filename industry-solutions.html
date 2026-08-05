@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Industry Solutions · Clockchain</title>
-  <meta name="description" content="How Clockchain's verifiable time layer applies across eleven industries — from financial services and healthcare to AI, robotics, and supply chain. Download each brief as a PDF." />
+  <meta name="description" content="How Clockchain's verifiable time layer applies across eighteen industries — from financial services and healthcare to AI, robotics, and supply chain. Each industry links to a full brief (PDF)." />
   <link rel="canonical" href="https://koan-shdw.github.io/clockchain-preview-r2/industry-solutions.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Clockchain" />
   <meta property="og:title" content="Industry Solutions · Clockchain" />
-  <meta property="og:description" content="How Clockchain's verifiable time layer applies across eleven industries. Download each brief as a PDF." />
+  <meta property="og:description" content="How Clockchain's verifiable time layer applies across eighteen industries. Each links to a full brief (PDF)." />
   <meta property="og:image" content="https://koan-shdw.github.io/clockchain-preview-r2/assets/og-clockchain.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
@@ -18,36 +18,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=2" />
-  <link rel="stylesheet" href="site.css?v=11" />
+  <link rel="stylesheet" href="site.css?v=12" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
   <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
   <style>
     .is-hero{padding:calc(var(--band-sm) + 84px) 24px var(--band-sm);background:var(--bg);}
-    .is-hero .container{max-width:960px;}
+    .is-hero .container{max-width:840px;}
     .is-hero h1{font-family:var(--f-display);font-size:clamp(38px,5.4vw,62px);letter-spacing:-0.02em;line-height:1.05;margin:16px 0 18px;}
     .is-hero h1 em{font-style:normal;color:var(--accent);}
     .is-hero .body-lg{max-width:66ch;}
     .is-hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px;align-items:center;}
-    .is-toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:36px;}
-    .is-toc a{font-family:var(--f-mono);font-size:12px;letter-spacing:.02em;color:var(--fg-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;text-decoration:none;transition:color .18s ease,border-color .18s ease,background .18s ease;}
-    .is-toc a:hover{color:var(--fg);border-color:var(--accent);background:var(--accent-soft);}
 
+    /* Industry list: same structure/format as the Docs page list */
     .is-list{padding:var(--band-sm) 24px var(--band);}
-    .is-list .container{max-width:960px;display:flex;flex-direction:column;gap:20px;}
-    .is-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,3vw,40px);box-shadow:var(--shadow);scroll-margin-top:100px;}
-    .is-card-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:16px;}
-    .is-n{font-family:var(--f-mono);font-size:13px;color:var(--accent);padding-top:8px;flex:0 0 auto;}
-    .is-card-heading h2{font-family:var(--f-display);font-size:clamp(23px,3vw,32px);letter-spacing:-0.01em;line-height:1.12;}
-    .is-tagline{font-family:var(--f-display);font-size:clamp(15px,1.6vw,18px);color:var(--accent);margin-top:8px;font-weight:500;}
-    .is-overview{color:var(--fg-2);max-width:72ch;font-size:16px;line-height:1.62;}
-    .is-points{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 30px;}
-    .is-points li{position:relative;padding-left:22px;color:var(--fg-2);font-size:14.5px;line-height:1.5;}
-    .is-points li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.55;}
-    .is-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center;}
-    .is-share.copied{color:var(--accent);border-color:var(--accent);}
-    @media(max-width:720px){
-      .is-points{grid-template-columns:1fr;}
-    }
+    .is-list .container{max-width:840px;}
+    .docs-links{list-style:none;margin:0;display:grid;gap:2px;border-top:1px solid var(--line);}
+    .docs-links li{border-bottom:1px solid var(--line);}
+    .docs-links a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 2px;color:var(--fg-2);text-decoration:none;font-size:15px;transition:color .16s ease;}
+    .docs-links a:hover{color:var(--accent);}
+    .docs-links a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;opacity:.6;flex:none;}
   </style>
 </head>
 <body>
@@ -63,7 +52,7 @@
       <li><a href="services.html">Services</a></li>
       <li><a href="newsroom.html">News</a></li>
       <li><a href="docs.html">Docs</a></li>
-      <li><a href="docs.html#api">API</a></li>
+      <li><a href="app/docs/index.html">API</a></li>
     </ul>
     <div class="nav-right">
       <nav class="nav-socials" aria-label="Clockchain on social media">
@@ -75,14 +64,13 @@
     </div>
   </nav>
 
-  <!-- ===== MOBILE MENU ===== -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav class="mm-links" aria-label="Primary (mobile)">
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
       <a href="newsroom.html">News</a>
       <a href="docs.html">Docs</a>
-      <a href="docs.html#api">API</a>
+      <a href="app/docs/index.html">API</a>
       <a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a>
     </nav>
   </div>
@@ -93,29 +81,14 @@
       <div class="container">
         <span class="tag">Industry Solutions</span>
         <h1>One verifiable clock, <em>every industry.</em></h1>
-        <p class="body-lg">Wherever the order of events has to be proven — not just recorded — Clockchain anchors it to an independent, cryptographically verifiable timeline. Twelve briefs on how a shared time layer strengthens trust, traceability, and accountability across the sectors that depend on it most.</p>
+        <p class="body-lg">Wherever the order of events has to be proven — not just recorded — Clockchain anchors it to an independent, cryptographically verifiable timeline. Eighteen briefs on how a shared time layer strengthens trust, traceability, and accountability across the sectors that depend on it most.</p>
         <div class="is-hero-actions">
-          <a class="btn btn-primary" href="assets/industry/clockchain-industry-solutions.pdf" download>Download the full set (PDF)<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-          <a class="btn btn-outline" href="mailto:info@d4d.group">Talk to the team</a>
+          <a class="btn btn-primary" href="#" data-contact>Talk to the team</a>
         </div>
-        <nav class="is-toc" aria-label="Jump to an industry">
-          <a href="#ai-systems">AI Systems</a>
-          <a href="#critical-infrastructure">Critical Infrastructure</a>
-          <a href="#cybersecurity">Cybersecurity</a>
-          <a href="#digital-commerce">Digital Commerce</a>
-          <a href="#digital-identity">Digital Identity</a>
-          <a href="#financial-services">Financial Services</a>
-          <a href="#government-public-sector">Government &amp; Public Sector</a>
-          <a href="#healthcare-medicine">Healthcare &amp; Medicine</a>
-          <a href="#industrial-manufacturing">Industrial Manufacturing</a>
-          <a href="#media-publishing">Media &amp; Publishing</a>
-          <a href="#robotics-autonomous-systems">Robotics &amp; Autonomous Systems</a>
-          <a href="#supply-chain">Supply Chain</a>
-        </nav>
       </div>
     </section>
 
-    <!-- ===== Don't see your sector? (R2 #11: raised under intro copy; #12: buttons reversed) ===== -->
+    <!-- ===== Don't see your sector? (kept under intro per 7/27 notes #11/#12) ===== -->
     <section class="cta reveal" data-screen-label="Sectors">
       <div class="container">
         <div class="cta-card">
@@ -123,291 +96,35 @@
           <p class="sub">Clockchain is a general-purpose time layer. If your industry depends on proving when something happened, we should talk.</p>
           <div class="cta-actions">
             <a class="btn btn-outline" href="docs.html">Read the docs</a>
-            <a class="btn btn-primary" href="mailto:info@d4d.group">Talk to the team</a>
+            <a class="btn btn-primary" href="#" data-contact>Talk to the team</a>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ===== Industry briefs: same list structure/format as the Docs page (7/31 notes #3) ===== -->
     <section class="is-list reveal">
       <div class="container">
-
-        <article class="is-card" id="ai-systems">
-          <div class="is-card-head">
-            <span class="is-n">01</span>
-            <div class="is-card-heading">
-              <h2>AI Systems</h2>
-              <p class="is-tagline">Know exactly what happened. Prove exactly when it happened.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain creates an independent, cryptographically verifiable timeline for AI systems, allowing any authorized party to prove not only what happened, but precisely when it happened. It anchors critical AI lifecycle events to a trusted chronology that holds across distributed environments spanning multiple clouds, vendors, and autonomous agents. This builds trust, traceability, and accountability throughout the model lifecycle.</p>
-          <ul class="is-points">
-            <li>Creates independently verifiable timestamps for critical AI lifecycle events and anchors every AI event to an independently verifiable timeline.</li>
-            <li>Records model deployments, prompts, inference events, approvals, and agent actions, preserving the exact sequence of events across distributed AI systems.</li>
-            <li>Maintains a trusted chronology and a shared, independently verifiable timeline for AI systems operating across multiple clouds, vendors, and autonomous agents.</li>
-            <li>Enables complete reconstruction of AI decision histories and rapid forensic analysis following AI incidents.</li>
-            <li>Provides a trusted audit trail for autonomous and agentic AI, supporting compliance with emerging AI governance frameworks.</li>
-            <li>Builds confidence across organizations sharing AI systems and preserves confidence in AI records throughout the model lifecycle.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-ai-systems.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="ai-systems">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="critical-infrastructure">
-          <div class="is-card-head">
-            <span class="is-n">02</span>
-            <div class="is-card-heading">
-              <h2>Critical Infrastructure</h2>
-              <p class="is-tagline">Know exactly what happened. Prove exactly when it happened.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain gives critical infrastructure operators an independently verifiable chronology for every critical operational event, assigning a cryptographically verifiable timestamp to each alarm, control action, sensor reading, and outage. It strengthens existing SCADA, OT, and monitoring systems without replacing them, and records events in an immutable chronology that no single vendor or operator controls. The result is a single, neutral source of chronological truth that utilities, regulators, insurers, and investigators can all trust during and after incidents.</p>
-          <ul class="is-points">
-            <li>Assigns every alarm, control action, sensor reading, and outage a cryptographically verifiable timestamp.</li>
-            <li>Strengthens existing SCADA, OT, and monitoring systems with no replacement required and no change to operational workflows.</li>
-            <li>Records events in an immutable chronology independent of any single vendor or operator.</li>
-            <li>Lets the complete sequence of events be reconstructed exactly as it occurred, establishing a single source of chronological truth during incidents.</li>
-            <li>Creates a neutral record and enables independent verification across utilities, vendors, insurers, and regulators.</li>
-            <li>Simplifies regulatory reporting and forensic investigations, making post-incident inquiries faster, more accurate, and defensible.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-critical-infrastructure.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="critical-infrastructure">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="cybersecurity">
-          <div class="is-card-head">
-            <span class="is-n">03</span>
-            <div class="is-card-heading">
-              <h2>Cybersecurity</h2>
-              <p class="is-tagline">Know exactly what happened. Prove exactly when it happened.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain provides temporal infrastructure for cybersecurity, giving security events cryptographically verifiable timestamps anchored to a common, immutable timeline. It complements SIEM, EDR, XDR, IAM, and existing logging platforms rather than replacing them, so it adds trust to security operations without changing established workflows. When multiple organizations investigate the same incident, every investigator references the same trusted chronology.</p>
-          <ul class="is-points">
-            <li>Complements SIEM, EDR, XDR, IAM, and existing logging platforms, working alongside current security operations without replacing existing tools.</li>
-            <li>Gives authentication events, alerts, and administrative actions cryptographically verifiable timestamps.</li>
-            <li>Anchors incident declarations, evidence collection, containment actions, and recovery milestones to an immutable timeline.</li>
-            <li>Anchors critical security events from multiple vendors to a common timeline, creating a neutral chronology trusted across organizations and investigators.</li>
-            <li>Lets the complete sequence of security events be reconstructed exactly as it occurred, with every investigator referencing the same trusted chronology.</li>
-            <li>Produces independently verifiable digital evidence that strengthens forensic investigations and simplifies audits, legal proceedings, and regulatory reporting.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-cybersecurity.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="cybersecurity">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="digital-commerce">
-          <div class="is-card-head">
-            <span class="is-n">04</span>
-            <div class="is-card-heading">
-              <h2>Digital Commerce</h2>
-              <p class="is-tagline">Every transaction tells a story. Clockchain verifies the timeline.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain creates an independent, cryptographically verifiable timeline for digital commerce, allowing any authorized party to prove not only what happened, but precisely when it happened. It anchors payment, fulfillment, and refund events to an immutable chronology shared across merchants, payment providers, and marketplaces, strengthening transaction integrity across the digital economy. It complements existing infrastructure without disrupting established transaction workflows.</p>
-          <ul class="is-points">
-            <li>Integrates with leading commerce and payment platforms, including Shopify, Adobe Commerce, Stripe, PayPal, and Square.</li>
-            <li>Gives every transaction milestone an independently verifiable timestamp, anchoring payment, fulfillment, and refund events to an immutable timeline.</li>
-            <li>Connects merchants, payment providers, and logistics partners through a shared trusted chronology, establishing a common timeline across distributed commerce systems.</li>
-            <li>Preserves the complete chronology of every customer transaction so every participant can reference the same trusted transaction history.</li>
-            <li>Strengthens dispute resolution through independently verifiable transaction evidence and improves transparency across merchants, payment providers, and marketplaces.</li>
-            <li>Supports audits, fraud investigations, and operational reconciliation without changing existing commerce infrastructure.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-digital-commerce.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="digital-commerce">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="digital-identity">
-          <div class="is-card-head">
-            <span class="is-n">05</span>
-            <div class="is-card-heading">
-              <h2>Digital Identity</h2>
-              <p class="is-tagline">Identity proves who. Clockchain proves when.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain adds a cryptographically verifiable timeline to digital identity, letting authorized parties prove not only who performed an action but precisely when it occurred. It complements existing identity infrastructure without disrupting workflows, establishing a common chronology across distributed identity ecosystems. By anchoring identity lifecycle events to independently verifiable timestamps, it strengthens accountability and builds trust across identity providers and relying parties.</p>
-          <ul class="is-points">
-            <li>Integrates with existing identity and access management platforms, complementing them without disrupting workflows.</li>
-            <li>Connects identities across organizations, clouds, and trusted partners under a common chronology for distributed identity ecosystems.</li>
-            <li>Anchors identity lifecycle events to independently verifiable timestamps.</li>
-            <li>Preserves credential, authentication, and authorization histories, and records consent, approvals, and credential revocation events.</li>
-            <li>Enables every participant to reference the same verified timeline, improving confidence across identity providers and relying parties.</li>
-            <li>Supports audits, investigations, and identity governance programs, strengthening accountability throughout the identity lifecycle.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-digital-identity.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="digital-identity">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="financial-services">
-          <div class="is-card-head">
-            <span class="is-n">06</span>
-            <div class="is-card-heading">
-              <h2>Financial Services</h2>
-              <p class="is-tagline">Financial integrity begins with trusted time.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain brings verifiable time to financial services, building trust, transparency, and accountability across modern financial systems. It anchors critical financial events to independently verifiable timestamps and connects institutions through a shared trusted chronology, so that when multiple organizations investigate the same incident, everyone references the same trusted timeline. It complements existing infrastructure without disrupting established workflows.</p>
-          <ul class="is-points">
-            <li>Integrates with core banking, trading, and payment infrastructures, including Fedwire, CHIPS, FIX, SWIFT, and modern payment platforms.</li>
-            <li>Anchors critical financial events to independently verifiable timestamps and preserves the complete chronology of trades, payments, and settlements.</li>
-            <li>Produces trusted records for audits and regulatory investigations, letting every participant reference the same verified timeline.</li>
-            <li>Connects financial institutions through a shared trusted chronology, creating a common timeline across distributed financial systems.</li>
-            <li>Improves transparency across institutions, counterparties, and regulators, and supports operational reconciliation.</li>
-            <li>Strengthens governance with independently verifiable financial evidence, building confidence without replacing existing infrastructure.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-financial-services.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="financial-services">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="government-public-sector">
-          <div class="is-card-head">
-            <span class="is-n">07</span>
-            <div class="is-card-heading">
-              <h2>Government &amp; Public Sector</h2>
-              <p class="is-tagline">Public trust begins with trusted time.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain creates an independent, cryptographically verifiable timeline for government operations, helping preserve trusted public records for generations. It builds transparency, accountability, and public trust across digital government by anchoring critical events to independently verifiable timestamps.</p>
-          <ul class="is-points">
-            <li>Integrates with existing government applications and digital services, preserving current workflows without replacing government infrastructure.</li>
-            <li>Creates an interoperable timeline across agencies and jurisdictions, establishing a shared chronology for cross-agency collaboration.</li>
-            <li>Anchors critical government events to independently verifiable timestamps.</li>
-            <li>Preserves approvals, permits, licenses, and official records, and records policy decisions, inspections, and emergency actions.</li>
-            <li>Improves transparency across agencies and public institutions and supports audits, investigations, and legal proceedings.</li>
-            <li>Reinforces accountability and strengthens confidence in long-term government records.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-government-public-sector.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="government-public-sector">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="healthcare-medicine">
-          <div class="is-card-head">
-            <span class="is-n">08</span>
-            <div class="is-card-heading">
-              <h2>Healthcare &amp; Medicine</h2>
-              <p class="is-tagline">Every patient has a story. Clockchain preserves its timeline.</p>
-            </div>
-          </div>
-          <p class="is-overview">Every patient journey depends on accurate, trustworthy records. Clockchain creates an independent, cryptographically verifiable timeline that helps preserve critical healthcare events across the continuum of care. It strengthens patient safety, clinical integrity, and trust across healthcare.</p>
-          <ul class="is-points">
-            <li>Integrates with existing electronic health record, laboratory, and clinical systems to create a trusted timeline across the continuum of care.</li>
-            <li>Anchors critical clinical events to independently verifiable timestamps, preserving diagnoses, treatments, laboratory results, and medical procedures.</li>
-            <li>Records medication administration and care transitions throughout the patient journey.</li>
-            <li>Supports coordinated care by letting authorized providers, facilities, and organizations reference the same verified timeline from diagnosis through treatment.</li>
-            <li>Supports audits, regulatory compliance, and medical investigations while improving transparency across patient care and clinical operations.</li>
-            <li>Creates trusted clinical records for long-term verification, reinforcing confidence in the integrity of healthcare records.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-healthcare-medicine.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="healthcare-medicine">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="industrial-manufacturing">
-          <div class="is-card-head">
-            <span class="is-n">09</span>
-            <div class="is-card-heading">
-              <h2>Industrial Manufacturing</h2>
-              <p class="is-tagline">Every product begins with a process. Clockchain preserves its history.</p>
-            </div>
-          </div>
-          <p class="is-overview">Every manufactured product has an operational history, from production and quality inspection to maintenance and delivery. Clockchain creates an independent, cryptographically verifiable timeline that helps preserve every critical manufacturing event across smart manufacturing and industrial automation, without disrupting plant operations.</p>
-          <ul class="is-points">
-            <li>Integrates with manufacturing execution systems (MES), ERP, SCADA, PLC, and industrial IoT and automation platforms.</li>
-            <li>Anchors critical manufacturing events to independently verifiable timestamps, establishing a verifiable chronology throughout the manufacturing lifecycle.</li>
-            <li>Preserves production, inspection, maintenance, calibration, and equipment histories, and records machine events alongside operator actions and automated system decisions.</li>
-            <li>Creates a verifiable timeline across production, quality, and maintenance operations while supporting existing plant workflows.</li>
-            <li>Enables every authorized stakeholder to reference the same verified operational timeline, strengthening quality assurance and production traceability.</li>
-            <li>Supports audits, regulatory compliance, and root-cause investigations, reinforcing confidence in manufacturing records and product histories.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-industrial-manufacturing.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="industrial-manufacturing">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="media-publishing">
-          <div class="is-card-head">
-            <span class="is-n">10</span>
-            <div class="is-card-heading">
-              <h2>Media &amp; Publishing</h2>
-              <p class="is-tagline">Protecting the story behind every story.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain establishes trusted content provenance across publishing, broadcasting, and digital media, strengthening authenticity and trust throughout the content lifecycle. It anchors editorial revisions, approvals, and publishing milestones to independently verifiable timestamps, creating a trusted timeline from content creation through publication and distribution. It integrates with existing editorial, CMS, DAM, and publishing platforms without disrupting newsroom processes.</p>
-          <ul class="is-points">
-            <li>Integrates with editorial, CMS, DAM, and publishing platforms including WordPress VIP, Adobe Experience Manager, Arc XP, and Contentful, without disrupting existing newsroom operations.</li>
-            <li>Anchors revisions, approvals, and publishing milestones to independently verifiable timestamps, establishing a verifiable chronology from creation through publication and distribution.</li>
-            <li>Preserves creation, editing, approval, publication, and distribution histories, and records AI-assisted content generation alongside human editorial decisions.</li>
-            <li>Enables every stakeholder to reference the same verified content timeline across editorial, production, review, and publishing workflows.</li>
-            <li>Strengthens confidence in the authenticity of published content and reinforces transparency throughout the content lifecycle.</li>
-            <li>Supports copyright, licensing, and legal investigations, and preserves trusted digital records for years to come.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-media-publishing.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="media-publishing">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="robotics-autonomous-systems">
-          <div class="is-card-head">
-            <span class="is-n">11</span>
-            <div class="is-card-heading">
-              <h2>Robotics &amp; Autonomous Systems</h2>
-              <p class="is-tagline">Coordinated machines begin with coordinated time.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain provides temporal infrastructure for robotics and autonomous systems, creating an independent, cryptographically verifiable timeline that lets robots and autonomous machines coordinate, record, and verify critical actions across distributed environments. It gives every system a shared, trusted chronology to synchronize operations, verify actions, and strengthen accountability.</p>
-          <ul class="is-points">
-            <li>Anchors critical robotic events to independently verifiable timestamps.</li>
-            <li>Records decisions, commands, and autonomous actions, preserving navigation, sensing, and control histories.</li>
-            <li>Enables every system to reference the same verified timeline for reliable coordination across autonomous fleets.</li>
-            <li>Integrates with existing robotic and automation platforms, preserving control systems without disrupting operations.</li>
-            <li>Supports forensic analysis following operational incidents and reinforces accountability for critical machine decisions.</li>
-            <li>Preserves trusted operational histories for future analysis.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-robotics-autonomous-systems.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="robotics-autonomous-systems">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
-        <article class="is-card" id="supply-chain">
-          <div class="is-card-head">
-            <span class="is-n">12</span>
-            <div class="is-card-heading">
-              <h2>Supply Chain</h2>
-              <p class="is-tagline">Every product has a journey. Clockchain preserves its history.</p>
-            </div>
-          </div>
-          <p class="is-overview">Clockchain brings trusted traceability to global supply chains by anchoring critical events to independently verifiable timestamps. Products pass through many hands before reaching their destination, and Clockchain ensures every milestone can be independently verified for years to come. It creates a shared, trusted timeline spanning production through final delivery, strengthening transparency, traceability, and trust across organizational boundaries.</p>
-          <ul class="is-points">
-            <li>Anchors critical supply chain events to independently verifiable timestamps, establishing a trusted chronology from production through final delivery.</li>
-            <li>Integrates with existing ERP, warehouse, and logistics platforms to create a trusted timeline across every stage of the supply chain.</li>
-            <li>Preserves manufacturing, inspection, shipment, and delivery histories, and records chain-of-custody transfers throughout the product lifecycle.</li>
-            <li>Enables every supply chain partner to reference the same verified timeline, supporting trusted coordination across organizational boundaries.</li>
-            <li>Improves visibility across suppliers, carriers, and customers, and reinforces confidence in product provenance and chain of custody.</li>
-            <li>Supports recalls, audits, and regulatory investigations with trusted operational records for long-term verification.</li>
-          </ul>
-          <div class="is-actions">
-            <a class="btn btn-primary" href="assets/industry/clockchain-supply-chain.pdf" download>Download PDF<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></a>
-            <button class="btn btn-outline is-share" type="button" data-slug="supply-chain">Copy link<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
-          </div>
-        </article>
-
+        <ul class="docs-links">
+          <li><a href="assets/industry/clockchain-aerospace-defense.pdf" target="_blank" rel="noopener">Aerospace &amp; Defense<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-ai-systems.pdf" target="_blank" rel="noopener">AI Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-critical-infrastructure.pdf" target="_blank" rel="noopener">Critical Infrastructure<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-cybersecurity.pdf" target="_blank" rel="noopener">Cybersecurity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-digital-commerce.pdf" target="_blank" rel="noopener">Digital Commerce<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-digital-identity.pdf" target="_blank" rel="noopener">Digital Identity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-energy-natural-resources.pdf" target="_blank" rel="noopener">Energy &amp; Natural Resources<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-financial-services.pdf" target="_blank" rel="noopener">Financial Services<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-government-public-sector.pdf" target="_blank" rel="noopener">Government &amp; Public Sector<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-healthcare-medicine.pdf" target="_blank" rel="noopener">Healthcare &amp; Medicine<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-industrial-manufacturing.pdf" target="_blank" rel="noopener">Industrial Manufacturing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-legal-services.pdf" target="_blank" rel="noopener">Legal Services<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-media-publishing.pdf" target="_blank" rel="noopener">Media &amp; Publishing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-pharma-life-sciences.pdf" target="_blank" rel="noopener">Pharma &amp; Life Sciences<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-robotics-autonomous-systems.pdf" target="_blank" rel="noopener">Robotics &amp; Autonomous Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-supply-chain.pdf" target="_blank" rel="noopener">Supply Chain<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-telecommunications.pdf" target="_blank" rel="noopener">Telecommunications<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+          <li><a href="assets/industry/clockchain-transportation.pdf" target="_blank" rel="noopener">Transportation<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+        </ul>
       </div>
     </section>
 
@@ -421,10 +138,10 @@
           <a href="index.html" aria-label="Clockchain, home" style="display:inline-block;"><img src="assets/clockchain-logo-full.png" alt="Clockchain" /></a>
           <p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>
         </div>
-        <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="mailto:info@d4d.group">Contact</a></li></ul></div>
+        <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>
         <div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>
         <div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>
-        <div class="footer-col"><h5>Network</h5><ul><li><a href="app/login.html" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a></li><li><a href="mailto:info@d4d.group">Node operators</a></li></ul></div>
+        <div class="footer-col"><h5>Network</h5><ul><li><a href="app/login.html" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="#" data-contact>Node operators</a></li></ul></div>
         <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>
       </div>
       <div class="footer-bottom">
@@ -444,33 +161,7 @@
   </footer>
 
   <script src="app.js?v=2"></script>
+  <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
-  <script>
-    /* per-section share: copy a deep link to the industry to the clipboard */
-    (function(){
-      document.querySelectorAll('.is-share').forEach(function(btn){
-        var original = btn.innerHTML;
-        btn.addEventListener('click', function(){
-          var slug = btn.getAttribute('data-slug');
-          var url = location.origin + location.pathname + '#' + slug;
-          if(history.replaceState) history.replaceState(null, '', '#' + slug);
-          var done = function(){
-            btn.classList.add('copied');
-            btn.textContent = 'Link copied';
-            setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = original; }, 1800);
-          };
-          if(navigator.clipboard && navigator.clipboard.writeText){
-            navigator.clipboard.writeText(url).then(done, done);
-          } else {
-            var ta = document.createElement('textarea');
-            ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
-            document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); } catch(e){}
-            document.body.removeChild(ta); done();
-          }
-        });
-      });
-    })();
-  </script>
 </body>
 </html>

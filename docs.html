@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Docs · Clockchain</title>
-  <meta name="description" content="The Clockchain library: overview, services, use cases, and developer documentation, organized into a few collapsible sections." />
+  <meta name="description" content="The Clockchain library: overview, industry solutions, and developer documentation, organized into a few collapsible sections." />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=2" />
-  <link rel="stylesheet" href="site.css?v=11" />
+  <link rel="stylesheet" href="site.css?v=12" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
   <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
   <style>
@@ -45,7 +45,9 @@
     .docs-links li:last-child{border-bottom:none;}
     .docs-links a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 2px;color:var(--fg-2);text-decoration:none;font-size:14.5px;transition:color .16s ease;}
     .docs-links a:hover{color:var(--accent);}
-    .docs-links a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;opacity:.6;}
+    .docs-links a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;opacity:.6;flex:none;}
+    .docs-sub{font-family:var(--f-mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:22px 0 8px;}
+    .docs-acc-body p:first-child .docs-sub,.docs-acc-body .docs-sub:first-child{margin-top:0;}
   </style>
 </head>
 <body>
@@ -59,7 +61,7 @@
       <li><a href="services.html">Services</a></li>
       <li><a href="newsroom.html">News</a></li>
       <li><a href="docs.html" aria-current="page">Docs</a></li>
-      <li><a href="docs.html#api">API</a></li>
+      <li><a href="app/docs/index.html">API</a></li>
     </ul>
     <div class="nav-right">
       <nav class="nav-socials" aria-label="Clockchain on social media">
@@ -77,7 +79,7 @@
       <a href="services.html">Services</a>
       <a href="newsroom.html">News</a>
       <a href="docs.html" aria-current="page">Docs</a>
-      <a href="docs.html#api">API</a>
+      <a href="app/docs/index.html">API</a>
       <a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a>
     </nav>
   </div>
@@ -88,7 +90,7 @@
       <div class="container">
         <span class="tag">Docs</span>
         <h1>Everything you need to build with <em>verifiable time.</em></h1>
-        <p class="body-lg">The Clockchain library: overview, services, use cases, and developer documentation, organized into a few collapsible sections. Open a section to expand it.</p>
+        <p class="body-lg">The Clockchain library: overview, industry solutions, and developer documentation, organized into a few collapsible sections. Open a section to expand it.</p>
       </div>
     </section>
 
@@ -96,51 +98,57 @@
       <div class="container">
         <div class="docs-acc-list">
 
-          <details class="docs-acc" open>
+          <details class="docs-acc">
             <summary><span class="docs-acc-n">01</span>Overview<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
             <div class="docs-acc-body">
-              <p>Clockchain is a decentralized network of trusted time sources, from certified atomic clocks to national time institutes and satellite navigation systems, validated on-chain every second. Every timestamp is cryptographically signed, permanent, and independently verifiable by anyone.</p>
-              <p>Clockchain replaces trust in a time source with proof: a physical network of atomic clocks, national time institutes, and satellite systems, reconciled by AI and validated on-chain through Proof-of-Time consensus.</p>
+              <p>In a digital economy where milliseconds determine financial outcomes and automated systems execute across global jurisdictions, reliable time has become critical infrastructure. Clockchain&reg; creates independently verifiable proof of when events happened and the order in which they occurred.</p>
+              <h4 class="docs-sub">The hidden weakness in digital time</h4>
+              <p><strong>Trusted does not mean infallible.</strong> Clocks drift. Synchronization is affected by latency, configuration, hardware, software, and the quality of the source. A trusted clock reports its best estimate of time&mdash;not an absolute guarantee.</p>
+              <p><strong>Time can be manipulated.</strong> Network and satellite time signals can be disrupted or spoofed, local clocks and timestamps can be altered, and a compromised system can rewrite the timeline it reports.</p>
+              <p><strong>Widely used clocks do not always agree.</strong> Systems obtain and distribute time through different sources, networks, devices, and synchronization methods. Even trusted clocks serving millions of users can diverge, leaving no universally consistent record across platforms, organizations, or jurisdictions.</p>
+              <h4 class="docs-sub">The Clockchain response</h4>
+              <p>Clockchain combines observations from multiple independent time sources to create a unified, UTC-aligned network reference. That reference is established through distributed consensus and immutably recorded, enabling third parties to verify time claims and reconstruct the chronology of digital events without depending on a single clock, server, or organization.</p>
+              <h4 class="docs-sub">Three core services</h4>
+              <p><strong>Verifiable Time</strong> &nbsp;Applications can obtain and verify a network-derived reference rather than accepting a single clock on trust.</p>
+              <p><strong>Event Logging</strong> &nbsp;Organizations can anchor important events in a tamper-evident chronology that remains auditable across systems.</p>
+              <p><strong>Smart Contract Scheduling</strong> &nbsp;Transactions and automated processes can execute according to verifiable schedules instead of relying solely on centralized schedulers.</p>
+              <p>All three services are powered by Clockchain's patented technology, which aggregates multiple independent global time sources and anchors a synchronized timestamp on-chain every second via decentralized consensus. Unlike conventional blockchain timestamps that rely on validator or miner-reported block times, Clockchain provides a uniform time standard that facilitates interoperability between on-chain, off-chain, physical, and digital environments&mdash;enabling simpler reconciliation.</p>
+              <h4 class="docs-sub">Built for systems that must prove when</h4>
+              <p>Clockchain provides verifiable proof of time for industries and enterprises that require measurable performance, transparency, and demonstrable compliance.</p>
+              <p>AI agents and autonomous systems &bull; Financial markets and digital assets &bull; Cybersecurity and digital forensics &bull; Supply chains and industrial automation &bull; Government and regulated records &bull; Media provenance, healthcare, telecommunications, scientific research, and critical infrastructure</p>
+              <p>Explore the Clockchain public testnet, documentation, and partnership opportunities at www.clockchain.network.</p>
             </div>
           </details>
 
           <details class="docs-acc">
-            <summary><span class="docs-acc-n">02</span>Services<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="docs-acc-body">
-              <p>Three services, one clock: logging, authentication &amp; timestamps, smart contract scheduling &amp; execution, and the Timestamp API.</p>
-              <ul class="docs-links">
-                <li><a href="services.html">Services overview<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="app/logging.html" target="_blank" rel="noopener">Logging, Authentication &amp; Timestamps<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="app/contracts.html" target="_blank" rel="noopener">Smart Contract Scheduling &amp; Execution<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="app/timestamp.html" target="_blank" rel="noopener">Timestamp API<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="docs-acc">
-            <summary><span class="docs-acc-n">03</span>Use cases<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <summary><span class="docs-acc-n">02</span>Industry Solutions<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
             <div class="docs-acc-body">
               <p>How a shared, verifiable time layer applies across the industries that depend on proving when something happened. Each links to a full brief.</p>
               <ul class="docs-links">
-                <li><a href="industry-solutions.html#ai-systems">AI Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#critical-infrastructure">Critical Infrastructure<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#cybersecurity">Cybersecurity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#digital-commerce">Digital Commerce<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#digital-identity">Digital Identity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#financial-services">Financial Services<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#government-public-sector">Government &amp; Public Sector<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#healthcare-medicine">Healthcare &amp; Medicine<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#industrial-manufacturing">Industrial Manufacturing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#media-publishing">Media &amp; Publishing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#robotics-autonomous-systems">Robotics &amp; Autonomous Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html#supply-chain">Supply Chain<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-                <li><a href="industry-solutions.html">Full use case library<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-aerospace-defense.pdf" target="_blank" rel="noopener">Aerospace &amp; Defense<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-ai-systems.pdf" target="_blank" rel="noopener">AI Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-critical-infrastructure.pdf" target="_blank" rel="noopener">Critical Infrastructure<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-cybersecurity.pdf" target="_blank" rel="noopener">Cybersecurity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-digital-commerce.pdf" target="_blank" rel="noopener">Digital Commerce<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-digital-identity.pdf" target="_blank" rel="noopener">Digital Identity<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-energy-natural-resources.pdf" target="_blank" rel="noopener">Energy &amp; Natural Resources<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-financial-services.pdf" target="_blank" rel="noopener">Financial Services<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-government-public-sector.pdf" target="_blank" rel="noopener">Government &amp; Public Sector<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-healthcare-medicine.pdf" target="_blank" rel="noopener">Healthcare &amp; Medicine<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-industrial-manufacturing.pdf" target="_blank" rel="noopener">Industrial Manufacturing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-legal-services.pdf" target="_blank" rel="noopener">Legal Services<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-media-publishing.pdf" target="_blank" rel="noopener">Media &amp; Publishing<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-pharma-life-sciences.pdf" target="_blank" rel="noopener">Pharma &amp; Life Sciences<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-robotics-autonomous-systems.pdf" target="_blank" rel="noopener">Robotics &amp; Autonomous Systems<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-supply-chain.pdf" target="_blank" rel="noopener">Supply Chain<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-telecommunications.pdf" target="_blank" rel="noopener">Telecommunications<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+                <li><a href="assets/industry/clockchain-transportation.pdf" target="_blank" rel="noopener">Transportation<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               </ul>
             </div>
           </details>
 
           <details class="docs-acc" id="api">
-            <summary><span class="docs-acc-n">04</span>Developer docs &amp; API<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <summary><span class="docs-acc-n">03</span>Developer docs &amp; API<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
             <div class="docs-acc-body">
               <p>The developer documentation and the Timestamp API reference live in the Dev Portal docs.</p>
               <ul class="docs-links">
@@ -165,10 +173,10 @@
           <a href="index.html" aria-label="Clockchain, home" style="display:inline-block;"><img src="assets/clockchain-logo-full.png" alt="Clockchain" /></a>
           <p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>
         </div>
-        <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="mailto:info@d4d.group">Contact</a></li></ul></div>
+        <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>
         <div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>
         <div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>
-        <div class="footer-col"><h5>Network</h5><ul><li><a href="app/login.html" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a></li><li><a href="mailto:info@d4d.group">Node operators</a></li></ul></div>
+        <div class="footer-col"><h5>Network</h5><ul><li><a href="app/login.html" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="#" data-contact>Node operators</a></li></ul></div>
         <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>
       </div>
       <div class="footer-bottom">
@@ -188,6 +196,7 @@
   </footer>
 
   <script src="app.js?v=2"></script>
+  <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
   <script>(function(){function openHash(){if(!location.hash)return;var el=document.getElementById(location.hash.slice(1));if(el&&el.tagName==='DETAILS'){el.open=true;el.scrollIntoView();}}openHash();window.addEventListener('hashchange',openHash);})();</script>
 </body>
