@@ -17,28 +17,7 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <nav class="nav">
-    <a class="nav-logo" href="index.html" aria-label="Clockchain"><img src="assets/clockchain-logo-full.png" alt="Clockchain" /></a>
-    <ul class="nav-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="newsroom.html">News</a></li>
-      <li><a href="docs.html">Docs</a></li>
-      <li><a href="app/docs/index.html">API</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <nav class="mm-links" aria-label="Primary (mobile)">
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="newsroom.html">News</a>
-      <a href="docs.html">Docs</a>
-      <a href="app/docs/index.html">API</a>
-    </nav>
-  </div>
+  <div id="site-nav"></div>
 
   <main id="main-content" tabindex="-1">
     <section class="legal-hero">
@@ -128,24 +107,9 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container-wide">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="index.html" aria-label="Clockchain, home" style="display:inline-block;"><img src="assets/clockchain-logo-full.png" alt="Clockchain" /></a>
-          <p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>
-        </div>
-        <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>
-        <div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>
-        <div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>
-        <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html" aria-current="page">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>
-      </div>
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2026 D4D Sàrl. All rights reserved. Clockchain® is a registered trademark of D4D Sàrl.</span>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
+  <script src="components.js?v=1"></script>
   <script src="app.js?v=2"></script>
   <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
