@@ -21,8 +21,8 @@
           '<li><a href="about.html"' + (pageName === 'about.html' ? ' aria-current="page"' : '') + '>About</a></li>' +
           '<li><a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a></li>' +
           '<li><a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a></li>' +
-          '<li><a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a></li>' +
-          '<li><a href="app/docs/index.html">API</a></li>' +
+          '<li><a href="https://services.clockchain.network/docs"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a></li>' +
+          '<li><a href="https://services.clockchain.network/docs">API</a></li>' +
         '</ul>' +
         '<div class="nav-right">' +
           '<nav class="nav-socials" aria-label="Clockchain on social media">' +
@@ -38,8 +38,8 @@
           '<a href="about.html"' + (pageName === 'about.html' ? ' aria-current="page"' : '') + '>About</a>' +
           '<a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a>' +
           '<a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a>' +
-          '<a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a>' +
-          '<a href="app/docs/index.html">API</a>' +
+          '<a href="https://services.clockchain.network/docs"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a>' +
+          '<a href="https://services.clockchain.network/docs">API</a>' +
           '<a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a>' +
         '</nav>' +
         '<nav class="mm-socials" aria-label="Clockchain on social media">' +
@@ -62,7 +62,7 @@
               '<p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>' +
             '</div>' +
             '<div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>' +
-            '<div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>' +
+            '<div class="footer-col"><h5>Product</h5><ul><li><a href="https://services.clockchain.network/docs">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>' +
             '<div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>' +
             '<div class="footer-col"><h5>Network</h5><ul><li><a href="https://services.clockchain.network" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="#" data-contact>Node operators</a></li></ul></div>' +
             '<div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>' +
