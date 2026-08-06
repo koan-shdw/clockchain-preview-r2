@@ -243,7 +243,7 @@ body.cw-dismissed .cw-dock{display:none;}
 /* ===== Compare boxes (always open) ===== */
 .compare{position:relative;z-index:1;padding:0 24px var(--band-sm);}
 .compare .container{max-width:1120px;}
-.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
 /* R2 #5/#6/#18: side-by-side boxes, one shared column template so both tables align */
 .cmp-t-time .cw-row,.cmp-t-chain .cw-row{grid-template-columns:1fr 1fr 1.3fr 1.1fr;}
 .cmp-t-chain .cw-row>span:last-child,.cmp-t-time .cw-row>span:last-child{text-align:right;}
