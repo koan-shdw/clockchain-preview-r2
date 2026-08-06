@@ -21,7 +21,7 @@
           '<li><a href="about.html"' + (pageName === 'about.html' ? ' aria-current="page"' : '') + '>About</a></li>' +
           '<li><a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a></li>' +
           '<li><a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a></li>' +
-          '<li><a href="https://services.clockchain.network/docs"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a></li>' +
+          '<li><a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a></li>' +
           '<li><a href="https://services.clockchain.network/docs">API</a></li>' +
         '</ul>' +
         '<div class="nav-right">' +
@@ -38,7 +38,7 @@
           '<a href="about.html"' + (pageName === 'about.html' ? ' aria-current="page"' : '') + '>About</a>' +
           '<a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a>' +
           '<a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a>' +
-          '<a href="https://services.clockchain.network/docs"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a>' +
+          '<a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a>' +
           '<a href="https://services.clockchain.network/docs">API</a>' +
           '<a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a>' +
         '</nav>' +
