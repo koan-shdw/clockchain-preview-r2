@@ -62,7 +62,7 @@
               '<p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>' +
             '</div>' +
             '<div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>' +
-            '<div class="footer-col"><h5>Product</h5><ul><li><a href="https://services.clockchain.network/docs">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>' +
+            '<div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>' +
             '<div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>' +
             '<div class="footer-col"><h5>Network</h5><ul><li><a href="https://services.clockchain.network" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="#" data-contact>Node operators</a></li></ul></div>' +
             '<div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>' +
