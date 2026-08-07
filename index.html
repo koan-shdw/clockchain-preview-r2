@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter" data-headweight="light" data-bodyweight="light" data-density="comfortable">
+<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter"
+  data-headweight="light" data-bodyweight="light" data-density="comfortable">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clockchain · The world's first verifiable global time network</title>
-  <meta name="description" content="Clockchain is the world's first verifiable global time network: a decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
+  <meta name="description"
+    content="Clockchain is the world's first verifiable global time network: a decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
   <link rel="canonical" href="https://koan-shdw.github.io/clockchain-preview-r2/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Clockchain" />
   <meta property="og:title" content="Clockchain · The world's first verifiable global time network" />
-  <meta property="og:description" content="A decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
+  <meta property="og:description"
+    content="A decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
   <meta property="og:image" content="https://koan-shdw.github.io/clockchain-preview-r2/assets/og-clockchain.png" />
   <meta property="og:url" content="https://koan-shdw.github.io/clockchain-preview-r2/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Clockchain · The world's first verifiable global time network" />
-  <meta name="twitter:description" content="A decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
+  <meta name="twitter:description"
+    content="A decentralized, cryptographically verifiable time standard, anchored on-chain every second. Time you can prove." />
   <meta name="twitter:image" content="https://koan-shdw.github.io/clockchain-preview-r2/assets/og-clockchain.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=2" />
   <link rel="stylesheet" href="site.css?v=16" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
-  <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
+  <script>(function () { try { var t = localStorage.getItem('cc-theme'); if (t === 'eclipse' || t === 'daylight') { document.documentElement.setAttribute('data-variant', t); } } catch (e) { } })();</script>
 </head>
+
 <body class="has-earth">
 
   <canvas class="hero-earth" id="hero-earth" aria-hidden="true"></canvas>
@@ -44,11 +52,18 @@
       <div class="hero-q-inner">
         <div class="hero-q-copy">
           <div class="eyebrow"><span class="live-dot"></span>Network live: anchoring time on-chain every second</div>
-          <h1 class="hero-q-title">The verifiable time layer for<br /><span class="hq-em">autonomous systems.</span></h1>
+          <h1 class="hero-q-title">The verifiable time layer for<br /><span class="hq-em">autonomous systems.</span>
+          </h1>
           <p class="hero-lede">The world's first verifiable global time network.</p>
-          <p class="hero-sub">Every financial transaction, legal agreement, AI interaction, and autonomous decision depends on time, yet the internet runs on clocks <strong>nobody can verify</strong>. Clockchain is a decentralized, cryptographically verifiable time standard, <strong>anchored on-chain every second</strong>.</p>
+          <p class="hero-sub">Every financial transaction, legal agreement, AI interaction, and autonomous decision
+            depends on time, yet the internet runs on clocks <strong>nobody can verify</strong>. Clockchain is a
+            decentralized, cryptographically verifiable time standard, <strong>anchored on-chain every second</strong>.
+          </p>
           <div class="hero-q-actions">
-            <a class="btn btn-primary" href="https://services.clockchain.network/logging-create-log" target="_blank" rel="noopener">Log Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-primary" href="https://services.clockchain.network/logging-create-log" target="_blank"
+              rel="noopener">Log Now<svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg></a>
           </div>
         </div>
 
@@ -60,7 +75,8 @@
           <div class="cw-time mono" id="cw-time">--:--:--<span class="cw-ms">.---</span></div>
           <div class="cw-date" id="cw-date">— UTC</div>
           <div class="cw-stats">
-            <div class="cw-stat"><span class="cw-label">Block height</span><span class="cw-val mono" id="cw-height">—</span></div>
+            <div class="cw-stat"><span class="cw-label">Block height</span><span class="cw-val mono"
+                id="cw-height">—</span></div>
           </div>
           <div class="cw-counter">
             <span class="cw-label">Total logs anchored</span>
@@ -75,7 +91,9 @@
       <div class="container">
         <span class="tag">What is Clockchain</span>
         <h2 class="h2">What time is it? <em>Prove it.</em></h2>
-        <p class="body-lg">A decentralized network of trusted time sources, from certified atomic clocks to national time institutes and satellite navigation systems, validated on-chain every second. Every timestamp is cryptographically signed, permanent, and independently verifiable by anyone.</p>
+        <p class="body-lg">A decentralized network of trusted time sources, from certified atomic clocks to national
+          time institutes and satellite navigation systems, validated on-chain every second. Every timestamp is
+          cryptographically signed, permanent, and independently verifiable by anyone.</p>
       </div>
     </section>
 
@@ -83,33 +101,131 @@
     <section class="compare reveal" id="compare" data-screen-label="02b Compare">
       <div class="container">
         <div class="compare-grid">
-          <!-- A: Clockchain consensus time vs existing time standards (R2 #5) -->
+
+          <!-- A: Time Standards -->
           <div class="cmp-card">
-            <div class="cmp-head"><span class="cmp-title">Clockchain Consensus Time vs Existing Time Standards</span><span class="net-badge mono">LIVE</span></div>
+            <div class="cmp-head">
+              <span class="cmp-title">Clockchain Consensus Time vs Existing Time Standards</span>
+              <span class="net-badge mono">LIVE</span>
+            </div>
             <div class="cw-table cmp-t-time">
-              <div class="cw-row cw-row-head"><span>Source</span><span>Current time</span><span>Time source</span><span>Independently verifiable</span></div>
-              <div class="cw-row is-cc"><span>Clockchain</span><span class="mono" data-cw-src="clockchain">—</span><span>Distributed Consensus</span><span class="cmp-verify yes">Yes</span></div>
-              <div class="cw-row"><span>UTC</span><span class="mono" data-cw-src="utc">—</span><span>BIPM</span><span class="cmp-verify no">No</span></div>
-              <div class="cw-row"><span>Google NTP</span><span class="mono" data-cw-src="ntp">—</span><span>Google</span><span class="cmp-verify no">No</span></div>
-              <div class="cw-row"><span>GPS</span><span class="mono" data-cw-src="gps">—</span><span>GPS Constellation</span><span class="cmp-verify no">No</span></div>
-              <div class="cw-row"><span>TAI</span><span class="mono" data-cw-src="tai">—</span><span>BIPM</span><span class="cmp-verify no">No</span></div>
+              <div class="cw-row cw-row-head">
+                <span>Source</span>
+                <span>Current time</span>
+                <span>Time source</span>
+                <span>Independently verifiable</span>
+              </div>
+              <div class="cw-row is-cc">
+                <span>Clockchain</span>
+                <span class="mono" data-cw-src="clockchain">—</span>
+                <span>Distributed Consensus</span>
+                <span class="cmp-verify yes">Yes</span>
+              </div>
+              <div class="cw-row">
+                <span>UTC</span>
+                <span class="mono" data-cw-src="utc">—</span>
+                <span>BIPM</span>
+                <span class="cmp-verify no">No</span>
+              </div>
+              <div class="cw-row">
+                <span>Google NTP</span>
+                <span class="mono" data-cw-src="ntp">—</span>
+                <span>Google</span>
+                <span class="cmp-verify no">No</span>
+              </div>
+              <div class="cw-row">
+                <span>TAI (Atomic)</span>
+                <span class="mono" data-cw-src="tai">—</span>
+                <span>BIPM</span>
+                <span class="cmp-verify no">No</span>
+              </div>
+              <div class="cw-row">
+                <span>System Time</span>
+                <span class="mono" data-cw-src="system">—</span>
+                <span>Clockchain API Host</span>
+                <span class="cmp-verify no">No</span>
+              </div>
+              <div class="cw-row">
+                <span>Swagger Time API</span>
+                <span class="mono" data-cw-src="swagger">—</span>
+                <span>Swagger API</span>
+                <span class="cmp-verify no">No</span>
+              </div>
             </div>
             <p class="cmp-note">An independently verifiable time reference for the Autonomous Age.</p>
           </div>
-          <!-- B: Blockchain time compared to Clockchain (R2 #6) -->
+
+          <!-- B: Blockchain Comparison -->
           <div class="cmp-card">
-            <div class="cmp-head"><span class="cmp-title">Blockchain Time Compared to Clockchain</span><span class="net-badge mono">LIVE</span></div>
+            <div class="cmp-head">
+              <span class="cmp-title">Blockchain Time Compared to Clockchain</span>
+              <span class="net-badge mono">LIVE</span>
+            </div>
             <div class="cw-table cmp-t-chain">
-              <div class="cw-row cw-row-head"><span>Network</span><span>Current time</span><span>Time offset</span><span>Latest block</span></div>
-              <div class="cw-row is-cc"><span>Clockchain</span><span class="mono" data-cw-chain="0">—</span><span class="mono">0 ms</span><span class="mono" data-cw-block="clockchain">#—</span></div>
-              <div class="cw-row"><span>Ethereum</span><span class="mono" data-cw-chain="-2">—</span><span class="mono">−2.0 s</span><span class="mono">#23,481,102</span></div>
-              <div class="cw-row"><span>Solana</span><span class="mono" data-cw-chain="1">—</span><span class="mono">+1.0 s</span><span class="mono">#402,193,552</span></div>
-              <div class="cw-row"><span>Bitcoin</span><span class="mono" data-cw-chain="-7">—</span><span class="mono">−7.0 s</span><span class="mono">#912,841</span></div>
-              <div class="cw-row"><span>Polygon</span><span class="mono" data-cw-chain="-1">—</span><span class="mono">−1.0 s</span><span class="mono">#78,112,442</span></div>
-              <div class="cw-row"><span>Sui</span><span class="mono" data-cw-chain="0">—</span><span class="mono">+0.0 s</span><span class="mono">#98,341,201</span></div>
+              <div class="cw-row cw-row-head">
+                <span>Network</span>
+                <span>Current time</span>
+                <span>Time offset</span>
+                <span>Latest block</span>
+              </div>
+              <div class="cw-row is-cc">
+                <span>Clockchain</span>
+                <span class="mono" data-cw-chain="clockchain">—</span>
+                <span class="mono">0 ms</span>
+                <span class="mono" data-cw-block="clockchain">—</span>
+              </div>
+              <div class="cw-row">
+                <span>Ethereum</span>
+                <span class="mono" data-cw-chain="ethereum">—</span>
+                <span class="mono" data-cw-chain-off="ethereum">—</span>
+                <span class="mono" data-cw-block="ethereum">—</span>
+              </div>
+              <div class="cw-row">
+                <span>Bitcoin</span>
+                <span class="mono" data-cw-chain="bitcoin">—</span>
+                <span class="mono" data-cw-chain-off="bitcoin">—</span>
+                <span class="mono" data-cw-block="bitcoin">—</span>
+              </div>
+              <div class="cw-row">
+                <span>Solana</span>
+                <span class="mono" data-cw-chain="solana">—</span>
+                <span class="mono" data-cw-chain-off="solana">—</span>
+                <span class="mono" data-cw-block="solana">—</span>
+              </div>
+              <div class="cw-row">
+                <span>Polygon</span>
+                <span class="mono" data-cw-chain="polygon">—</span>
+                <span class="mono" data-cw-chain-off="polygon">—</span>
+                <span class="mono" data-cw-block="polygon">—</span>
+              </div>
+              <!-- <div class="cw-row">
+                <span>Avalanche C-Chain</span>
+                <span class="mono" data-cw-chain="avalanche">—</span>
+                <span class="mono" data-cw-chain-off="avalanche">—</span>
+                <span class="mono" data-cw-block="avalanche">—</span>
+              </div> -->
+              <div class="cw-row">
+                <span>BNB Chain</span>
+                <span class="mono" data-cw-chain="bnb">—</span>
+                <span class="mono" data-cw-chain-off="bnb">—</span>
+                <span class="mono" data-cw-block="bnb">—</span>
+              </div>
+              <!-- <div class="cw-row">
+                <span>Hyperliquid</span>
+                <span class="mono" data-cw-chain="hyperliquid">—</span>
+                <span class="mono" data-cw-chain-off="hyperliquid">—</span>
+                <span class="mono" data-cw-block="hyperliquid">—</span>
+              </div> -->
+              <div class="cw-row">
+                <span>Tron</span>
+                <span class="mono" data-cw-chain="tron">—</span>
+                <span class="mono" data-cw-chain-off="tron">—</span>
+                <span class="mono" data-cw-block="tron">—</span>
+              </div>
             </div>
             <p class="cmp-note">Making blockchain time transparent, comparable, and independently verifiable.</p>
           </div>
+
         </div>
       </div>
     </section>
@@ -127,48 +243,67 @@
             <summary>
               <span class="svc-n">01</span>
               <span class="svc-acc-title">Logging, Authentication &amp; Timestamps</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
             </summary>
             <div class="svc-acc-body">
-              <p>Timestamp and log data every second onto Clockchain in a simple, decentralized, cost-effective way. Instantly authenticate from any device, anywhere.</p>
+              <p>Timestamp and log data every second onto Clockchain in a simple, decentralized, cost-effective way.
+                Instantly authenticate from any device, anywhere.</p>
               <ul class="ps-list">
                 <li>Industry-standard hashing for any asset</li>
                 <li>Advanced timestamp verification</li>
                 <li>Search and audit your full log history</li>
               </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network/logging-create-log" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn-primary svc-go" href="https://services.clockchain.network/logging-create-log"
+                target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg></a>
             </div>
           </details>
           <details class="svc-acc">
             <summary>
               <span class="svc-n">02</span>
               <span class="svc-acc-title">Smart Contract Scheduling &amp; Execution</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
             </summary>
             <div class="svc-acc-body">
-              <p>Schedule and execute critical services with the first verifiable blockchain time, a scheduling and execution system you can trust. Never miss a deadline again.</p>
+              <p>Schedule and execute critical services with the first verifiable blockchain time, a scheduling and
+                execution system you can trust. Never miss a deadline again.</p>
               <ul class="ps-list">
                 <li>Time triggers with cryptographic proof of execution</li>
                 <li>Webhook notifications</li>
                 <li>Full deployment monitoring</li>
               </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network/smart-contracts-schedule-contract" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn-primary svc-go"
+                href="https://services.clockchain.network/smart-contracts-schedule-contract" target="_blank"
+                rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg></a>
             </div>
           </details>
           <details class="svc-acc">
             <summary>
               <span class="svc-n">03</span>
               <span class="svc-acc-title">Timestamp API</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
             </summary>
             <div class="svc-acc-body">
-              <p>Access, verify, and stamp anything, every second, on any device. Clockchain-verified timestamps for UTC, GPS, TAI, ISO 8601, and RFC 3339, with microsecond precision.</p>
+              <p>Access, verify, and stamp anything, every second, on any device. Clockchain-verified timestamps for
+                UTC, GPS, TAI, ISO 8601, and RFC 3339, with microsecond precision.</p>
               <ul class="ps-list">
                 <li>Unlimited API requests with full API access</li>
                 <li>Webhook notifications and bulk operations</li>
                 <li>SLA guarantee</li>
               </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network/timestamp-api-dashboard" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn-primary svc-go" href="https://services.clockchain.network/timestamp-api-dashboard"
+                target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg></a>
             </div>
           </details>
         </div>
@@ -188,7 +323,9 @@
             <div class="uc-n">01</div>
             <div class="uc-body">
               <h4>Compliance &amp; auditability</h4>
-              <p>A regulator investigates a sudden stock market crash. Using Clockchain's independently verifiable timestamps, investigators reconstruct the exact sequence of orders, trades, and market events to determine what happened and resolve disputes with confidence.</p>
+              <p>A regulator investigates a sudden stock market crash. Using Clockchain's independently verifiable
+                timestamps, investigators reconstruct the exact sequence of orders, trades, and market events to
+                determine what happened and resolve disputes with confidence.</p>
               <span class="pill">Finance · Regulation · Audit · Healthcare · Cybersecurity · Transport</span>
             </div>
           </article>
@@ -196,7 +333,9 @@
             <div class="uc-n">02</div>
             <div class="uc-body">
               <h4>Chain of custody &amp; proof of provenance</h4>
-              <p>A viral video appears online showing a public figure making controversial remarks. Clockchain provides independently verifiable proof of when the original recording was created and whether it has been modified, helping distinguish authentic media from deepfakes.</p>
+              <p>A viral video appears online showing a public figure making controversial remarks. Clockchain provides
+                independently verifiable proof of when the original recording was created and whether it has been
+                modified, helping distinguish authentic media from deepfakes.</p>
               <span class="pill">Supply chain · Legal · Media · Commerce · Pharma</span>
             </div>
           </article>
@@ -204,13 +343,17 @@
             <div class="uc-n">03</div>
             <div class="uc-body">
               <h4>Interoperability &amp; a unified temporal system</h4>
-              <p>Multiple AI agents from different companies collaborate to complete a complex task. Clockchain provides a common, independently verifiable timeline so every agent can prove when actions were taken, messages were exchanged, and decisions were made.</p>
+              <p>Multiple AI agents from different companies collaborate to complete a complex task. Clockchain provides
+                a common, independently verifiable timeline so every agent can prove when actions were taken, messages
+                were exchanged, and decisions were made.</p>
               <span class="pill">Interop · AI agents · Infrastructure · Manufacturing · Robotics · Government</span>
             </div>
           </article>
         </div>
         <div class="how-more">
-          <a class="btn btn-outline" href="industry-solutions.html">Industry Solutions<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-outline" href="industry-solutions.html">Industry Solutions<svg viewBox="0 0 24 24">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg></a>
         </div>
       </div>
     </section>
@@ -226,24 +369,36 @@
           <a class="nt-card" href="blog/brief-history-of-time.html">
             <div class="nt-top"><span class="nt-kicker">Blog</span><span class="nt-date">May 25, 2026</span></div>
             <h3>A history of time.</h3>
-            <p>From a singularity 13.8 billion years ago to a blockchain-native global time standard: fifteen moments that shaped how we measure when.</p>
-            <span class="nt-link">Read post<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            <p>From a singularity 13.8 billion years ago to a blockchain-native global time standard: fifteen moments
+              that shaped how we measure when.</p>
+            <span class="nt-link">Read post<svg viewBox="0 0 24 24">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg></span>
           </a>
           <a class="nt-card" href="newsroom.html#news">
-            <div class="nt-top"><span class="nt-kicker">Press Release</span><span class="nt-date">Feb 24, 2026</span></div>
+            <div class="nt-top"><span class="nt-kicker">Press Release</span><span class="nt-date">Feb 24, 2026</span>
+            </div>
             <h3>Clockchain opens its public testnet.</h3>
-            <p>The world's first blockchain-based time oracle is now open to developers: atomic-clock precision with on-chain verifiability.</p>
-            <span class="nt-link">Read release<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            <p>The world's first blockchain-based time oracle is now open to developers: atomic-clock precision with
+              on-chain verifiability.</p>
+            <span class="nt-link">Read release<svg viewBox="0 0 24 24">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg></span>
           </a>
           <a class="nt-card" href="newsroom.html#media">
-            <div class="nt-top"><span class="nt-kicker">In the Media</span><span class="nt-date">Feb 24, 2026</span></div>
+            <div class="nt-top"><span class="nt-kicker">In the Media</span><span class="nt-date">Feb 24, 2026</span>
+            </div>
             <h3>Clockchain Launches Public Testnet: Here's What It Offers.</h3>
             <p>Blockzeit profiles the testnet launch and the three foundational services now live for developers.</p>
-            <span class="nt-link">Read coverage<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            <span class="nt-link">Read coverage<svg viewBox="0 0 24 24">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg></span>
           </a>
         </div>
         <div class="nt-cta-row">
-          <a class="btn btn-outline" href="newsroom.html">View all news &amp; media<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-outline" href="newsroom.html">View all news &amp; media<svg viewBox="0 0 24 24">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg></a>
         </div>
       </div>
     </section>
@@ -253,9 +408,13 @@
       <div class="container">
         <div class="cta-card">
           <h2>Build with <em>time</em> you can prove.</h2>
-          <p class="sub">Integrate the Timestamp API, schedule a smart contract, or log your first moment on-chain. The testnet is open. Start in minutes.</p>
+          <p class="sub">Integrate the Timestamp API, schedule a smart contract, or log your first moment on-chain. The
+            testnet is open. Start in minutes.</p>
           <div class="cta-actions">
-            <a class="btn btn-primary" href="https://services.clockchain.network/logging-create-log" target="_blank" rel="noopener">Clock it!<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-primary" href="https://services.clockchain.network/logging-create-log" target="_blank"
+              rel="noopener">Clock it!<svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg></a>
             <a class="btn btn-outline" href="#" data-contact>Talk to the team</a>
           </div>
           <p class="hero-cta-help cta-help">Log something to the chain and get back a timestamp no one can alter.</p>
@@ -273,4 +432,5 @@
   <script src="hero-earth.js?v=8"></script>
   <script src="consent.js?v=1"></script>
 </body>
+
 </html>
