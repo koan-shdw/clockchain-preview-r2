@@ -22,7 +22,7 @@
           '<li><a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a></li>' +
           '<li><a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a></li>' +
           '<li><a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a></li>' +
-          '<li><a href="https://services.clockchain.network/docs">API</a></li>' +
+          '<li><a href="http://dev.clockchain.network/service/docs">API</a></li>' +
         '</ul>' +
         '<div class="nav-right">' +
           '<nav class="nav-socials" aria-label="Clockchain on social media">' +
@@ -39,7 +39,7 @@
           '<a href="services.html"' + (pageName === 'services.html' ? ' aria-current="page"' : '') + '>Services</a>' +
           '<a href="newsroom.html"' + (pageName === 'newsroom.html' ? ' aria-current="page"' : '') + '>News</a>' +
           '<a href="docs.html"' + (pageName === 'docs.html' ? ' aria-current="page"' : '') + '>Docs</a>' +
-          '<a href="https://services.clockchain.network/docs">API</a>' +
+          '<a href="http://dev.clockchain.network/service/docs">API</a>' +
           '<a href="https://discord.com/invite/daHCN5qMtN" target="_blank" rel="noopener">Community</a>' +
         '</nav>' +
         '<nav class="mm-socials" aria-label="Clockchain on social media">' +
