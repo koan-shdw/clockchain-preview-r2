@@ -1,295 +1,185 @@
 (function () {
-  /* ═══════════════════════════════════════════════════════════════════════
-     Clockchain live-proof widget — REAL INDEX DATA edition.
-     Two API calls on boot (+ every 30 s):
-       /api/v1/indexes/time       → d4-time anchor + per-source offsets
-       /api/v1/indexes/blockchain → per-chain heights + time offsets
-     Between syncs the Clockchain time/height advances locally (+1 s / tick)
-     so the display is always smooth.
-     ═══════════════════════════════════════════════════════════════════════ */
-
-  var TIME_API = "http://dev.clockchain.network:8001/api/v1/indexes/time";
-  var CHAIN_API =
-    "http://dev.clockchain.network:8001/api/v1/indexes/blockchain";
-  var REFRESH_MS = 30000; /* re-sync every 30 s                         */
+  var TIME_API     = "http://dev.clockchain.network:8001/api/v1/indexes/time";
+  var CHAIN_API    = "http://dev.clockchain.network:8001/api/v1/indexes/blockchain";
+  var GETTIME_API  = "http://dev.clockchain.network:8001/getTime";  /* ← NEW */
+  var REFRESH_MS   = 30000;
   var TAI_ATOMIC_KEY = "atomic-clock";
 
-  /* ── Shared state ─────────────────────────────────────────────────────── */
-  var anchor = null;
-  /*  anchor = {
-        serverMs : number   — d4-time epoch ms at last sync
-        localMs  : number   — Date.now() at last sync
-        height   : number   — Clockchain block height at last sync
-      }                                                                      */
+  var anchor       = null;
+  var timeOffsets  = {};
+  var blockchains  = {};
+  var totalLogsVal = 0;   /* ← NEW: real value from API, updated every 30 s */
 
-  /* sourceId → offsetFromD4Millis (ms).
-     Negative = source is behind D4; Positive = source is ahead.
-     data-cw-src attribute values map here via SRC_MAP below.               */
-  var timeOffsets = {};
-
-  /* chain key → { height, offsetMs }
-     data-cw-chain / data-cw-block attribute values map here via CHAIN_MAP. */
-  var blockchains = {};
-
-  /* ── data-cw-src value → API sourceId ────────────────────────────────── */
   var SRC_MAP = {
-    clockchain: "d4-time",
-    utc: "utc",
-    ntp: "google-ntp",
-    tai: "atomic-clock",
-    system: "system-time",
-    swagger: "swagger-time-api",
+    clockchain: "d4-time", utc: "utc", ntp: "google-ntp",
+    tai: "atomic-clock", system: "system-time", swagger: "swagger-time-api",
   };
 
-  /* ── data-cw-chain / data-cw-block value → API sourceId ─────────────── */
   var CHAIN_MAP = {
-    ethereum: "ethereum",
-    bitcoin: "bitcoin",
-    polygon: "polygon",
-    avalanche: "avalanche-c-chain",
-    bnb: "bnb-chain",
-    solana: "solana",
-    tron: "tron",
-    hyperliquid: "hyperliquid",
+    ethereum: "ethereum", bitcoin: "bitcoin", polygon: "polygon",
+    avalanche: "avalanche-c-chain", bnb: "bnb-chain", solana: "solana",
+    tron: "tron", hyperliquid: "hyperliquid",
   };
 
-  /* ── Fetch both indexes, update anchor + offsets ─────────────────────── */
+  /* ── DOM refs ─────────────────────────────────────────────────────────── */
+  var el = {
+    time   : document.getElementById("cw-time"),
+    date   : document.getElementById("cw-date"),
+    height : document.getElementById("cw-height"),
+    hash   : document.getElementById("cw-hash"),
+    logs   : document.getElementById("cw-logs"),   /* updated every 30 s only */
+    dHash  : document.getElementById("cwd-hash"),
+    dTime  : document.getElementById("cwd-time"),
+    dHeight: document.getElementById("cwd-height"),
+  };
+  var srcEls   = document.querySelectorAll("[data-cw-src]");
+  var offEls   = document.querySelectorAll("[data-cw-off]");
+  var chainEls = document.querySelectorAll("[data-cw-chain]");
+  var blockEls = document.querySelectorAll("[data-cw-block]");
+
+  /* ── Fetch all three APIs ─────────────────────────────────────────────── */
   function fetchAll() {
     var fetchedAt = Date.now();
 
     var pTime = fetch(TIME_API)
-      .then(function (r) {
-        return r.json();
-      })
+      .then(function (r) { return r.json(); })
       .then(function (json) {
         var list = json.data || [];
         var d4 = null;
-
-        /* Reset and repopulate time offsets */
         timeOffsets = {};
         list.forEach(function (src) {
           timeOffsets[src.sourceId] = src.offsetFromD4Millis;
           if (src.sourceId === "d4-time") d4 = src;
         });
-
-        /* Anchor on d4-time */
         if (d4) {
           anchor = {
             serverMs: d4.sourceTimeEpochMillis,
-            localMs: fetchedAt,
-            height: parseInt((d4.details && d4.details.blockHeight) || 0, 10),
+            localMs : fetchedAt,
+            height  : parseInt((d4.details && d4.details.blockHeight) || 0, 10),
           };
         }
       });
 
     var pChain = fetch(CHAIN_API)
-      .then(function (r) {
-        return r.json();
-      })
+      .then(function (r) { return r.json(); })
       .then(function (json) {
         var list = json.data || [];
         blockchains = {};
         list.forEach(function (src) {
           blockchains[src.sourceId] = {
-            height: src.sourceHeight,
+            height  : src.sourceHeight,
             offsetMs: src.offsetFromD4Millis,
           };
         });
       });
 
-    return Promise.all([pTime, pChain]).catch(function (err) {
+    /* ── NEW: fetch totalLogs from /getTime, update DOM once here ──────── */
+    var pLogs = fetch(GETTIME_API)
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        var raw = json.data && json.data.totalLogs;
+        if (raw != null) {
+          totalLogsVal = parseInt(raw, 10);
+          if (el.logs) el.logs.textContent = totalLogsVal.toLocaleString();
+        }
+      });
+
+    return Promise.all([pTime, pChain, pLogs]).catch(function (err) {
       console.warn("[cw] Sync failed — continuing with last anchor:", err);
-      /* Keep the existing anchor; display keeps advancing locally */
       if (!anchor) {
         anchor = { serverMs: Date.now(), localMs: Date.now(), height: 0 };
       }
     });
   }
 
-  /* ── Live state: advances every frame from last anchor ───────────────── */
+  /* ── Live state ───────────────────────────────────────────────────────── */
   function currentState() {
-    var now = Date.now();
-    var elapsed = now - anchor.localMs; /* ms since last API sync */
+    var now = Date.now(), elapsed = now - anchor.localMs;
     return {
-      ms: anchor.serverMs + elapsed,
-      height: anchor.height + Math.floor(elapsed / 1000) /* +1 block/sec  */,
+      ms    : anchor.serverMs + elapsed,
+      height: anchor.height + Math.floor(elapsed / 1000),
     };
   }
 
   /* ── Formatters ───────────────────────────────────────────────────────── */
-  function pad(n, w) {
-    n = String(n);
-    while (n.length < (w || 2)) n = "0" + n;
-    return n;
-  }
+  function pad(n, w) { n = String(n); while (n.length < (w || 2)) n = "0" + n; return n; }
   function fmtTime(ms) {
     var d = new Date(ms);
-    return (
-      pad(d.getUTCHours()) +
-      ":" +
-      pad(d.getUTCMinutes()) +
-      ":" +
-      pad(d.getUTCSeconds())
-    );
+    return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
   }
   function fmtDate(ms) {
     var d = new Date(ms);
-    return (
-      d.getUTCFullYear() +
-      "-" +
-      pad(d.getUTCMonth() + 1) +
-      "-" +
-      pad(d.getUTCDate()) +
-      " UTC"
-    );
+    return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) + " UTC";
   }
   function fmtOffset(ms) {
-    if (ms === 0) return "consensus";
-    if (ms === null || ms === undefined) return "—";
+    if (ms === 0 || ms == null) return ms === 0 ? "consensus" : "—";
     return (ms > 0 ? "+" : "") + ms + " ms";
   }
   function randHash() {
-    var c = "0123456789abcdef",
-      s = "0x";
+    var c = "0123456789abcdef", s = "0x";
     for (var i = 0; i < 12; i++) s += c[Math.floor(Math.random() * 16)];
     return s;
   }
 
-  /* ── Total anchored logs (rising counter) ─────────────────────────────── */
-  var LOGS_EPOCH = Date.UTC(2026, 0, 1, 0, 0, 0);
-  var LOGS_RATE = 7.4;
-  function totalLogs(ms) {
-    return Math.floor(((ms - LOGS_EPOCH) / 1000) * LOGS_RATE);
-  }
-
-  /* ── DOM refs ─────────────────────────────────────────────────────────── */
-  var el = {
-    time: document.getElementById("cw-time"),
-    date: document.getElementById("cw-date"),
-    height: document.getElementById("cw-height"),
-    hash: document.getElementById("cw-hash"),
-    logs: document.getElementById("cw-logs"),
-    dHash: document.getElementById("cwd-hash"),
-    dTime: document.getElementById("cwd-time"),
-    dHeight: document.getElementById("cwd-height"),
-  };
-  var srcEls = document.querySelectorAll("[data-cw-src]");
-  var offEls = document.querySelectorAll("[data-cw-off]");
-  var chainEls = document.querySelectorAll("[data-cw-chain]");
-  var blockEls = document.querySelectorAll("[data-cw-block]");
-
-  /* ── Render loop — runs every animation frame ─────────────────────────── */
-  var lastSecond = -1;
-  var raf;
+  /* ── Render loop ──────────────────────────────────────────────────────── */
+  var lastSecond = -1, raf;
 
   function render() {
-    if (!anchor) {
-      raf = requestAnimationFrame(render);
-      return;
-    }
+    if (!anchor) { raf = requestAnimationFrame(render); return; }
 
-    var st = currentState();
-    var sec = Math.floor(st.ms / 1000);
+    var st     = currentState();
+    var sec    = Math.floor(st.ms / 1000);
     var msPart = pad(st.ms % 1000, 3);
 
-    /* Millisecond display — updates every frame */
+    /* Every frame — time with milliseconds */
     if (el.time) {
-      el.time.innerHTML =
-        fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
+      el.time.innerHTML = fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
     }
-    if (el.logs) el.logs.textContent = totalLogs(st.ms).toLocaleString();
+    /* el.logs is NOT touched here — only updated every 30 s inside fetchAll() */
 
-    /* Second display — updates once per second */
     if (sec !== lastSecond) {
       lastSecond = sec;
+      var h = "#" + st.height.toLocaleString(), hash = randHash();
 
-      var h = "#" + st.height.toLocaleString();
-      var hash = randHash();
-
-      if (el.date) el.date.textContent = fmtDate(st.ms);
-      if (el.height) el.height.textContent = h;
-      if (el.dTime) el.dTime.textContent = fmtTime(st.ms);
+      if (el.date)    el.date.textContent    = fmtDate(st.ms);
+      if (el.height)  el.height.textContent  = h;
+      if (el.dTime)   el.dTime.textContent   = fmtTime(st.ms);
       if (el.dHeight) el.dHeight.textContent = h;
-
       var anchored = "block " + hash + "… anchored · verified on-chain";
-      if (el.hash) el.hash.textContent = anchored;
+      if (el.hash)  el.hash.textContent  = anchored;
       if (el.dHash) el.dHash.textContent = anchored;
 
-      /* ── Time sources: data-cw-src="utc|ntp|tai|clockchain|system|swagger" */
       srcEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-src");
-        var sourceId = SRC_MAP[key] || key;
-
-        if (key === "tai") {
-          /* TAI: use real atomic-clock offset + 37-second leap-second total */
-          var atomicOff = timeOffsets[TAI_ATOMIC_KEY] || 0;
-          n.textContent = fmtTime(st.ms + atomicOff);
-          return;
-        }
+        var key = n.getAttribute("data-cw-src"), sourceId = SRC_MAP[key] || key;
+        if (key === "tai") { n.textContent = fmtTime(st.ms + (timeOffsets[TAI_ATOMIC_KEY] || 0)); return; }
         var off = timeOffsets[sourceId];
         n.textContent = fmtTime(st.ms + (off != null ? off : 0));
       });
 
-      /* ── Offset labels: data-cw-off="utc|ntp|tai|clockchain|system|swagger" */
       offEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-off");
-        var sourceId = SRC_MAP[key] || key;
-        if (key === "clockchain") {
-          n.textContent = "consensus";
-          return;
-        }
-        if (key === "tai") {
-          var atomicOff = timeOffsets[TAI_ATOMIC_KEY];
-          n.textContent = atomicOff != null ? fmtOffset(atomicOff) : "+37 s";
-          return;
-        }
+        var key = n.getAttribute("data-cw-off"), sourceId = SRC_MAP[key] || key;
+        if (key === "clockchain") { n.textContent = "consensus"; return; }
+        if (key === "tai") { var ao = timeOffsets[TAI_ATOMIC_KEY]; n.textContent = ao != null ? fmtOffset(ao) : "+37 s"; return; }
         var off = timeOffsets[sourceId];
         n.textContent = off != null ? fmtOffset(off) : "—";
       });
 
-      /* ── Blockchain times: data-cw-chain="ethereum|bitcoin|polygon|..." */
       chainEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-chain");
-        var sourceId = CHAIN_MAP[key] || key;
-        var bc = blockchains[sourceId];
-        var offsetMs = bc ? bc.offsetMs : 0;
-        n.textContent = fmtTime(st.ms + offsetMs);
+        var key = n.getAttribute("data-cw-chain"), bc = blockchains[CHAIN_MAP[key] || key];
+        n.textContent = fmtTime(st.ms + (bc ? bc.offsetMs : 0));
       });
 
-      /* ── Blockchain heights: data-cw-block="ethereum|bitcoin|polygon|..." */
       blockEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-block");
-        var sourceId = CHAIN_MAP[key] || key;
-        var bc = blockchains[sourceId];
-        if (bc && bc.height != null) {
-          n.textContent = "#" + Number(bc.height).toLocaleString();
-        } else {
-          /* fallback: show Clockchain height */
-          n.textContent = "#" + st.height.toLocaleString();
-        }
+        var key = n.getAttribute("data-cw-block"), bc = blockchains[CHAIN_MAP[key] || key];
+        n.textContent = bc && bc.height != null ? "#" + Number(bc.height).toLocaleString() : "#" + st.height.toLocaleString();
       });
 
-      /* ── Blockchain offset labels: data-cw-chain-off="ethereum|bitcoin|..." */
       var chainOffEls = document.querySelectorAll("[data-cw-chain-off]");
       chainOffEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-chain-off");
-        var sourceId = CHAIN_MAP[key] || key;
-        var bc = blockchains[sourceId];
-        if (!bc) {
-          n.textContent = "—";
-          return;
-        }
+        var key = n.getAttribute("data-cw-chain-off"), bc = blockchains[CHAIN_MAP[key] || key];
+        if (!bc) { n.textContent = "—"; return; }
         var ms = bc.offsetMs;
-        if (ms === 0) {
-          n.textContent = "0 ms";
-          return;
-        }
-        if (Math.abs(ms) >= 1000) {
-          /* show as seconds if ≥ 1 s */
-          n.textContent = (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s";
-        } else {
-          n.textContent = (ms > 0 ? "+" : "") + ms + " ms";
-        }
+        n.textContent = ms === 0 ? "0 ms" : (Math.abs(ms) >= 1000 ? (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s" : (ms > 0 ? "+" : "") + ms + " ms");
       });
     }
 
@@ -298,44 +188,31 @@
 
   /* ── Visibility ───────────────────────────────────────────────────────── */
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      cancelAnimationFrame(raf);
-    } else {
-      fetchAll().then(function () {
-        lastSecond = -1;
-        raf = requestAnimationFrame(render);
-      });
-    }
+    if (document.hidden) { cancelAnimationFrame(raf); }
+    else { fetchAll().then(function () { lastSecond = -1; raf = requestAnimationFrame(render); }); }
   });
 
   /* ── Hero card expand ─────────────────────────────────────────────────── */
-  var toggle = document.getElementById("cw-toggle");
-  var table = document.getElementById("cw-table");
+  var toggle = document.getElementById("cw-toggle"), table = document.getElementById("cw-table");
   if (toggle && table) {
     toggle.addEventListener("click", function () {
       var open = table.hasAttribute("hidden");
-      if (open) table.removeAttribute("hidden");
-      else table.setAttribute("hidden", "");
+      if (open) table.removeAttribute("hidden"); else table.setAttribute("hidden", "");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
 
   /* ── Dock ─────────────────────────────────────────────────────────────── */
-  var card = document.getElementById("cw-card");
-  var dock = document.getElementById("cw-dock");
+  var card = document.getElementById("cw-card"), dock = document.getElementById("cw-dock");
   if (dock) {
     if (card && "IntersectionObserver" in window) {
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (en) {
-            var docked = !en.isIntersecting && en.boundingClientRect.top < 0;
-            document.body.classList.toggle("cw-docked", docked);
-            dock.setAttribute("aria-hidden", docked ? "false" : "true");
-          });
-        },
-        { threshold: 0.15 },
-      );
-      io.observe(card);
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var docked = !en.isIntersecting && en.boundingClientRect.top < 0;
+          document.body.classList.toggle("cw-docked", docked);
+          dock.setAttribute("aria-hidden", docked ? "false" : "true");
+        });
+      }, { threshold: 0.15 }).observe(card);
     } else {
       document.body.classList.add("cw-docked");
       dock.setAttribute("aria-hidden", "false");
@@ -343,13 +220,11 @@
   }
 
   /* ── Dock expand panel ────────────────────────────────────────────────── */
-  var dToggle = document.getElementById("cw-dock-toggle");
-  var dPanel = document.getElementById("cw-dock-panel");
+  var dToggle = document.getElementById("cw-dock-toggle"), dPanel = document.getElementById("cw-dock-panel");
   if (dToggle && dPanel) {
     dToggle.addEventListener("click", function () {
       var open = dPanel.hasAttribute("hidden");
-      if (open) dPanel.removeAttribute("hidden");
-      else dPanel.setAttribute("hidden", "");
+      if (open) dPanel.removeAttribute("hidden"); else dPanel.setAttribute("hidden", "");
       dToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
     document.addEventListener("click", function (e) {
@@ -365,19 +240,15 @@
   if (dClose) {
     dClose.addEventListener("click", function () {
       document.body.classList.add("cw-dismissed");
-      try {
-        sessionStorage.setItem("cw-dismissed", "1");
-      } catch (e) {}
+      try { sessionStorage.setItem("cw-dismissed", "1"); } catch (e) {}
     });
-    try {
-      if (sessionStorage.getItem("cw-dismissed") === "1")
-        document.body.classList.add("cw-dismissed");
-    } catch (e) {}
+    try { if (sessionStorage.getItem("cw-dismissed") === "1") document.body.classList.add("cw-dismissed"); } catch (e) {}
   }
 
   /* ── Boot ─────────────────────────────────────────────────────────────── */
   fetchAll().then(function () {
     raf = requestAnimationFrame(render);
-    setInterval(fetchAll, REFRESH_MS);
+    setInterval(fetchAll, REFRESH_MS);  /* fetchAll also updates el.logs */
   });
+
 })();
