@@ -3,7 +3,6 @@
   var CHAIN_API    = "http://dev.clockchain.network:8001/api/v1/indexes/blockchain";
   var GETTIME_API  = "http://dev.clockchain.network:8001/getTime";  /* ← NEW */
   var REFRESH_MS   = 30000;
-  var TAI_ATOMIC_KEY = "atomic-clock";
 
   var anchor       = null;
   var timeOffsets  = {};
@@ -12,7 +11,8 @@
 
   var SRC_MAP = {
     clockchain: "d4-time", utc: "utc", ntp: "google-ntp",
-    tai: "atomic-clock", system: "system-time", swagger: "swagger-time-api",
+    gnss: "gnss-gps", ptp: "ptp",
+    system: "system-time", swagger: "swagger-time-api",
   };
 
   var CHAIN_MAP = {
@@ -151,15 +151,16 @@
 
       srcEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-src"), sourceId = SRC_MAP[key] || key;
-        if (key === "tai") { n.textContent = fmtTime(st.ms + (timeOffsets[TAI_ATOMIC_KEY] || 0)); return; }
         var off = timeOffsets[sourceId];
+        /* no backend feed yet for these two: GPS runs 18 s ahead of UTC; PTP tracks its grandmaster (≈UTC at this precision) */
+        if (off == null && key === "gnss") off = (timeOffsets["utc"] || 0) + 18000;
+        if (off == null && key === "ptp")  off = timeOffsets["utc"] || 0;
         n.textContent = fmtTime(st.ms + (off != null ? off : 0));
       });
 
       offEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-off"), sourceId = SRC_MAP[key] || key;
         if (key === "clockchain") { n.textContent = "consensus"; return; }
-        if (key === "tai") { var ao = timeOffsets[TAI_ATOMIC_KEY]; n.textContent = ao != null ? fmtOffset(ao) : "+37 s"; return; }
         var off = timeOffsets[sourceId];
         n.textContent = off != null ? fmtOffset(off) : "—";
       });
