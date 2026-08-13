@@ -364,6 +364,13 @@ body.menu-open .mobile-menu{opacity:1;visibility:visible;transform:none;}
   .nav-cta{display:none;}
   .nav-burger{display:flex;}
   .nav-theme{display:none;}
+  /* width-driven logo: height follows aspect, so iOS Display Zoom / Larger Text
+     can never squash it against the burger (img max-width:100% + fixed height did) */
+  .nav-logo img{width:min(56vw,220px);height:auto;}
+  .nav-burger{flex:0 0 auto;}
+}
+@media(max-width:400px){
+  .nav{padding:0 18px;}
 }
 @media(min-width:861px){
   .mobile-menu{display:none;}
