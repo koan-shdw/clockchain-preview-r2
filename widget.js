@@ -1,24 +1,44 @@
 (function () {
-  var TIME_API     = "http://dev.clockchain.network:8001/api/v1/indexes/time";
-  var CHAIN_API    = "http://dev.clockchain.network:8001/api/v1/indexes/blockchain";
-  var GETTIME_API  = "http://dev.clockchain.network:8001/getTime";  /* ← NEW */
-  var REFRESH_MS   = 30000;
+  /* ═══════════════════════════════════════════════════════════════════════
+     Clockchain live-proof widget — REAL INDEX DATA edition.
+     Three API calls on boot (+ every 30 s):
+       /getTime                   → Clockchain time, blockHeight, totalLogs
+       /api/v1/indexes/time       → per-source time offsets
+       /api/v1/indexes/blockchain → per-chain heights + time offsets
+     Between syncs, Clockchain time & height advance locally (+1 s / tick)
+     so the display remains smooth. If API data is missing, "—" is shown.
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  var TIME_API    = "https://clockchain.network/clockchain-api/api/v1/indexes/time";
+  var CHAIN_API   = "https://clockchain.network/clockchain-api/api/v1/indexes/blockchain";
+  var GETTIME_API = "https://clockchain.network/clockchain-api/getTime";
+  var REFRESH_MS  = 30000;
 
   var anchor       = null;
+  /* anchor = { serverMs: number, localMs: number, height: number } */
   var timeOffsets  = {};
   var blockchains  = {};
-  var totalLogsVal = 0;   /* ← NEW: real value from API, updated every 30 s */
+  var totalLogsVal = null;
 
   var SRC_MAP = {
-    clockchain: "d4-time", utc: "utc", ntp: "google-ntp",
-    gnss: "gnss-gps", ptp: "ptp",
-    system: "system-time", swagger: "swagger-time-api",
+    clockchain: "d4-time",
+    utc: "utc",
+    ntp: "google-ntp",
+    gnss: "gnss-gps",
+    ptp: "ptp",
+    system: "system-time",
+    swagger: "swagger-time-api",
   };
 
   var CHAIN_MAP = {
-    ethereum: "ethereum", bitcoin: "bitcoin", polygon: "polygon",
-    avalanche: "avalanche-c-chain", bnb: "bnb-chain", solana: "solana",
-    tron: "tron", hyperliquid: "hyperliquid",
+    ethereum: "ethereum",
+    bitcoin: "bitcoin",
+    polygon: "polygon",
+    avalanche: "avalanche-c-chain",
+    bnb: "bnb-chain",
+    solana: "solana",
+    tron: "tron",
+    hyperliquid: "hyperliquid",
   };
 
   /* ── DOM refs ─────────────────────────────────────────────────────────── */
@@ -27,43 +47,103 @@
     date   : document.getElementById("cw-date"),
     height : document.getElementById("cw-height"),
     hash   : document.getElementById("cw-hash"),
-    logs   : document.getElementById("cw-logs"),   /* updated every 30 s only */
+    logs   : document.getElementById("cw-logs"),
     dHash  : document.getElementById("cwd-hash"),
     dTime  : document.getElementById("cwd-time"),
     dHeight: document.getElementById("cwd-height"),
   };
-  var srcEls   = document.querySelectorAll("[data-cw-src]");
-  var offEls   = document.querySelectorAll("[data-cw-off]");
-  var chainEls = document.querySelectorAll("[data-cw-chain]");
-  var blockEls = document.querySelectorAll("[data-cw-block]");
+  var srcEls      = document.querySelectorAll("[data-cw-src]");
+  var offEls      = document.querySelectorAll("[data-cw-off]");
+  var chainEls    = document.querySelectorAll("[data-cw-chain]");
+  var blockEls    = document.querySelectorAll("[data-cw-block]");
+  var chainOffEls = document.querySelectorAll("[data-cw-chain-off]");
+
+  /* ── Parse "DD-MM-YYYY_HH:mm:ss:mmm" → Unix ms (UTC) ─────────────────── */
+  function parseMadMarzullo(str) {
+    if (!str || typeof str !== "string") return null;
+    try {
+      var halves = str.split("_");
+      if (halves.length < 2) return null;
+      var dateParts = halves[0].split("-");
+      var timeParts = halves[1].split(":");
+      if (dateParts.length < 3 || timeParts.length < 3) return null;
+
+      return Date.UTC(
+        parseInt(dateParts[2], 10),
+        parseInt(dateParts[1], 10) - 1,
+        parseInt(dateParts[0], 10),
+        parseInt(timeParts[0], 10),
+        parseInt(timeParts[1], 10),
+        parseInt(timeParts[2], 10),
+        parseInt(timeParts[3] || 0, 10)
+      );
+    } catch (e) {
+      return null;
+    }
+  }
 
   /* ── Fetch all three APIs ─────────────────────────────────────────────── */
   function fetchAll() {
     var fetchedAt = Date.now();
 
+    /* 1. getTime API: Sourced for Clockchain time, blockHeight, and totalLogs */
+    var pGetTime = fetch(GETTIME_API)
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        if (json && json.success && json.data) {
+          var d = json.data;
+          var serverMs = parseMadMarzullo(d.madMarzulloTime);
+          var height   = d.blockHeight != null ? parseInt(d.blockHeight, 10) : null;
+
+          if (serverMs != null && height != null && !isNaN(height)) {
+            anchor = {
+              serverMs: serverMs,
+              localMs : fetchedAt,
+              height  : height,
+            };
+          } else {
+            anchor = null;
+          }
+
+          totalLogsVal = d.totalLogs != null ? parseInt(d.totalLogs, 10) : null;
+        } else {
+          anchor = null;
+          totalLogsVal = null;
+        }
+
+        if (el.logs) {
+          el.logs.textContent = (totalLogsVal != null && !isNaN(totalLogsVal))
+            ? totalLogsVal.toLocaleString()
+            : "—";
+        }
+      })
+      .catch(function (err) {
+        console.warn("[cw] /getTime API failed:", err);
+        if (!anchor) anchor = null;
+        totalLogsVal = null;
+        if (el.logs) el.logs.textContent = "—";
+      });
+
+    /* 2. Time Indexes API */
     var pTime = fetch(TIME_API)
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        var list = json.data || [];
-        var d4 = null;
+        var list = (json && json.data) || [];
         timeOffsets = {};
         list.forEach(function (src) {
           timeOffsets[src.sourceId] = src.offsetFromD4Millis;
-          if (src.sourceId === "d4-time") d4 = src;
         });
-        if (d4) {
-          anchor = {
-            serverMs: d4.sourceTimeEpochMillis,
-            localMs : fetchedAt,
-            height  : parseInt((d4.details && d4.details.blockHeight) || 0, 10),
-          };
-        }
+      })
+      .catch(function (err) {
+        console.warn("[cw] Time index API failed:", err);
+        timeOffsets = {};
       });
 
+    /* 3. Blockchain Indexes API */
     var pChain = fetch(CHAIN_API)
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        var list = json.data || [];
+        var list = (json && json.data) || [];
         blockchains = {};
         list.forEach(function (src) {
           blockchains[src.sourceId] = {
@@ -71,29 +151,18 @@
             offsetMs: src.offsetFromD4Millis,
           };
         });
+      })
+      .catch(function (err) {
+        console.warn("[cw] Blockchain index API failed:", err);
+        blockchains = {};
       });
 
-    /* ── NEW: fetch totalLogs from /getTime, update DOM once here ──────── */
-    var pLogs = fetch(GETTIME_API)
-      .then(function (r) { return r.json(); })
-      .then(function (json) {
-        var raw = json.data && json.data.totalLogs;
-        if (raw != null) {
-          totalLogsVal = parseInt(raw, 10);
-          if (el.logs) el.logs.textContent = totalLogsVal.toLocaleString();
-        }
-      });
-
-    return Promise.all([pTime, pChain, pLogs]).catch(function (err) {
-      console.warn("[cw] Sync failed — continuing with last anchor:", err);
-      if (!anchor) {
-        anchor = { serverMs: Date.now(), localMs: Date.now(), height: 0 };
-      }
-    });
+    return Promise.all([pGetTime, pTime, pChain]);
   }
 
   /* ── Live state ───────────────────────────────────────────────────────── */
   function currentState() {
+    if (!anchor) return null;
     var now = Date.now(), elapsed = now - anchor.localMs;
     return {
       ms    : anchor.serverMs + elapsed,
@@ -102,17 +171,24 @@
   }
 
   /* ── Formatters ───────────────────────────────────────────────────────── */
-  function pad(n, w) { n = String(n); while (n.length < (w || 2)) n = "0" + n; return n; }
+  function pad(n, w) {
+    n = String(n);
+    while (n.length < (w || 2)) n = "0" + n;
+    return n;
+  }
   function fmtTime(ms) {
+    if (ms == null || isNaN(ms)) return "—";
     var d = new Date(ms);
     return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
   }
   function fmtDate(ms) {
+    if (ms == null || isNaN(ms)) return "—";
     var d = new Date(ms);
     return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) + " UTC";
   }
   function fmtOffset(ms) {
-    if (ms === 0 || ms == null) return ms === 0 ? "consensus" : "—";
+    if (ms === 0) return "consensus";
+    if (ms == null || isNaN(ms)) return "—";
     return (ms > 0 ? "+" : "") + ms + " ms";
   }
   function randHash() {
@@ -125,18 +201,42 @@
   var lastSecond = -1, raf;
 
   function render() {
-    if (!anchor) { raf = requestAnimationFrame(render); return; }
+    var st = currentState();
 
-    var st     = currentState();
+    /* ── Case 1: No API data available ───────────────────────────────────── */
+    if (!st) {
+      if (el.time)    el.time.innerHTML    = "—";
+      if (el.date)    el.date.textContent  = "—";
+      if (el.height)  el.height.textContent = "—";
+      if (el.dTime)   el.dTime.textContent  = "—";
+      if (el.dHeight) el.dHeight.textContent = "—";
+      if (el.hash)    el.hash.textContent   = "—";
+      if (el.dHash)   el.dHash.textContent  = "—";
+      if (el.logs)    el.logs.textContent   = "—";
+
+      srcEls.forEach(function (n) { n.textContent = "—"; });
+      offEls.forEach(function (n) {
+        var key = n.getAttribute("data-cw-off");
+        n.textContent = key === "clockchain" ? "consensus" : "—";
+      });
+      chainEls.forEach(function (n) { n.textContent = "—"; });
+      blockEls.forEach(function (n) { n.textContent = "—"; });
+      chainOffEls.forEach(function (n) { n.textContent = "—"; });
+
+      raf = requestAnimationFrame(render);
+      return;
+    }
+
+    /* ── Case 2: Live rendering from anchor data ─────────────────────────── */
     var sec    = Math.floor(st.ms / 1000);
     var msPart = pad(st.ms % 1000, 3);
 
-    /* Every frame — time with milliseconds */
+    /* Millisecond display */
     if (el.time) {
       el.time.innerHTML = fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
     }
-    /* el.logs is NOT touched here — only updated every 30 s inside fetchAll() */
 
+    /* Second display */
     if (sec !== lastSecond) {
       lastSecond = sec;
       var h = "#" + st.height.toLocaleString(), hash = randHash();
@@ -149,15 +249,22 @@
       if (el.hash)  el.hash.textContent  = anchored;
       if (el.dHash) el.dHash.textContent = anchored;
 
+      /* Time sources */
       srcEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-src"), sourceId = SRC_MAP[key] || key;
         var off = timeOffsets[sourceId];
-        /* no backend feed yet for these two: GPS runs 18 s ahead of UTC; PTP tracks its grandmaster (≈UTC at this precision) */
-        if (off == null && key === "gnss") off = (timeOffsets["utc"] || 0) + 18000;
-        if (off == null && key === "ptp")  off = timeOffsets["utc"] || 0;
-        n.textContent = fmtTime(st.ms + (off != null ? off : 0));
+
+        if (off == null && key === "gnss" && timeOffsets["utc"] != null) {
+          off = timeOffsets["utc"] + 18000;
+        }
+        if (off == null && key === "ptp" && timeOffsets["utc"] != null) {
+          off = timeOffsets["utc"];
+        }
+
+        n.textContent = off != null ? fmtTime(st.ms + off) : "—";
       });
 
+      /* Time offsets */
       offEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-off"), sourceId = SRC_MAP[key] || key;
         if (key === "clockchain") { n.textContent = "consensus"; return; }
@@ -165,22 +272,28 @@
         n.textContent = off != null ? fmtOffset(off) : "—";
       });
 
+      /* Blockchain times */
       chainEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-chain"), bc = blockchains[CHAIN_MAP[key] || key];
-        n.textContent = fmtTime(st.ms + (bc ? bc.offsetMs : 0));
+        n.textContent = (bc && bc.offsetMs != null) ? fmtTime(st.ms + bc.offsetMs) : "—";
       });
 
+      /* Blockchain heights */
       blockEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-block"), bc = blockchains[CHAIN_MAP[key] || key];
-        n.textContent = bc && bc.height != null ? "#" + Number(bc.height).toLocaleString() : "#" + st.height.toLocaleString();
+        n.textContent = (bc && bc.height != null) ? "#" + Number(bc.height).toLocaleString() : "—";
       });
 
-      var chainOffEls = document.querySelectorAll("[data-cw-chain-off]");
+      /* Blockchain offsets */
       chainOffEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-chain-off"), bc = blockchains[CHAIN_MAP[key] || key];
-        if (!bc) { n.textContent = "—"; return; }
+        if (!bc || bc.offsetMs == null) { n.textContent = "—"; return; }
         var ms = bc.offsetMs;
-        n.textContent = ms === 0 ? "0 ms" : (Math.abs(ms) >= 1000 ? (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s" : (ms > 0 ? "+" : "") + ms + " ms");
+        n.textContent = ms === 0
+          ? "0 ms"
+          : (Math.abs(ms) >= 1000
+            ? (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s"
+            : (ms > 0 ? "+" : "") + ms + " ms");
       });
     }
 
@@ -189,8 +302,14 @@
 
   /* ── Visibility ───────────────────────────────────────────────────────── */
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden) { cancelAnimationFrame(raf); }
-    else { fetchAll().then(function () { lastSecond = -1; raf = requestAnimationFrame(render); }); }
+    if (document.hidden) {
+      cancelAnimationFrame(raf);
+    } else {
+      fetchAll().then(function () {
+        lastSecond = -1;
+        raf = requestAnimationFrame(render);
+      });
+    }
   });
 
   /* ── Hero card expand ─────────────────────────────────────────────────── */
@@ -249,7 +368,7 @@
   /* ── Boot ─────────────────────────────────────────────────────────────── */
   fetchAll().then(function () {
     raf = requestAnimationFrame(render);
-    setInterval(fetchAll, REFRESH_MS);  /* fetchAll also updates el.logs */
+    setInterval(fetchAll, REFRESH_MS);
   });
 
 })();
