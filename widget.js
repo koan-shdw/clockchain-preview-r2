@@ -1,12 +1,13 @@
 (function () {
   /* ═══════════════════════════════════════════════════════════════════════
      Clockchain live-proof widget — REAL INDEX DATA edition.
-     Three API calls on boot (+ every 30 s):
+     Three independent API calls on boot (+ every 30 s):
        /getTime                   → Clockchain time, blockHeight, totalLogs
        /api/v1/indexes/time       → per-source time offsets
        /api/v1/indexes/blockchain → per-chain heights + time offsets
-     Between syncs, Clockchain time & height advance locally (+1 s / tick)
-     so the display remains smooth. If API data is missing, "—" is shown.
+
+     Live ticker advances +1 s / tick between 30 s syncs.
+     Missing or null API values fall back to "--".
      ═══════════════════════════════════════════════════════════════════════ */
 
   var TIME_API    = "https://clockchain.network/clockchain-api/api/v1/indexes/time";
@@ -28,6 +29,7 @@
     ptp: "ptp",
     system: "system-time",
     swagger: "swagger-time-api",
+    atomic: "atomic-clock",
   };
 
   var CHAIN_MAP = {
@@ -87,7 +89,7 @@
   function fetchAll() {
     var fetchedAt = Date.now();
 
-    /* 1. getTime API: Sourced for Clockchain time, blockHeight, and totalLogs */
+    /* 1. getTime API: Clockchain time, blockHeight, and totalLogs */
     var pGetTime = fetch(GETTIME_API)
       .then(function (r) { return r.json(); })
       .then(function (json) {
@@ -111,28 +113,23 @@
           anchor = null;
           totalLogsVal = null;
         }
-
-        if (el.logs) {
-          el.logs.textContent = (totalLogsVal != null && !isNaN(totalLogsVal))
-            ? totalLogsVal.toLocaleString()
-            : "—";
-        }
       })
       .catch(function (err) {
         console.warn("[cw] /getTime API failed:", err);
-        if (!anchor) anchor = null;
+        anchor = null;
         totalLogsVal = null;
-        if (el.logs) el.logs.textContent = "—";
       });
 
     /* 2. Time Indexes API */
     var pTime = fetch(TIME_API)
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        var list = (json && json.data) || [];
+        var list = Array.isArray(json) ? json : ((json && json.data) || []);
         timeOffsets = {};
         list.forEach(function (src) {
-          timeOffsets[src.sourceId] = src.offsetFromD4Millis;
+          if (src && src.sourceId) {
+            timeOffsets[src.sourceId] = src.offsetFromD4Millis;
+          }
         });
       })
       .catch(function (err) {
@@ -144,13 +141,15 @@
     var pChain = fetch(CHAIN_API)
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        var list = (json && json.data) || [];
+        var list = Array.isArray(json) ? json : ((json && json.data) || []);
         blockchains = {};
         list.forEach(function (src) {
-          blockchains[src.sourceId] = {
-            height  : src.sourceHeight,
-            offsetMs: src.offsetFromD4Millis,
-          };
+          if (src && src.sourceId) {
+            blockchains[src.sourceId] = {
+              height  : src.sourceHeight,
+              offsetMs: src.offsetFromD4Millis,
+            };
+          }
         });
       })
       .catch(function (err) {
@@ -161,7 +160,7 @@
     return Promise.all([pGetTime, pTime, pChain]);
   }
 
-  /* ── Live state ───────────────────────────────────────────────────────── */
+  /* ── Live state for Clockchain ────────────────────────────────────────── */
   function currentState() {
     if (!anchor) return null;
     var now = Date.now(), elapsed = now - anchor.localMs;
@@ -178,18 +177,18 @@
     return n;
   }
   function fmtTime(ms) {
-    if (ms == null || isNaN(ms)) return "—";
+    if (ms == null || isNaN(ms)) return "--";
     var d = new Date(ms);
     return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
   }
   function fmtDate(ms) {
-    if (ms == null || isNaN(ms)) return "—";
+    if (ms == null || isNaN(ms)) return "--";
     var d = new Date(ms);
     return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) + " UTC";
   }
   function fmtOffset(ms) {
     if (ms === 0) return "consensus";
-    if (ms == null || isNaN(ms)) return "—";
+    if (ms == null || isNaN(ms)) return "--";
     return (ms > 0 ? "+" : "") + ms + " ms";
   }
   function randHash() {
@@ -202,57 +201,62 @@
   var lastSecond = -1, raf;
 
   function render() {
-    var st = currentState();
+    var st     = currentState();
+    var now    = Date.now();
+    var baseMs = st ? st.ms : now;
 
-    /* ── Case 1: No API data available ───────────────────────────────────── */
-    if (!st) {
-      if (el.time)    el.time.innerHTML    = "--";
-      if (el.date)    el.date.textContent  = "--";
-      if (el.height)  el.height.textContent = "--";
-      if (el.dTime)   el.dTime.textContent  = "--";
-      if (el.dHeight) el.dHeight.textContent = "--";
-      if (el.hash)    el.hash.textContent   = "--";
-      if (el.dHash)   el.dHash.textContent  = "--";
-      if (el.logs)    el.logs.textContent   = "--";
+    var sec    = Math.floor(baseMs / 1000);
+    var msPart = pad(baseMs % 1000, 3);
 
-      srcEls.forEach(function (n) { n.textContent = "--"; });
-      offEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-off");
-        n.textContent = key === "clockchain" ? "consensus" : "--";
-      });
-      chainEls.forEach(function (n) { n.textContent = "--"; });
-      blockEls.forEach(function (n) { n.textContent = "--"; });
-      chainOffEls.forEach(function (n) { n.textContent = "--"; });
-
-      raf = requestAnimationFrame(render);
-      return;
+    /* Clockchain Live Millisecond Header */
+    if (st) {
+      if (el.time) {
+        el.time.innerHTML = fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
+      }
+    } else {
+      if (el.time) el.time.innerHTML = "--";
     }
 
-    /* ── Case 2: Live rendering from anchor data ─────────────────────────── */
-    var sec    = Math.floor(st.ms / 1000);
-    var msPart = pad(st.ms % 1000, 3);
-
-    /* Millisecond display */
-    if (el.time) {
-      el.time.innerHTML = fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
-    }
-
-    /* Second display */
+    /* Second-by-second updates */
     if (sec !== lastSecond) {
       lastSecond = sec;
-      var h = "#" + st.height.toLocaleString(), hash = randHash();
 
-      if (el.date)    el.date.textContent    = fmtDate(st.ms);
-      if (el.height)  el.height.textContent  = h;
-      if (el.dTime)   el.dTime.textContent   = fmtTime(st.ms);
-      if (el.dHeight) el.dHeight.textContent = h;
-      var anchored = "block " + hash + "… anchored · verified on-chain";
-      if (el.hash)  el.hash.textContent  = anchored;
-      if (el.dHash) el.dHash.textContent = anchored;
+      /* 1. Clockchain Hero Card & Dock Elements */
+      if (st) {
+        var h = "#" + st.height.toLocaleString();
+        var hash = randHash();
+        var anchored = "block " + hash + "… anchored · verified on-chain";
 
-      /* Time sources */
+        if (el.date)    el.date.textContent    = fmtDate(st.ms);
+        if (el.height)  el.height.textContent  = h;
+        if (el.dTime)   el.dTime.textContent   = fmtTime(st.ms);
+        if (el.dHeight) el.dHeight.textContent = h;
+        if (el.hash)    el.hash.textContent    = anchored;
+        if (el.dHash)   el.dHash.textContent   = anchored;
+      } else {
+        if (el.date)    el.date.textContent    = "--";
+        if (el.height)  el.height.textContent  = "--";
+        if (el.dTime)   el.dTime.textContent   = "--";
+        if (el.dHeight) el.dHeight.textContent = "--";
+        if (el.hash)    el.hash.textContent    = "--";
+        if (el.dHash)   el.dHash.textContent   = "--";
+      }
+
+      /* 2. Total Logs */
+      if (el.logs) {
+        el.logs.textContent = (totalLogsVal != null && !isNaN(totalLogsVal))
+          ? totalLogsVal.toLocaleString()
+          : "--";
+      }
+
+      /* 3. Time Sources Table (Current Time column) */
       srcEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-src"), sourceId = SRC_MAP[key] || key;
+        var key = n.getAttribute("data-cw-src");
+        if (key === "clockchain") {
+          n.textContent = st ? fmtTime(st.ms) : "--";
+          return;
+        }
+        var sourceId = SRC_MAP[key] || key;
         var off = timeOffsets[sourceId];
 
         if (off == null && key === "gnss" && timeOffsets["utc"] != null) {
@@ -262,51 +266,58 @@
           off = timeOffsets["utc"];
         }
 
-        n.textContent = off != null ? fmtTime(st.ms + off) : "—";
+        n.textContent = off != null ? fmtTime(baseMs + off) : "--";
       });
 
-      /* Time offsets */
+      /* 4. Time Offsets Column */
       offEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-off"), sourceId = SRC_MAP[key] || key;
-        if (key === "clockchain") { n.textContent = "consensus"; return; }
+        var key = n.getAttribute("data-cw-off");
+        if (key === "clockchain") {
+          n.textContent = st ? "consensus" : "--";
+          return;
+        }
+        var sourceId = SRC_MAP[key] || key;
         var off = timeOffsets[sourceId];
-        n.textContent = off != null ? fmtOffset(off) : "—";
+        n.textContent = off != null ? fmtOffset(off) : "--";
       });
 
-      /* Blockchain times (Clockchain row takes directly from getTime API anchor) */
+      /* 5. Blockchain Times Column */
       chainEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-chain");
         if (key === "clockchain" || key === "0") {
-          n.textContent = fmtTime(st.ms);
+          n.textContent = st ? fmtTime(st.ms) : "--";
           return;
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        n.textContent = (bc && bc.offsetMs != null) ? fmtTime(st.ms + bc.offsetMs) : "—";
+        n.textContent = (bc && bc.offsetMs != null) ? fmtTime(baseMs + bc.offsetMs) : "--";
       });
 
-      /* Blockchain heights (Clockchain row takes directly from getTime API anchor) */
+      /* 6. Blockchain Heights Column */
       blockEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-block");
         if (key === "clockchain" || key === "0") {
-          n.textContent = "#" + st.height.toLocaleString();
+          n.textContent = st ? "#" + st.height.toLocaleString() : "--";
           return;
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        n.textContent = (bc && bc.height != null) ? "#" + Number(bc.height).toLocaleString() : "—";
+        n.textContent = (bc && bc.height != null) ? "#" + Number(bc.height).toLocaleString() : "--";
       });
 
-      /* Blockchain offsets */
+      /* 7. Blockchain Offsets Column */
       chainOffEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-chain-off");
         if (key === "clockchain" || key === "0") {
-          n.textContent = "0 ms";
+          n.textContent = st ? "0 ms" : "--";
           return;
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        if (!bc || bc.offsetMs == null) { n.textContent = "—"; return; }
+        if (!bc || bc.offsetMs == null) {
+          n.textContent = "--";
+          return;
+        }
         var ms = bc.offsetMs;
         n.textContent = ms === 0
           ? "0 ms"
