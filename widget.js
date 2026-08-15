@@ -31,6 +31,7 @@
   };
 
   var CHAIN_MAP = {
+    clockchain: "clockchain",
     ethereum: "ethereum",
     bitcoin: "bitcoin",
     polygon: "polygon",
@@ -205,23 +206,23 @@
 
     /* ── Case 1: No API data available ───────────────────────────────────── */
     if (!st) {
-      if (el.time)    el.time.innerHTML    = "—";
-      if (el.date)    el.date.textContent  = "—";
-      if (el.height)  el.height.textContent = "—";
-      if (el.dTime)   el.dTime.textContent  = "—";
-      if (el.dHeight) el.dHeight.textContent = "—";
-      if (el.hash)    el.hash.textContent   = "—";
-      if (el.dHash)   el.dHash.textContent  = "—";
-      if (el.logs)    el.logs.textContent   = "—";
+      if (el.time)    el.time.innerHTML    = "--";
+      if (el.date)    el.date.textContent  = "--";
+      if (el.height)  el.height.textContent = "--";
+      if (el.dTime)   el.dTime.textContent  = "--";
+      if (el.dHeight) el.dHeight.textContent = "--";
+      if (el.hash)    el.hash.textContent   = "--";
+      if (el.dHash)   el.dHash.textContent  = "--";
+      if (el.logs)    el.logs.textContent   = "--";
 
-      srcEls.forEach(function (n) { n.textContent = "—"; });
+      srcEls.forEach(function (n) { n.textContent = "--"; });
       offEls.forEach(function (n) {
         var key = n.getAttribute("data-cw-off");
-        n.textContent = key === "clockchain" ? "consensus" : "—";
+        n.textContent = key === "clockchain" ? "consensus" : "--";
       });
-      chainEls.forEach(function (n) { n.textContent = "—"; });
-      blockEls.forEach(function (n) { n.textContent = "—"; });
-      chainOffEls.forEach(function (n) { n.textContent = "—"; });
+      chainEls.forEach(function (n) { n.textContent = "--"; });
+      blockEls.forEach(function (n) { n.textContent = "--"; });
+      chainOffEls.forEach(function (n) { n.textContent = "--"; });
 
       raf = requestAnimationFrame(render);
       return;
@@ -272,21 +273,39 @@
         n.textContent = off != null ? fmtOffset(off) : "—";
       });
 
-      /* Blockchain times */
+      /* Blockchain times (Clockchain row takes directly from getTime API anchor) */
       chainEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-chain"), bc = blockchains[CHAIN_MAP[key] || key];
+        var key = n.getAttribute("data-cw-chain");
+        if (key === "clockchain" || key === "0") {
+          n.textContent = fmtTime(st.ms);
+          return;
+        }
+        var sourceId = CHAIN_MAP[key] || key;
+        var bc = blockchains[sourceId];
         n.textContent = (bc && bc.offsetMs != null) ? fmtTime(st.ms + bc.offsetMs) : "—";
       });
 
-      /* Blockchain heights */
+      /* Blockchain heights (Clockchain row takes directly from getTime API anchor) */
       blockEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-block"), bc = blockchains[CHAIN_MAP[key] || key];
+        var key = n.getAttribute("data-cw-block");
+        if (key === "clockchain" || key === "0") {
+          n.textContent = "#" + st.height.toLocaleString();
+          return;
+        }
+        var sourceId = CHAIN_MAP[key] || key;
+        var bc = blockchains[sourceId];
         n.textContent = (bc && bc.height != null) ? "#" + Number(bc.height).toLocaleString() : "—";
       });
 
       /* Blockchain offsets */
       chainOffEls.forEach(function (n) {
-        var key = n.getAttribute("data-cw-chain-off"), bc = blockchains[CHAIN_MAP[key] || key];
+        var key = n.getAttribute("data-cw-chain-off");
+        if (key === "clockchain" || key === "0") {
+          n.textContent = "0 ms";
+          return;
+        }
+        var sourceId = CHAIN_MAP[key] || key;
+        var bc = blockchains[sourceId];
         if (!bc || bc.offsetMs == null) { n.textContent = "—"; return; }
         var ms = bc.offsetMs;
         n.textContent = ms === 0
