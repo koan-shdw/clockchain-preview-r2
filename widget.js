@@ -3,8 +3,8 @@
      Clockchain live-proof widget — REAL INDEX DATA edition.
      Three independent API calls on boot (+ every 30 s):
        /getTime                   → Clockchain time, blockHeight, totalLogs
-       /api/v1/indexes/time       → per-source time offsets
-       /api/v1/indexes/blockchain → per-chain heights + time offsets
+       /api/v1/indexes/time       → per-source time ISO strings
+       /api/v1/indexes/blockchain → per-chain heights + time ISO strings
 
      Live ticker advances +1 s / tick between 30 s syncs.
      Missing or null API values fall back to "--".
@@ -17,7 +17,7 @@
 
   var anchor       = null;
   /* anchor = { serverMs: number, localMs: number, height: number } */
-  var timeOffsets  = {};
+  var timeSources  = {};
   var blockchains  = {};
   var totalLogsVal = null;
 
@@ -61,7 +61,7 @@
   var blockEls    = document.querySelectorAll("[data-cw-block]");
   var chainOffEls = document.querySelectorAll("[data-cw-chain-off]");
 
-  /* ── Parse "DD-MM-YYYY_HH:mm:ss:mmm" → Unix ms (UTC) ─────────────────── */
+  /* ── Parse Date Helpers ───────────────────────────────────────────────── */
   function parseMadMarzullo(str) {
     if (!str || typeof str !== "string") return null;
     try {
@@ -85,13 +85,23 @@
     }
   }
 
+  function parseIsoOrMad(str) {
+    if (!str || typeof str !== "string") return null;
+    var ms = Date.parse(str);
+    if (!isNaN(ms)) return ms;
+    return parseMadMarzullo(str);
+  }
+
   /* ── Fetch all three APIs ─────────────────────────────────────────────── */
   function fetchAll() {
     var fetchedAt = Date.now();
 
     /* 1. getTime API: Clockchain time, blockHeight, and totalLogs */
     var pGetTime = fetch(GETTIME_API)
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
       .then(function (json) {
         if (json && json.success && json.data) {
           var d = json.data;
@@ -122,32 +132,60 @@
 
     /* 2. Time Indexes API */
     var pTime = fetch(TIME_API)
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
       .then(function (json) {
         var list = Array.isArray(json) ? json : ((json && json.data) || []);
-        timeOffsets = {};
+        timeSources = {};
         list.forEach(function (src) {
           if (src && src.sourceId) {
-            timeOffsets[src.sourceId] = src.offsetFromD4Millis;
+            var ms = null;
+            if (src.sourceTimeIso) {
+              ms = parseIsoOrMad(src.sourceTimeIso);
+            } else if (src.offsetFromD4Millis != null) {
+              var refMs = anchor ? anchor.serverMs : fetchedAt;
+              ms = refMs + src.offsetFromD4Millis;
+            }
+
+            if (ms != null) {
+              timeSources[src.sourceId] = {
+                sourceMs : ms,
+                fetchedAt: fetchedAt,
+              };
+            }
           }
         });
       })
       .catch(function (err) {
         console.warn("[cw] Time index API failed:", err);
-        timeOffsets = {};
+        timeSources = {};
       });
 
     /* 3. Blockchain Indexes API */
     var pChain = fetch(CHAIN_API)
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
       .then(function (json) {
         var list = Array.isArray(json) ? json : ((json && json.data) || []);
         blockchains = {};
         list.forEach(function (src) {
           if (src && src.sourceId) {
+            var ms = null;
+            if (src.sourceTimeIso) {
+              ms = parseIsoOrMad(src.sourceTimeIso);
+            } else if (src.offsetFromD4Millis != null) {
+              var refMs = anchor ? anchor.serverMs : fetchedAt;
+              ms = refMs + src.offsetFromD4Millis;
+            }
+
             blockchains[src.sourceId] = {
-              height  : src.sourceHeight,
-              offsetMs: src.offsetFromD4Millis,
+              height   : src.sourceHeight,
+              sourceMs : ms,
+              fetchedAt: fetchedAt,
             };
           }
         });
@@ -168,6 +206,15 @@
       ms    : anchor.serverMs + elapsed,
       height: anchor.height + Math.floor(elapsed / 1000),
     };
+  }
+
+  /* ── Compute Live Time & Offset for any Source ────────────────────────── */
+  function getSourceData(srcObj, now, baseMs) {
+    if (!srcObj || srcObj.sourceMs == null) return { ms: null, offsetMs: null };
+    var elapsed = now - (srcObj.fetchedAt || now);
+    var liveMs = srcObj.sourceMs + elapsed;
+    var offsetMs = liveMs - baseMs;
+    return { ms: liveMs, offsetMs: offsetMs };
   }
 
   /* ── Formatters ───────────────────────────────────────────────────────── */
@@ -257,16 +304,25 @@
           return;
         }
         var sourceId = SRC_MAP[key] || key;
-        var off = timeOffsets[sourceId];
+        var src = timeSources[sourceId];
 
-        if (off == null && key === "gnss" && timeOffsets["utc"] != null) {
-          off = timeOffsets["utc"] + 18000;
-        }
-        if (off == null && key === "ptp" && timeOffsets["utc"] != null) {
-          off = timeOffsets["utc"];
+        /* Fallbacks for GNSS & PTP if derived from UTC */
+        if (!src && timeSources["utc"]) {
+          if (key === "gnss") {
+            src = {
+              sourceMs : timeSources["utc"].sourceMs + 18000,
+              fetchedAt: timeSources["utc"].fetchedAt
+            };
+          } else if (key === "ptp") {
+            src = {
+              sourceMs : timeSources["utc"].sourceMs,
+              fetchedAt: timeSources["utc"].fetchedAt
+            };
+          }
         }
 
-        n.textContent = off != null ? fmtTime(baseMs + off) : "--";
+        var data = getSourceData(src, now, baseMs);
+        n.textContent = data.ms != null ? fmtTime(data.ms) : "--";
       });
 
       /* 4. Time Offsets Column */
@@ -277,8 +333,24 @@
           return;
         }
         var sourceId = SRC_MAP[key] || key;
-        var off = timeOffsets[sourceId];
-        n.textContent = off != null ? fmtOffset(off) : "--";
+        var src = timeSources[sourceId];
+
+        if (!src && timeSources["utc"]) {
+          if (key === "gnss") {
+            src = {
+              sourceMs : timeSources["utc"].sourceMs + 18000,
+              fetchedAt: timeSources["utc"].fetchedAt
+            };
+          } else if (key === "ptp") {
+            src = {
+              sourceMs : timeSources["utc"].sourceMs,
+              fetchedAt: timeSources["utc"].fetchedAt
+            };
+          }
+        }
+
+        var data = getSourceData(src, now, baseMs);
+        n.textContent = data.offsetMs != null ? fmtOffset(data.offsetMs) : "--";
       });
 
       /* 5. Blockchain Times Column */
@@ -290,7 +362,8 @@
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        n.textContent = (bc && bc.offsetMs != null) ? fmtTime(baseMs + bc.offsetMs) : "--";
+        var data = getSourceData(bc, now, baseMs);
+        n.textContent = data.ms != null ? fmtTime(data.ms) : "--";
       });
 
       /* 6. Blockchain Heights Column */
@@ -314,11 +387,12 @@
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        if (!bc || bc.offsetMs == null) {
+        var data = getSourceData(bc, now, baseMs);
+        if (data.offsetMs == null) {
           n.textContent = "--";
           return;
         }
-        var ms = bc.offsetMs;
+        var ms = data.offsetMs;
         n.textContent = ms === 0
           ? "0 ms"
           : (Math.abs(ms) >= 1000
