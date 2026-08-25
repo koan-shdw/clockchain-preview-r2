@@ -50,6 +50,27 @@
       '</div>';
   }
 
+  // Breadcrumbs: every page except home (blog/ and app/ don't use this shell)
+  if (!isHome) {
+    var CRUMB_LABELS = {
+      'about.html': 'About', 'services.html': 'Services', 'docs.html': 'Docs',
+      'newsroom.html': 'Newsroom', 'industry-solutions.html': 'Industry Solutions',
+      'faq.html': 'FAQ', 'privacy.html': 'Privacy Policy', 'terms.html': 'Terms of Use',
+      'cookie.html': 'Cookie Policy'
+    };
+    var crumbLabel = CRUMB_LABELS[pageName] ||
+      pageName.replace(/\.html$/, '').replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    var mainEl = document.querySelector('main');
+    if (mainEl) {
+      var crumbs = document.createElement('nav');
+      crumbs.className = 'crumbs';
+      crumbs.setAttribute('aria-label', 'Breadcrumb');
+      crumbs.innerHTML = '<a href="index.html">Home</a><span class="crumb-sep" aria-hidden="true">/</span><span aria-current="page"></span>';
+      crumbs.querySelector('[aria-current]').textContent = crumbLabel;
+      mainEl.insertBefore(crumbs, mainEl.firstChild);
+    }
+  }
+
   // Inject Footer
   var footerContainer = document.getElementById('site-footer');
   if (footerContainer) {
@@ -61,9 +82,9 @@
               '<a href="#main-content" aria-label="Clockchain, back to top" style="display:inline-block;"><img src="assets/clockchain-logo-full.png" alt="Clockchain" /></a>' +
               '<p class="footer-addr">D4D Sàrl<br/>Rue des Beaux-Arts 8<br/>2000 Neuchâtel · Switzerland<br/><br/>info@d4d.group</p>' +
             '</div>' +
-            '<div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="about.html#patent">Patent · US 12,022,015</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>' +
+            '<div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="#" data-contact>Contact</a></li></ul></div>' +
             '<div class="footer-col"><h5>Product</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="services.html">Services</a></li></ul></div>' +
-            '<div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li></ul></div>' +
+            '<div class="footer-col"><h5>Resources</h5><ul><li><a href="newsroom.html#news">News</a></li><li><a href="newsroom.html#blog">Blog</a></li><li><a href="faq.html">FAQ</a></li></ul></div>' +
             '<div class="footer-col"><h5>Network</h5><ul><li><a href="https://services.clockchain.network" target="_blank" rel="noopener">Dev Portal</a></li><li><a href="#" data-contact>Node operators</a></li></ul></div>' +
             '<div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Use</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="cookie.html">Cookie Policy</a></li><li><a href="#" data-cookie-settings>Cookie settings</a></li></ul></div>' +
           '</div>' +

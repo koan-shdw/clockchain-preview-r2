@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter" data-headweight="light" data-bodyweight="light" data-density="comfortable">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ · Clockchain</title>
+  <meta name="description" content="Answers to common questions about Clockchain, the time-focused blockchain network that creates independently verifiable proof of time." />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="site.css?v=17" />
+  <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
+  <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
+  <style>
+    .docs-hero{padding:calc(var(--band-sm) + 76px) 24px var(--band-sm);background:var(--bg);}
+    .docs-hero .container{max-width:840px;}
+    .docs-hero h1{font-family:var(--f-display);font-size:clamp(38px,5vw,60px);letter-spacing:-0.02em;line-height:1.05;margin:16px 0 16px;}
+    .docs-hero h1 em{font-style:normal;color:var(--accent);}
+    .docs-hero .body-lg{max-width:64ch;}
+
+    .docs-wrap{padding:var(--band-sm) 24px var(--band);}
+    .docs-wrap .container{max-width:840px;}
+    .docs-acc-list{border-top:1px solid var(--line);}
+    .docs-acc{border-bottom:1px solid var(--line);}
+    .docs-acc>summary{
+      list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;
+      padding:20px 4px;font-family:var(--f-display);font-size:clamp(18px,2.1vw,22px);
+      font-weight:400;letter-spacing:-0.01em;color:var(--fg);
+    }
+    .docs-acc>summary::-webkit-details-marker{display:none;}
+    .docs-acc>summary::marker{content:"";}
+    .docs-acc>summary:hover{color:var(--accent);}
+    .docs-acc-n{font-family:var(--f-mono);font-size:12px;color:var(--accent);flex:none;width:26px;}
+    .docs-acc-chev{width:20px;height:20px;flex:none;margin-left:auto;fill:none;stroke:currentColor;stroke-width:2;transition:transform .25s ease;}
+    .docs-acc[open]>summary .docs-acc-chev{transform:rotate(180deg);}
+    .docs-acc-body{padding:2px 4px 24px 46px;}
+    .docs-acc-body p{color:var(--fg-2);max-width:64ch;}
+    .docs-acc-body p+p{margin-top:12px;}
+
+    :root .docs-acc-body .faq-q{font-weight:600 !important;color:var(--fg);margin-top:22px;} /* outranks the data-bodyweight !important theme rule */
+    .docs-acc-body .faq-q:first-child{margin-top:0;}
+    .faq-ul{list-style:disc;margin:12px 0 0 20px;color:var(--fg-2);max-width:64ch;}
+    .faq-ul li+li{margin-top:6px;}
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="site-nav"></div>
+
+  <main id="main-content" tabindex="-1">
+
+    <section class="docs-hero">
+      <div class="container">
+        <span class="tag">FAQ</span>
+        <h1>Frequently asked <em>questions.</em></h1>
+        <p class="body-lg">Answers to common questions about Clockchain, the time-focused blockchain network that creates independently verifiable proof of time. Open a section to expand it.</p>
+      </div>
+    </section>
+
+    <section class="docs-wrap reveal">
+      <div class="container">
+        <div class="docs-acc-list">
+
+          <details class="docs-acc" id="understanding">
+            <summary><span class="docs-acc-n">01</span>Understanding Clockchain<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <div class="docs-acc-body">
+              <p class="faq-q">What is Clockchain?</p>
+              <p>Clockchain&reg; is a time-focused blockchain network that creates independently verifiable proof of time. It combines trusted time sources with blockchain technology to produce a tamper-evident record of when events occurred and the order in which they took place.</p>
+              <p class="faq-q">What problem does Clockchain solve?</p>
+              <p>Digital systems routinely depend on timestamps, but conventional timestamps are often generated and controlled by the same systems that use them. They may be inaccurate, inconsistent across platforms, or altered after an event. Clockchain provides independent evidence against which claims about time and sequence can be verified.</p>
+              <p class="faq-q">What is verifiable time?</p>
+              <p>Verifiable time is time supported by evidence that can be independently examined. Instead of requiring users to trust a timestamp simply because a system produced it, Clockchain makes it possible to verify when the time was established, how it was recorded, and where it falls within the network's chronology.</p>
+              <p class="faq-q">Why does verifiable time matter?</p>
+              <p>Time determines when transactions settle, contracts execute, records are created, deadlines expire, and automated decisions take effect. When those events are disputed, an ordinary timestamp may not provide sufficient proof. Verifiable time strengthens the evidence needed to reconstruct events, establish their sequence, and demonstrate that time-sensitive requirements were met.</p>
+              <p class="faq-q">What is proof of time?</p>
+              <p>Proof of time is independently verifiable evidence that a particular event, record, or digital action existed in relation to a trusted time reference. Clockchain creates this evidence by anchoring time within a tamper-evident blockchain chronology.</p>
+            </div>
+          </details>
+
+          <details class="docs-acc" id="how-it-works">
+            <summary><span class="docs-acc-n">02</span>How Clockchain Works<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <div class="docs-acc-body">
+              <p class="faq-q">How is Clockchain different from an ordinary timestamp?</p>
+              <p>An ordinary timestamp is generally created by a device, application, or centralized server. Its reliability depends on the accuracy and integrity of that system. A Clockchain timestamp is connected to a decentralized, tamper-evident chronology that can be independently examined rather than accepted solely on the authority of the system that created it.</p>
+              <p class="faq-q">How is Clockchain different from a conventional blockchain timestamp?</p>
+              <p>Most blockchains use timestamps primarily to support network operations, and those timestamps may allow variation or depend on the clock of an individual validator. Clockchain is designed specifically around time, using multiple trusted time inputs and network consensus to establish and preserve a unified, UTC-aligned reference.</p>
+              <p class="faq-q">Does blockchain technology automatically guarantee accurate time?</p>
+              <p>No. Blockchain can make a record difficult to alter, but it does not guarantee that the original time value was accurate. Clockchain addresses this distinction by combining trusted time sources with a consensus-based blockchain record. This provides evidence of both the time reference and the integrity of the resulting chronology.</p>
+              <p class="faq-q">Does Clockchain replace UTC or existing time sources?</p>
+              <p>No. Clockchain is designed to work with established time sources, not replace them. It transforms trusted time data into a decentralized and independently verifiable record that digital systems can use as evidence.</p>
+              <p class="faq-q">How frequently does Clockchain record time?</p>
+              <p>Clockchain establishes and records a network time reference every second. This creates a continuous chronology against which digital events and records can be verified.</p>
+              <p class="faq-q">Can Clockchain prove the order in which events occurred?</p>
+              <p>Clockchain can provide verifiable evidence of the sequence in which records were anchored to its chronology. This can help establish whether one recorded event preceded or followed another, even when the events originated from different systems or jurisdictions.</p>
+              <p class="faq-q">Can Clockchain sequence events that are recorded within the same one second interval?</p>
+              <p>Yes, Clockchain can record event sequences that happen during the interval between reference points.</p>
+              <p class="faq-q">Can records on Clockchain be changed?</p>
+              <p>Once information has been anchored to the blockchain and confirmed by the network, it cannot be quietly changed without detection. This tamper-evident structure protects the integrity of the record and makes later verification possible.</p>
+            </div>
+          </details>
+
+          <details class="docs-acc" id="products">
+            <summary><span class="docs-acc-n">03</span>Products and Applications<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <div class="docs-acc-body">
+              <p class="faq-q">What services does Clockchain provide?</p>
+              <p>Clockchain's services include:</p>
+              <ul class="faq-ul">
+                <li>A Time API that allows applications to access verifiable time</li>
+                <li>Event Logging for creating tamper-evident records of digital activity</li>
+                <li>Smart Contract Scheduling for coordinating blockchain actions using verifiable time</li>
+                <li>Agent Identity Verification for connecting autonomous activity to verifiable identity and chronology</li>
+              </ul>
+              <p>Together, these services allow organizations to incorporate proof of time and sequence into existing digital systems and workflows.</p>
+              <p class="faq-q">What types of events can be recorded?</p>
+              <p>Clockchain can support records associated with transactions, digital documents, AI decisions, system activity, smart-contract operations, data transfers, machine actions, compliance events, and other time-sensitive processes. The precise implementation depends on the application and the evidence an organization needs to preserve.</p>
+              <p class="faq-q">Does Clockchain store private or sensitive data?</p>
+              <p>Clockchain does not require an organization to publish the underlying contents of a private record. A cryptographic representation of the data can be anchored to the network, allowing the organization to demonstrate that the record existed and has not been changed without revealing the original information publicly.</p>
+              <p class="faq-q">What is the Clockchain Time API?</p>
+              <p>The Clockchain Time API enables applications to request and use Clockchain's verifiable time reference. It allows developers to incorporate proof of time into software, automated workflows, financial systems, AI platforms, and other time-dependent applications without building their own blockchain-based time infrastructure.</p>
+              <p class="faq-q">How does Clockchain Event Logging work?</p>
+              <p>Event Logging creates a tamper-evident record connecting a digital event to Clockchain's chronology. If the event is later questioned, its cryptographic record can be compared with the original data to verify its integrity and establish when it was recorded.</p>
+              <p class="faq-q">How does Smart Contract Scheduling use Clockchain?</p>
+              <p>Clockchain Smart Contract Scheduling allows blockchain operations to be coordinated using a verifiable time reference. This can support time-dependent payments, deadlines, releases, expirations, and other automated actions where the timing of execution must be consistent and independently auditable.</p>
+              <p class="faq-q">How can AI agents use Clockchain?</p>
+              <p>AI agents can use Clockchain to create verifiable records of their identities, decisions, instructions, outputs, and interactions. This can help organizations reconstruct autonomous activity, distinguish between agents, and establish when actions occurred and in what sequence.</p>
+              <p class="faq-q">Which industries can use Clockchain?</p>
+              <p>Clockchain can support any industry in which timing, sequencing, auditability, or automated execution is important. Potential applications include financial services, artificial intelligence, robotics, digital commerce, telecommunications, healthcare, critical infrastructure, media and publishing, supply chains, and public-sector systems.</p>
+            </div>
+          </details>
+
+          <details class="docs-acc" id="trust">
+            <summary><span class="docs-acc-n">04</span>Trust, Compliance, and Integration<svg class="docs-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+            <div class="docs-acc-body">
+              <p class="faq-q">How can Clockchain support regulatory compliance?</p>
+              <p>Clockchain can strengthen the evidence used to demonstrate that required actions occurred at a particular time and in the proper sequence. This may support recordkeeping, audit trails, transaction reconstruction, data integrity, traceability, and time-sensitive reporting obligations.</p>
+              <p>Clockchain is an enabling technology, however, and its use does not by itself make an organization compliant with any particular law or regulation.</p>
+              <p class="faq-q">Can Clockchain help resolve disputes?</p>
+              <p>Yes. Clockchain can provide independently verifiable evidence concerning when a record was created or anchored and where it appears within an established chronology. This evidence may help resolve disagreements involving deadlines, transaction order, document existence, system activity, or the timing of automated decisions.</p>
+              <p class="faq-q">Who controls Clockchain's time records?</p>
+              <p>Clockchain's records are maintained through a distributed blockchain network rather than a single company server or internal database. This reduces dependence on any one participant and allows records to be independently examined.</p>
+              <p class="faq-q">Does an organization need to replace its existing systems to use Clockchain?</p>
+              <p>No. Clockchain is intended to complement existing applications, databases, and time sources. Organizations can integrate its services into selected workflows through APIs and blockchain-compatible tools without replacing their entire technology environment.</p>
+              <p class="faq-q">Which blockchain networks does Clockchain support?</p>
+              <p>Clockchain is designed to support interoperability with widely used blockchain ecosystems, including Ethereum and Polygon. This allows developers to incorporate Clockchain's verifiable time capabilities into existing blockchain applications and smart-contract workflows.</p>
+              <p class="faq-q">Is Clockchain available now?</p>
+              <p>Clockchain's public testnet is available for developers, enterprises, and other participants interested in evaluating its technology and exploring potential applications.</p>
+              <p class="faq-q">How can my organization get started?</p>
+              <p>Organizations can begin by identifying a process in which the timing or sequencing of events must be trusted, audited, or proven. The Clockchain team can then help evaluate an appropriate application, such as API access, event logging, smart-contract scheduling, or agent identity verification, and support an initial testnet implementation.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="components.js?v=3"></script>
+  <script src="app.js?v=3"></script>
+  <script src="contact.js?v=1"></script>
+  <script src="consent.js?v=1"></script>
+  <script>(function(){function openHash(){if(!location.hash)return;var el=document.getElementById(location.hash.slice(1));if(el&&el.tagName==='DETAILS'){el.open=true;el.scrollIntoView();}}openHash();window.addEventListener('hashchange',openHash);})();</script>
+</body>
+</html>

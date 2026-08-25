@@ -231,7 +231,7 @@
   function fmtDate(ms) {
     if (ms == null || isNaN(ms)) return "--";
     var d = new Date(ms);
-    return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) + " UTC";
+    return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate());
   }
   function fmtOffset(ms) {
     if (ms === 0) return "consensus";
