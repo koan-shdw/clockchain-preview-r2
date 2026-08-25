@@ -448,7 +448,7 @@ body.cm-lock{overflow:hidden;}
 /* ===== Services page ===== */
 .svc-hero{padding:calc(var(--band-sm) + 76px) 24px 0;background:var(--bg);}
 .svc-hero .container{max-width:1120px;}
-.svc-page{padding:var(--band-sm) 24px var(--band);}
+.svc-page{padding:calc(var(--band-sm) + 44px) 24px var(--band);} /* +44px: clear the fixed nav + breadcrumb strip (other heroes carry this clearance in their own padding) */
 .svc-page .container{max-width:1120px;}
 .svc-page .services-head{margin-bottom:44px;}
 .svc-page .services-head h1{font-family:var(--f-display);font-size:clamp(38px,5vw,60px);letter-spacing:-0.02em;line-height:1.05;margin:16px 0 16px;}
