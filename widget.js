@@ -10,9 +10,9 @@
      Missing or null API values fall back to "--".
      ═══════════════════════════════════════════════════════════════════════ */
 
-  var TIME_API    = "https://clockchain.network/clockchain-api/api/v1/indexes/time";
-  var CHAIN_API   = "https://clockchain.network/clockchain-api/api/v1/indexes/blockchain";
-  var GETTIME_API = "https://clockchain.network/clockchain-api/getTime";
+  var TIME_API    = "https://dev.clockchain.network/clockchain-api/api/v1/indexes/time";
+  var CHAIN_API   = "https://dev.clockchain.network/clockchain-api/api/v1/indexes/blockchain";
+  var GETTIME_API = "https://dev.clockchain.network/clockchain-api/getTime";
   var REFRESH_MS  = 30000;
 
   var anchor       = null;
