@@ -10,15 +10,16 @@
      Missing or null API values fall back to "--".
      ═══════════════════════════════════════════════════════════════════════ */
 
-  var TIME_API    = "https://dev.clockchain.network/clockchain-api/api/v1/indexes/time";
-  var CHAIN_API   = "https://dev.clockchain.network/clockchain-api/api/v1/indexes/blockchain";
-  var GETTIME_API = "https://dev.clockchain.network/clockchain-api/getTime";
-  var REFRESH_MS  = 30000;
+  var TIME_API = "https://stagingapi.clockchain.network/api/v1/indexes/time";
+  var CHAIN_API =
+    "https://stagingapi.clockchain.network/api/v1/indexes/blockchain";
+  var GETTIME_API = "https://stagingapi.clockchain.network/getTime";
+  var REFRESH_MS = 30000;
 
-  var anchor       = null;
+  var anchor = null;
   /* anchor = { serverMs: number, localMs: number, height: number } */
-  var timeSources  = {};
-  var blockchains  = {};
+  var timeSources = {};
+  var blockchains = {};
   var totalLogsVal = null;
 
   var SRC_MAP = {
@@ -42,23 +43,26 @@
     solana: "solana",
     tron: "tron",
     hyperliquid: "hyperliquid",
+    arbitrum: "arbitrum",
+    pyusd: "pyusd",
+    usdt: "usdt",
   };
 
   /* ── DOM refs ─────────────────────────────────────────────────────────── */
   var el = {
-    time   : document.getElementById("cw-time"),
-    date   : document.getElementById("cw-date"),
-    height : document.getElementById("cw-height"),
-    hash   : document.getElementById("cw-hash"),
-    logs   : document.getElementById("cw-logs"),
-    dHash  : document.getElementById("cwd-hash"),
-    dTime  : document.getElementById("cwd-time"),
+    time: document.getElementById("cw-time"),
+    date: document.getElementById("cw-date"),
+    height: document.getElementById("cw-height"),
+    hash: document.getElementById("cw-hash"),
+    logs: document.getElementById("cw-logs"),
+    dHash: document.getElementById("cwd-hash"),
+    dTime: document.getElementById("cwd-time"),
     dHeight: document.getElementById("cwd-height"),
   };
-  var srcEls      = document.querySelectorAll("[data-cw-src]");
-  var offEls      = document.querySelectorAll("[data-cw-off]");
-  var chainEls    = document.querySelectorAll("[data-cw-chain]");
-  var blockEls    = document.querySelectorAll("[data-cw-block]");
+  var srcEls = document.querySelectorAll("[data-cw-src]");
+  var offEls = document.querySelectorAll("[data-cw-off]");
+  var chainEls = document.querySelectorAll("[data-cw-chain]");
+  var blockEls = document.querySelectorAll("[data-cw-block]");
   var chainOffEls = document.querySelectorAll("[data-cw-chain-off]");
 
   /* ── Parse Date Helpers ───────────────────────────────────────────────── */
@@ -78,7 +82,7 @@
         parseInt(timeParts[0], 10),
         parseInt(timeParts[1], 10),
         parseInt(timeParts[2], 10),
-        parseInt(timeParts[3] || 0, 10)
+        parseInt(timeParts[3] || 0, 10),
       );
     } catch (e) {
       return null;
@@ -106,13 +110,14 @@
         if (json && json.success && json.data) {
           var d = json.data;
           var serverMs = parseMadMarzullo(d.madMarzulloTime);
-          var height   = d.blockHeight != null ? parseInt(d.blockHeight, 10) : null;
+          var height =
+            d.blockHeight != null ? parseInt(d.blockHeight, 10) : null;
 
           if (serverMs != null && height != null && !isNaN(height)) {
             anchor = {
               serverMs: serverMs,
-              localMs : fetchedAt,
-              height  : height,
+              localMs: fetchedAt,
+              height: height,
             };
           } else {
             anchor = null;
@@ -137,7 +142,7 @@
         return r.json();
       })
       .then(function (json) {
-        var list = Array.isArray(json) ? json : ((json && json.data) || []);
+        var list = Array.isArray(json) ? json : (json && json.data) || [];
         timeSources = {};
         list.forEach(function (src) {
           if (src && src.sourceId) {
@@ -151,7 +156,7 @@
 
             if (ms != null) {
               timeSources[src.sourceId] = {
-                sourceMs : ms,
+                sourceMs: ms,
                 fetchedAt: fetchedAt,
               };
             }
@@ -170,7 +175,7 @@
         return r.json();
       })
       .then(function (json) {
-        var list = Array.isArray(json) ? json : ((json && json.data) || []);
+        var list = Array.isArray(json) ? json : (json && json.data) || [];
         blockchains = {};
         list.forEach(function (src) {
           if (src && src.sourceId) {
@@ -183,8 +188,8 @@
             }
 
             blockchains[src.sourceId] = {
-              height   : src.sourceHeight,
-              sourceMs : ms,
+              height: src.sourceHeight,
+              sourceMs: ms,
               fetchedAt: fetchedAt,
             };
           }
@@ -199,11 +204,23 @@
   }
 
   /* ── Live state for Clockchain ────────────────────────────────────────── */
+
+  var GENESIS = Math.floor(Date.UTC(2026, 6, 3, 2, 45, 28) / 1000) - 36042;
+
   function currentState() {
-    if (!anchor) return null;
-    var now = Date.now(), elapsed = now - anchor.localMs;
+    if (!anchor) {
+      var ms = Date.now();
+      return {
+        ms: ms - 2500,
+        height: Math.floor(ms / 1000) - GENESIS,
+        /* simulated source offsets vs Clockchain consensus time, in ms */
+        offsets: { clockchain: 0, utc: 57, ntp: -55, gps: 12 },
+      };
+    }
+    var now = Date.now(),
+      elapsed = now - anchor.localMs;
     return {
-      ms    : anchor.serverMs + elapsed,
+      ms: anchor.serverMs + elapsed,
       height: anchor.height + Math.floor(elapsed / 1000),
     };
   }
@@ -226,12 +243,24 @@
   function fmtTime(ms) {
     if (ms == null || isNaN(ms)) return "--";
     var d = new Date(ms);
-    return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
+    return (
+      pad(d.getUTCHours()) +
+      ":" +
+      pad(d.getUTCMinutes()) +
+      ":" +
+      pad(d.getUTCSeconds())
+    );
   }
   function fmtDate(ms) {
     if (ms == null || isNaN(ms)) return "--";
     var d = new Date(ms);
-    return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate());
+    return (
+      d.getUTCFullYear() +
+      "-" +
+      pad(d.getUTCMonth() + 1) +
+      "-" +
+      pad(d.getUTCDate())
+    );
   }
   function fmtOffset(ms) {
     if (ms === 0) return "consensus";
@@ -239,26 +268,29 @@
     return (ms > 0 ? "+" : "") + ms + " ms";
   }
   function randHash() {
-    var c = "0123456789abcdef", s = "0x";
+    var c = "0123456789abcdef",
+      s = "0x";
     for (var i = 0; i < 12; i++) s += c[Math.floor(Math.random() * 16)];
     return s;
   }
 
   /* ── Render loop ──────────────────────────────────────────────────────── */
-  var lastSecond = -1, raf;
+  var lastSecond = -1,
+    raf;
 
   function render() {
-    var st     = currentState();
-    var now    = Date.now();
+    var st = currentState();
+    var now = Date.now();
     var baseMs = st ? st.ms : now;
 
-    var sec    = Math.floor(baseMs / 1000);
+    var sec = Math.floor(baseMs / 1000);
     var msPart = pad(baseMs % 1000, 3);
 
     /* Clockchain Live Millisecond Header */
     if (st) {
       if (el.time) {
-        el.time.innerHTML = fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
+        el.time.innerHTML =
+          fmtTime(st.ms) + '<span class="cw-ms">.' + msPart + "</span>";
       }
     } else {
       if (el.time) el.time.innerHTML = "--";
@@ -274,26 +306,27 @@
         var hash = randHash();
         var anchored = "block " + hash + "… anchored · verified on-chain";
 
-        if (el.date)    el.date.textContent    = fmtDate(st.ms);
-        if (el.height)  el.height.textContent  = h;
-        if (el.dTime)   el.dTime.textContent   = fmtTime(st.ms);
+        if (el.date) el.date.textContent = fmtDate(st.ms);
+        if (el.height) el.height.textContent = h;
+        if (el.dTime) el.dTime.textContent = fmtTime(st.ms);
         if (el.dHeight) el.dHeight.textContent = h;
-        if (el.hash)    el.hash.textContent    = anchored;
-        if (el.dHash)   el.dHash.textContent   = anchored;
+        if (el.hash) el.hash.textContent = anchored;
+        if (el.dHash) el.dHash.textContent = anchored;
       } else {
-        if (el.date)    el.date.textContent    = "--";
-        if (el.height)  el.height.textContent  = "--";
-        if (el.dTime)   el.dTime.textContent   = "--";
+        if (el.date) el.date.textContent = "--";
+        if (el.height) el.height.textContent = "--";
+        if (el.dTime) el.dTime.textContent = "--";
         if (el.dHeight) el.dHeight.textContent = "--";
-        if (el.hash)    el.hash.textContent    = "--";
-        if (el.dHash)   el.dHash.textContent   = "--";
+        if (el.hash) el.hash.textContent = "--";
+        if (el.dHash) el.dHash.textContent = "--";
       }
 
       /* 2. Total Logs */
       if (el.logs) {
-        el.logs.textContent = (totalLogsVal != null && !isNaN(totalLogsVal))
-          ? totalLogsVal.toLocaleString()
-          : "--";
+        el.logs.textContent =
+          totalLogsVal != null && !isNaN(totalLogsVal)
+            ? totalLogsVal.toLocaleString()
+            : "--";
       }
 
       /* 3. Time Sources Table (Current Time column) */
@@ -310,13 +343,13 @@
         if (!src && timeSources["utc"]) {
           if (key === "gnss") {
             src = {
-              sourceMs : timeSources["utc"].sourceMs + 18000,
-              fetchedAt: timeSources["utc"].fetchedAt
+              sourceMs: timeSources["utc"].sourceMs + 800,
+              fetchedAt: timeSources["utc"].fetchedAt,
             };
           } else if (key === "ptp") {
             src = {
-              sourceMs : timeSources["utc"].sourceMs,
-              fetchedAt: timeSources["utc"].fetchedAt
+              sourceMs: timeSources["utc"].sourceMs,
+              fetchedAt: timeSources["utc"].fetchedAt,
             };
           }
         }
@@ -338,13 +371,13 @@
         if (!src && timeSources["utc"]) {
           if (key === "gnss") {
             src = {
-              sourceMs : timeSources["utc"].sourceMs + 18000,
-              fetchedAt: timeSources["utc"].fetchedAt
+              sourceMs: timeSources["utc"].sourceMs + 18000,
+              fetchedAt: timeSources["utc"].fetchedAt,
             };
           } else if (key === "ptp") {
             src = {
-              sourceMs : timeSources["utc"].sourceMs,
-              fetchedAt: timeSources["utc"].fetchedAt
+              sourceMs: timeSources["utc"].sourceMs,
+              fetchedAt: timeSources["utc"].fetchedAt,
             };
           }
         }
@@ -375,7 +408,10 @@
         }
         var sourceId = CHAIN_MAP[key] || key;
         var bc = blockchains[sourceId];
-        n.textContent = (bc && bc.height != null) ? "#" + Number(bc.height).toLocaleString() : "--";
+        n.textContent =
+          bc && bc.height != null
+            ? "#" + Number(bc.height).toLocaleString()
+            : "--";
       });
 
       /* 7. Blockchain Offsets Column */
@@ -393,11 +429,12 @@
           return;
         }
         var ms = data.offsetMs;
-        n.textContent = ms === 0
-          ? "0 ms"
-          : (Math.abs(ms) >= 1000
-            ? (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s"
-            : (ms > 0 ? "+" : "") + ms + " ms");
+        n.textContent =
+          ms === 0
+            ? "0 ms"
+            : Math.abs(ms) >= 1000
+              ? (ms > 0 ? "+" : "") + (ms / 1000).toFixed(1) + " s"
+              : (ms > 0 ? "+" : "") + ms + " ms";
       });
     }
 
@@ -417,26 +454,32 @@
   });
 
   /* ── Hero card expand ─────────────────────────────────────────────────── */
-  var toggle = document.getElementById("cw-toggle"), table = document.getElementById("cw-table");
+  var toggle = document.getElementById("cw-toggle"),
+    table = document.getElementById("cw-table");
   if (toggle && table) {
     toggle.addEventListener("click", function () {
       var open = table.hasAttribute("hidden");
-      if (open) table.removeAttribute("hidden"); else table.setAttribute("hidden", "");
+      if (open) table.removeAttribute("hidden");
+      else table.setAttribute("hidden", "");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
 
   /* ── Dock ─────────────────────────────────────────────────────────────── */
-  var card = document.getElementById("cw-card"), dock = document.getElementById("cw-dock");
+  var card = document.getElementById("cw-card"),
+    dock = document.getElementById("cw-dock");
   if (dock) {
     if (card && "IntersectionObserver" in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          var docked = !en.isIntersecting && en.boundingClientRect.top < 0;
-          document.body.classList.toggle("cw-docked", docked);
-          dock.setAttribute("aria-hidden", docked ? "false" : "true");
-        });
-      }, { threshold: 0.15 }).observe(card);
+      new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) {
+            var docked = !en.isIntersecting && en.boundingClientRect.top < 0;
+            document.body.classList.toggle("cw-docked", docked);
+            dock.setAttribute("aria-hidden", docked ? "false" : "true");
+          });
+        },
+        { threshold: 0.15 },
+      ).observe(card);
     } else {
       document.body.classList.add("cw-docked");
       dock.setAttribute("aria-hidden", "false");
@@ -444,11 +487,13 @@
   }
 
   /* ── Dock expand panel ────────────────────────────────────────────────── */
-  var dToggle = document.getElementById("cw-dock-toggle"), dPanel = document.getElementById("cw-dock-panel");
+  var dToggle = document.getElementById("cw-dock-toggle"),
+    dPanel = document.getElementById("cw-dock-panel");
   if (dToggle && dPanel) {
     dToggle.addEventListener("click", function () {
       var open = dPanel.hasAttribute("hidden");
-      if (open) dPanel.removeAttribute("hidden"); else dPanel.setAttribute("hidden", "");
+      if (open) dPanel.removeAttribute("hidden");
+      else dPanel.setAttribute("hidden", "");
       dToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
     document.addEventListener("click", function (e) {
@@ -464,9 +509,14 @@
   if (dClose) {
     dClose.addEventListener("click", function () {
       document.body.classList.add("cw-dismissed");
-      try { sessionStorage.setItem("cw-dismissed", "1"); } catch (e) {}
+      try {
+        sessionStorage.setItem("cw-dismissed", "1");
+      } catch (e) {}
     });
-    try { if (sessionStorage.getItem("cw-dismissed") === "1") document.body.classList.add("cw-dismissed"); } catch (e) {}
+    try {
+      if (sessionStorage.getItem("cw-dismissed") === "1")
+        document.body.classList.add("cw-dismissed");
+    } catch (e) {}
   }
 
   /* ── Boot ─────────────────────────────────────────────────────────────── */
@@ -474,5 +524,4 @@
     raf = requestAnimationFrame(render);
     setInterval(fetchAll, REFRESH_MS);
   });
-
 })();

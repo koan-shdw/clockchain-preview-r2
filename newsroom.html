@@ -1,38 +1,138 @@
 <!DOCTYPE html>
-<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter" data-headweight="light" data-bodyweight="light" data-density="comfortable">
+<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter"
+  data-headweight="light" data-bodyweight="light" data-density="comfortable">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Newsroom · Clockchain</title>
-  <meta name="description" content="News, press, and media from Clockchain: the world's first verifiable global time network by D4D Sàrl." />
+  <meta name="description"
+    content="News, press, and media from Clockchain: the world's first verifiable global time network by D4D Sàrl." />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=5" />
   <link rel="stylesheet" href="site.css?v=18" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
-  <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
+  <script>(function () { try { var t = localStorage.getItem('cc-theme'); if (t === 'eclipse' || t === 'daylight') { document.documentElement.setAttribute('data-variant', t); } } catch (e) { } })();</script>
   <script>
-    (function(){
-      var root=document.documentElement;
-      try{
-        var saved=JSON.parse(localStorage.getItem('clockchain-merged-tweaks-v3')||'null');
-        if(saved){
-          if(saved.variant){if(saved.variant==='hybrid'){root.setAttribute('data-variant','daylight');root.setAttribute('data-hybrid','1');}else{root.setAttribute('data-variant',saved.variant);}}
-          if(saved.accent)root.setAttribute('data-accent',saved.accent);
-          if(saved.displayFont)root.setAttribute('data-font',saved.displayFont);
-          if(saved.bodyFont)root.setAttribute('data-bodyfont',saved.bodyFont);
-          if(saved.headWeight)root.setAttribute('data-headweight',saved.headWeight);
-          if(saved.bodyWeight)root.setAttribute('data-bodyweight',saved.bodyWeight);
-          if(saved.density)root.setAttribute('data-density',saved.density);
+    (function () {
+      var root = document.documentElement;
+      try {
+        var saved = JSON.parse(localStorage.getItem('clockchain-merged-tweaks-v3') || 'null');
+        if (saved) {
+          if (saved.variant) { if (saved.variant === 'hybrid') { root.setAttribute('data-variant', 'daylight'); root.setAttribute('data-hybrid', '1'); } else { root.setAttribute('data-variant', saved.variant); } }
+          if (saved.accent) root.setAttribute('data-accent', saved.accent);
+          if (saved.displayFont) root.setAttribute('data-font', saved.displayFont);
+          if (saved.bodyFont) root.setAttribute('data-bodyfont', saved.bodyFont);
+          if (saved.headWeight) root.setAttribute('data-headweight', saved.headWeight);
+          if (saved.bodyWeight) root.setAttribute('data-bodyweight', saved.bodyWeight);
+          if (saved.density) root.setAttribute('data-density', saved.density);
         }
-      }catch(e){}
+      } catch (e) { }
     })();
   </script>
+
+
+  <script>
+    function formatDateTime(timestamp) {
+      if (!timestamp) return 'N/A';
+
+      try {
+        const date = typeof timestamp === 'number' ? new Date(timestamp) : new Date(timestamp);
+        if (isNaN(date.getTime())) return String(timestamp);
+
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).format(date);
+      } catch {
+        return String(timestamp);
+      }
+    }
+
+    (() => {
+      try {
+        var pTime = fetch('https://stagingapi.clockchain.network/api/admin/cms/pages/bda92bac-b745-486a-b33c-f9718f131182')
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (json) {
+            var el = document.getElementById("dynamic-content")
+            var content = json?.data?.additionalFields?.content
+            if (content) {
+              el.innerHTML = content
+            }
+          })
+      } catch {
+
+      }
+
+
+      fetch('https://stagingapi.clockchain.network/api/admin/cms/news')
+  .then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(function (json) {
+    var content = json?.data || [];
+    var el = document.getElementById("news-count")
+    el.innerHTML = content.length + ' entries'
+
+    var elements = content.map(function (item, idx) {
+      return `
+        <a
+          class="media-card ${idx === 0 ? 'lead' : ''}"
+          href="${item?.link || '#'}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="media-thumb">
+            <img
+              src="${item?.image || ''}"
+              alt="${item?.title || ''}"
+            />
+          </div>
+
+          <div class="media-body">
+            <span class="media-source">${item?.type || ''}</span>
+
+            <h4>${item?.title || ''}</h4>
+
+            <div class="media-foot">
+              <span class="media-date">
+                ${formatDateTime(item?.time)}
+              </span>
+
+              <span class="media-read">
+                Read article
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14M13 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+
+    document.querySelector('.newsroom-container').innerHTML = elements;
+  })
+  .catch(function (error) {
+    console.error('Failed to fetch news:', error);
+  });
+
+    })()
+  </script>
 </head>
+
 <body>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -43,6 +143,8 @@
 
 
   <main id="main-content" tabindex="-1">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="crumb-sep"
+        aria-hidden="true">/</span><span aria-current="page">Newsroom</span></nav>
 
     <!-- ===== PAGE HERO ===== -->
     <section class="page-hero">
@@ -50,7 +152,8 @@
         <div class="ph-inner">
           <span class="tag">Media</span>
           <h1>News, press &amp; <em>media.</em></h1>
-          <p class="dek">Press releases, third-party coverage, and writing from the Clockchain team: the story of a blockchain-native global time standard, as it unfolds.</p>
+          <p class="dek">Press releases, third-party coverage, and writing from the Clockchain team: the story of a
+            blockchain-native global time standard, as it unfolds.</p>
           <div class="ph-jump">
             <a href="#blog">Blog</a>
             <a href="#news">Press releases</a>
@@ -60,142 +163,34 @@
       </div>
     </section>
 
-    <!-- ===== BLOG ===== -->
-    <section class="blog" id="blog" data-screen-label="Blog">
-      <div class="container">
-        <div class="section-head-c">
-          <span class="tag">Writing</span>
-          <h2 class="h2">Clockchain <em>Blog.</em></h2>
-        </div>
-        <div class="blog-list">
-        <a class="blog-card" href="blog/brief-history-of-time.html">
-          <div class="blog-img"><img src="assets/blog/big-bang-lead.png" alt="Artistic rendering of the Big Bang, a singularity expanding into spacetime" /></div>
-          <div class="blog-body">
-            <div class="blog-meta"><span class="accent">Clockchain</span><span>·</span><span>May 25, 2026</span></div>
-            <h3>A history of time.</h3>
-            <p>From a singularity 13.8 billion years ago to a blockchain-native global time standard in 2026: fifteen moments that shaped how we measure when.</p>
-            <span class="read-link">Read post<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-          </div>
-        </a>
-        <a class="blog-card" href="https://www.forward-layer.com/blog/cross-knowledge-graph-temporal-truth" target="_blank" rel="noopener">
-          <div class="blog-img"><img src="assets/blog/goetz-weber-lead.png" alt="Data center server racks with illuminated network cabling" /></div>
-          <div class="blog-body">
-            <div class="blog-meta"><span class="accent">Goetz Weber</span><span>·</span><span>Feb 3, 2026</span></div>
-            <h3>Cross-Knowledge Graph Assertion of Temporal Truth.</h3>
-            <p>A guest post from Forward Layer's Goetz Weber on asserting verifiable temporal truth across knowledge graphs, reposted here with permission.</p>
-            <span class="read-link">Read post<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-          </div>
-        </a>
-        </div>
+    <div id="dynamic-content" style="min-height: 400px;">
+      <div style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+        <span class="loader"></span>
       </div>
-    </section>
+    </div>
 
-    <!-- ===== NEWS & MEDIA ===== -->
-    <section class="news" id="news" data-screen-label="News &amp; Media">
+    <section class="news" id="news" data-screen-label="News &amp; Media" style="padding-top: 0;">
       <div class="container">
-        <div class="section-head-c">
-          <span class="tag">Latest · Updated 2026.02.24</span>
-          <h2 class="h2">News &amp; <em>Media.</em></h2>
-        </div>
-
         <div class="news-body">
-        <div class="subhead">
-          <div class="subhead-l"><span class="subhead-num">01</span><h3>News</h3><span class="subhead-pill">Press Releases</span></div>
-          <div class="subhead-rule"></div>
-          <span class="subhead-count">6 releases</span>
-        </div>
 
-        <a class="pr-lead" href="assets/press/clockchain-press-release-2026-02-24.pdf" target="_blank" rel="noopener">
-          <div class="pr-meta"><span>Press Release</span><span>·</span><span>February 24, 2026</span></div>
-          <span class="pr-tag">Latest release</span>
-          <h4>Clockchain Opens Public Testnet, Introducing a New Blockchain-Based Global Time Standard</h4>
-          <p class="dek">The world's first blockchain-based timestamping and timekeeping system is now open to developers, combining atomic-clock precision with on-chain verifiability.</p>
-        </a>
 
-        <div class="pr-list">
-          <a class="pr-item" href="https://www.einpresswire.com/article/818495889/clockchain-to-schedule-and-execute-smart-contracts-on-ethereum-and-polygon" target="_blank" rel="noopener noreferrer"><span class="pr-date">June 3, 2025</span><span class="pr-title">Clockchain to Schedule and Execute Smart Contracts on Ethereum and Polygon</span><span class="pr-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-          <a class="pr-item" href="https://www.einpresswire.com/article/778900186/clockchain-network-announces-new-time-oracle" target="_blank" rel="noopener noreferrer"><span class="pr-date">January 22, 2025</span><span class="pr-title">Clockchain Network Announces New Time Oracle</span><span class="pr-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-          <a class="pr-item" href="https://www.einpresswire.com/article/752264416/clockchain-network-unveils-new-timestamping-solutions-at-sf-tech-week" target="_blank" rel="noopener noreferrer"><span class="pr-date">October 16, 2024</span><span class="pr-title">Clockchain Network Unveils New Timestamping Solutions at SF Tech Week</span><span class="pr-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-          <a class="pr-item" href="https://www.einpresswire.com/article/732597207/clockchain-awarded-patent-for-world-s-first-blockchain-clock" target="_blank" rel="noopener noreferrer"><span class="pr-date">August 13, 2024</span><span class="pr-title">Clockchain Awarded Patent for World's First Blockchain Clock</span><span class="pr-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-          <a class="pr-item" href="https://www.prweb.com/releases/d4d-clockchain-technology-debuts-at-european-timekeeping-forum-302178744.html" target="_blank" rel="noopener noreferrer"><span class="pr-date">June 24, 2024</span><span class="pr-title">D4D Clockchain Technology Debuts at European Timekeeping Forum</span><span class="pr-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-        </div>
+          <div class="subhead" id="media">
+            <div class="subhead-l"><span class="subhead-num">02</span>
+              <h3>Media</h3>
+            </div>
+            <div class="subhead-rule"></div>
+            <span class="subhead-count"><span id="news-count"><span> </span>
+          </div>
 
-        <div class="subhead" id="media">
-          <div class="subhead-l"><span class="subhead-num">02</span><h3>Media</h3></div>
-          <div class="subhead-rule"></div>
-          <span class="subhead-count">8 entries</span>
-        </div>
-
-        <div class="media-grid">
-          <a class="media-card lead" href="https://blockzeit.com/clockchain-launches-public-testnet-heres-what-it-offers/" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb"><img src="assets/media/blockzeit.png" alt="Blockzeit artwork: clock faces linked by a chain around the Clockchain mark" /></div>
-            <div class="media-body">
-              <span class="media-source">Blockzeit.com</span>
-              <h4>Clockchain Launches Public Testnet: Here's What It Offers</h4>
-              <div class="media-foot"><span class="media-date">Feb 24, 2026</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://www.mexc.co/news/786064" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb panel-light contain"><img src="assets/media/mexc.png" alt="MEXC logo" /></div>
-            <div class="media-body">
-              <span class="media-source">Mexc.co</span>
-              <h4>Clockchain Unveils Testnet for Verifiable Blockchain Time</h4>
-              <div class="media-foot"><span class="media-date">Feb 24, 2026</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://hipther.com/latest-news/2026/02/24/107521/blocks-headlines-today-in-blockchain-february-24-2026-clockchain-silent-data-better-finastra/" target="_blank" rel="noopener">
-            <div class="media-thumb"><img src="assets/media/hipther.png?v=2" alt="Network of glowing isometric blockchain blocks, Hipther blockchain news roundup" /></div>
-            <div class="media-body">
-              <span class="media-source">Hipther.com</span>
-              <h4>Blocks &amp; Headlines: Clockchain Opens Public Testnet for a Global Verifiable Time Standard</h4>
-              <div class="media-foot"><span class="media-date">Feb 24, 2026</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://medium.com/@victoruzogba/the-role-of-verifiable-time-in-smart-contract-execution-7384b1394bb4" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb panel-light contain"><img src="assets/media/medium.png" alt="Medium logo" /></div>
-            <div class="media-body">
-              <span class="media-source">Medium.com</span>
-              <h4>The Role of Verifiable Time in Smart Contract Execution</h4>
-              <div class="media-foot"><span class="media-date">May 26, 2025</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://neuchateleconomie.ch/clockchain-revolutionner-la-securite-du-temps-dans-lecosysteme-web3-0/" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb"><img src="assets/media/neuchatel.png" alt="Two members of the Clockchain team seated by a fountain in Neuchâtel" /></div>
-            <div class="media-body">
-              <span class="media-source">Neuchateleconomie.ch</span>
-              <h4>Clockchain: Revolutionizing time security in the Web 3.0 ecosystem from Neuchâtel</h4>
-              <div class="media-foot"><span class="media-date">Feb 9, 2025</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://www.cointrust.com/market-news/d4d-sarls-innovative-blockchain-clock-secures-key-patent" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb panel-dark contain"><img src="assets/media/cointrust.png" alt="CoinTrust logo" /></div>
-            <div class="media-body">
-              <span class="media-source">Cointrust.com</span>
-              <h4>D4D Sàrl's Innovative Blockchain Clock Secures Key Patent</h4>
-              <div class="media-foot"><span class="media-date">Aug 14, 2024</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://companyglance.com/news/d4d-sarl-gains-patent-for-clockchain-groundbreaking-blockchain-clock" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb panel-light contain"><img src="assets/media/companyglance.png" alt="CompanyGlance logo" /></div>
-            <div class="media-body">
-              <span class="media-source">Companyglance.com</span>
-              <h4>D4D Sàrl Gains Patent for Clockchain's Groundbreaking Blockchain Clock</h4>
-              <div class="media-foot"><span class="media-date">Aug 14, 2024</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-          <a class="media-card" href="https://companyglance.com/news/d4d-sarl-unveils-clockchain-technology" target="_blank" rel="noopener noreferrer">
-            <div class="media-thumb panel-light contain"><img src="assets/media/companyglance.png" alt="CompanyGlance logo" /></div>
-            <div class="media-body">
-              <span class="media-source">Companyglance.com</span>
-              <h4>D4D Sàrl Unveils Clockchain Technology</h4>
-              <div class="media-foot"><span class="media-date">June 25, 2024</span><span class="media-read">Read article<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></div>
-            </div>
-          </a>
-        </div>
+          <div class="media-grid newsroom-container">
+           
+          </div>
         </div>
       </div>
     </section>
   </main>
+
+
 
   <div id="site-footer"></div>
 
@@ -204,10 +199,16 @@
     <div class="amodal-backdrop" data-close></div>
     <div class="amodal-card">
       <div class="amodal-head">
-        <div class="amodal-meta"><span id="am-source">—</span><span>·</span><span id="am-date">—</span><span>·</span><span class="accent" id="am-tag">—</span></div>
-        <button class="amodal-close" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <div class="amodal-meta"><span id="am-source">—</span><span>·</span><span
+            id="am-date">—</span><span>·</span><span class="accent" id="am-tag">—</span></div>
+        <button class="amodal-close" data-close aria-label="Close"><svg viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg></button>
       </div>
-      <div class="amodal-body"><h2 id="am-title">—</h2><div id="am-content"></div></div>
+      <div class="amodal-body">
+        <h2 id="am-title">—</h2>
+        <div id="am-content"></div>
+      </div>
     </div>
   </div>
 
@@ -216,4 +217,5 @@
   <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
 </body>
+
 </html>

@@ -1,91 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter" data-headweight="light" data-bodyweight="light" data-density="comfortable">
+<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter"
+  data-headweight="light" data-bodyweight="light" data-density="comfortable">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services · Clockchain</title>
-  <meta name="description" content="Clockchain's three services: logging, authentication &amp; timestamps, smart contract scheduling &amp; execution, and the Timestamp API. Time you can independently verify." />
+  <meta name="description"
+    content="Clockchain's three services: logging, authentication &amp; timestamps, smart contract scheduling &amp; execution, and the Timestamp API. Time you can independently verify." />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=5" />
   <link rel="stylesheet" href="site.css?v=18" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
-  <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
+  <script>(function () { try { var t = localStorage.getItem('cc-theme'); if (t === 'eclipse' || t === 'daylight') { document.documentElement.setAttribute('data-variant', t); } } catch (e) { } })();</script>
 
+  <script>
+    (() => {
+      try {
+        var pTime = fetch('https://stagingapi.clockchain.network/api/admin/cms/pages/4fda7f66-3581-455f-83ac-50e4c5e17c2e')
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (json) {
+            var el = document.getElementById("dynamic-content")
+            var content = json?.data?.additionalFields?.content
+            if (content) {
+              el.innerHTML = content
+            }
+          })
+      } catch {
+
+      }
+    })()
+  </script>
 </head>
+
 <body>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div id="site-nav"></div>
 
-  <main id="main-content" tabindex="-1">
-
-    <section class="svc-page">
-      <div class="container">
-        <div class="services-head reveal">
-          <span class="tag">Clockchain Services</span>
-          <h1>Three services. <em>One clock.</em></h1>
-          <p class="body-lg">Time you can independently verify.</p>
-        </div>
-        <div class="svc-acc-list reveal">
-          <details class="svc-acc" open>
-            <summary>
-              <span class="svc-n">01</span>
-              <span class="svc-acc-title">Logging, Authentication &amp; Timestamps</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </summary>
-            <div class="svc-acc-body">
-              <p>Timestamp and log data every second onto Clockchain in a simple, decentralized, cost-effective way. Instantly authenticate from any device, anywhere.</p>
-              <ul class="ps-list">
-                <li>Industry-standard hashing for any asset</li>
-                <li>Advanced timestamp verification</li>
-                <li>Search and audit your full log history</li>
-              </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </details>
-          <details class="svc-acc" open>
-            <summary>
-              <span class="svc-n">02</span>
-              <span class="svc-acc-title">Smart Contract Scheduling &amp; Execution</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </summary>
-            <div class="svc-acc-body">
-              <p>Schedule and execute critical services with the first verifiable blockchain time, a scheduling and execution system you can trust. Never miss a deadline again.</p>
-              <ul class="ps-list">
-                <li>Time triggers with cryptographic proof of execution</li>
-                <li>Webhook notifications</li>
-                <li>Full deployment monitoring</li>
-              </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </details>
-          <details class="svc-acc" open>
-            <summary>
-              <span class="svc-n">03</span>
-              <span class="svc-acc-title">Timestamp API</span>
-              <svg class="svc-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </summary>
-            <div class="svc-acc-body">
-              <p>Access, verify, and stamp anything, every second, on any device. Clockchain-verified timestamps for UTC, GPS, TAI, ISO 8601, and RFC 3339, with microsecond precision.</p>
-              <ul class="ps-list">
-                <li>Unlimited API requests with full API access</li>
-                <li>Webhook notifications and bulk operations</li>
-                <li>SLA guarantee</li>
-              </ul>
-              <a class="btn btn-primary svc-go" href="https://services.clockchain.network" target="_blank" rel="noopener">Go Now<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-  </main>
+  <div id="dynamic-content" style="min-height: 400px;">
+    <div style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+      <span class="loader"></span>
+    </div>
+  </div>
 
   <div id="site-footer"></div>
 
@@ -94,4 +62,5 @@
   <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
 </body>
+
 </html>

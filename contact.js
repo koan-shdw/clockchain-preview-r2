@@ -1,8 +1,8 @@
 /* Contact form modal (Website Notes 7/31 #5/#6).
-   Opened by any [data-contact] element; submissions go to info@clockchain.network
+   Opened by any [data-contact] element; submissions go to info@d4d.group
    via FormSubmit's AJAX endpoint (no backend needed on GitHub Pages). */
 (function(){
-  var ENDPOINT = 'https://formsubmit.co/ajax/info@clockchain.network';
+  var ENDPOINT = 'https://formsubmit.co/ajax/info@d4d.group';
 
   function init(){
     var overlay = document.createElement('div');
@@ -70,7 +70,7 @@
         .catch(function(){
           btn.disabled = false;
           status.classList.add('error');
-          status.textContent = 'Something went wrong. Please email info@clockchain.network directly.';
+          status.textContent = 'Something went wrong. Please email info@d4d.group directly.';
         });
     });
   }

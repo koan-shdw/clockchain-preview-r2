@@ -1,155 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter" data-headweight="light" data-bodyweight="light" data-density="comfortable">
+<html lang="en" data-variant="daylight" data-accent="bright" data-font="inter" data-bodyfont="inter"
+  data-headweight="light" data-bodyweight="light" data-density="comfortable">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About · Clockchain</title>
-  <meta name="description" content="About D4D Sàrl and Clockchain: a Swiss company building the world's first verifiable global time network." />
+  <meta name="description"
+    content="About D4D Sàrl and Clockchain: a Swiss company building the world's first verifiable global time network." />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=5" />
   <link rel="stylesheet" href="site.css?v=18" />
   <script>window.CC_GA_ID = 'G-56GW11EBX3';</script>
-  <script>(function(){try{var t=localStorage.getItem('cc-theme');if(t==='eclipse'||t==='daylight'){document.documentElement.setAttribute('data-variant',t);}}catch(e){}})();</script>
+  <script>(function () { try { var t = localStorage.getItem('cc-theme'); if (t === 'eclipse' || t === 'daylight') { document.documentElement.setAttribute('data-variant', t); } } catch (e) { } })();</script>
 
+  <script>
+    (() => {
+      try {
+        var pTime = fetch('https://stagingapi.clockchain.network/api/admin/cms/pages/b42e0f9f-dc17-412c-97b9-65d81d99fff9')
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (json) {
+            var el = document.getElementById("dynamic-content")
+            var content = json?.data?.additionalFields?.content
+            if (content) {
+              el.innerHTML = content
+            }
+          })
+      } catch {
+
+      }
+    })()
+  </script>
 </head>
+
 <body>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div id="site-nav"></div>
 
-  <main id="main-content" tabindex="-1">
-
-    <section class="about-hero">
-      <div class="container">
-        <span class="tag">About</span>
-        <h1>The company behind <em>the clock.</em></h1>
-        <p class="body-lg">D4D Sàrl is a Swiss company building Clockchain: a decentralized, cryptographically verifiable global time standard, anchored on-chain every second.</p>
-      </div>
-    </section>
-
-    <!-- ===== ABOUT: expandable sections (R2 #11, from About Clockchain.docx) ===== -->
-    <section class="about-acc-wrap reveal">
-      <div class="container">
-        <div class="about-acc-list">
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Building trust through verifiable time</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">Every digital system depends on one assumption: that time is accurate.</p>
-              <p>From financial transactions and AI decision-making to digital evidence and smart contract execution, timestamps determine the order of events, establish accountability, and enable trust. Yet today's digital infrastructure relies on fragmented and often unverifiable time sources that can drift, be manipulated, or become inconsistent across systems.</p>
-              <p>Clockchain was created to solve this challenge.</p>
-              <p>Clockchain is pioneering a new category of digital infrastructure: a decentralized, blockchain-based global time network that provides a cryptographically verifiable, independently auditable proof of time. By combining multiple trusted global time references with decentralized consensus, Clockchain creates a resilient, tamper-resistant time standard that organizations can trust for their most critical applications.</p>
-              <p>Our mission is simple: to establish a universally trusted standard for verifiable time.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Why time matters</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">Nearly every digital interaction depends on the integrity of time.</p>
-              <p>Every financial trade, AI decision, software log, blockchain transaction, sensor reading, and legal record relies on timestamps to determine when something occurred. If those timestamps are inaccurate, inconsistent, or vulnerable to manipulation, the integrity of the entire system can be compromised.</p>
-              <p>Traditional timestamping methods often depend on centralized servers or individual system clocks. These approaches can introduce inconsistencies, create single points of failure, and make independent verification difficult.</p>
-              <p>As artificial intelligence, autonomous systems, digital finance, and interconnected infrastructure continue to expand, trustworthy time is becoming as fundamental as secure identity and reliable networking.</p>
-              <p>Clockchain was built to provide that foundation.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">What makes Clockchain different</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">Clockchain introduces a new approach to trusted time.</p>
-              <p>Rather than relying on a single authority, Clockchain continuously aggregates multiple independent, trusted time sources and establishes a unified network time through decentralized consensus. The resulting timestamp is permanently recorded on the Clockchain Network, creating an immutable and independently verifiable proof of when an event occurred.</p>
-              <p>This approach delivers:</p>
-              <ul class="about-list">
-                <li>Independent verification of time</li>
-                <li>Tamper-resistant timestamp records</li>
-                <li>Cryptographic proof of event ordering</li>
-                <li>High availability through decentralized architecture</li>
-                <li>Transparent, auditable historical records</li>
-                <li>A common time reference across organizations and jurisdictions</li>
-              </ul>
-              <p>Clockchain is designed to complement, not replace, existing time synchronization technologies by adding a layer of verifiable trust.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Built for the next generation of digital infrastructure</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">Verifiable time has applications across virtually every industry where trust, ordering, and auditability matter.</p>
-              <p>Clockchain is designed to support:</p>
-              <ul class="about-list about-list-2">
-                <li>Artificial Intelligence and autonomous agents</li>
-                <li>Financial services and capital markets</li>
-                <li>Blockchain and Web3 applications</li>
-                <li>Smart contract scheduling and execution</li>
-                <li>Digital asset authentication</li>
-                <li>Enterprise audit and compliance</li>
-                <li>Critical infrastructure</li>
-                <li>Robotics and industrial automation</li>
-                <li>Internet of Things (IoT)</li>
-                <li>Cybersecurity and digital forensics</li>
-                <li>Government and public sector systems</li>
-                <li>Supply chain and logistics</li>
-              </ul>
-              <p>As regulatory requirements continue to evolve, organizations are increasingly expected to maintain accurate records, traceability, and reliable audit evidence. Clockchain helps strengthen those capabilities by providing independently verifiable timestamps that can enhance existing logging and recordkeeping systems.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Our technology</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">Clockchain's patented technology combines decentralized consensus with trusted global time references to produce a continuously verifiable network time.</p>
-              <p>Key capabilities include:</p>
-              <ul class="about-list">
-                <li>Blockchain-based proof of time</li>
-                <li>Timestamp generation every second</li>
-                <li>Immutable Layer 2 event logging</li>
-                <li>APIs for enterprise integration</li>
-                <li>Smart contract scheduling</li>
-                <li>Scalable architecture for high-volume timestamp verification</li>
-                <li>Cryptographically verifiable audit records</li>
-              </ul>
-              <p>Together, these capabilities enable developers and enterprises to incorporate trusted time directly into their applications and workflows.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Our vision</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p class="lead">The internet standardized communication. Blockchains standardized decentralized trust. Clockchain seeks to standardize verifiable time.</p>
-              <p>We believe trustworthy time will become foundational infrastructure for the next generation of AI, finance, autonomous systems, and digital governance. As these technologies become more interconnected, organizations will require a shared, independently verifiable understanding of when events occurred, not simply a timestamp generated by an individual device or server, but one that can be validated long after the event itself.</p>
-              <p>Our vision is a digital world in which every critical event can be independently verified&mdash;when it happened and in what order.</p>
-            </div>
-          </details>
-
-          <details class="about-acc">
-            <summary><span class="about-acc-title">Join us</span><svg class="about-acc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-            <div class="about-acc-body">
-              <p>Whether you're building AI systems, financial platforms, blockchain applications, enterprise software, or mission-critical infrastructure, Clockchain provides the confidence that comes from knowing not only what happened, but exactly when it happened.</p>
-              <p>We invite developers, enterprises, researchers, validators, and technology partners to join us as we build the future of trusted digital time.</p>
-              <p class="about-join-cta"><a class="btn btn-primary" href="#" data-contact>Talk to the team<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
-            </div>
-          </details>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="about-band alt reveal">
-      <div class="container">
-        <h2>Where we are</h2>
-        <p>D4D Sàrl<br />Rue des Beaux-Arts 8<br />2000 Neuchâtel, Switzerland</p>
-        <p><a href="mailto:info@d4d.group">info@d4d.group</a></p>
-      </div>
-    </section>
-
-  </main>
+  <div id="dynamic-content" style="min-height: 400px;">
+    <div style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+      <span class="loader"></span>
+    </div>
+  </div>
 
   <div id="site-footer"></div>
 
@@ -157,6 +61,7 @@
   <script src="app.js?v=3"></script>
   <script src="contact.js?v=1"></script>
   <script src="consent.js?v=1"></script>
-  <script>(function(){function openHash(){if(!location.hash)return;var el=document.getElementById(location.hash.slice(1));if(el&&el.tagName==='DETAILS'){el.open=true;el.scrollIntoView();}}openHash();window.addEventListener('hashchange',openHash);})();</script>
+  <script>(function () { function openHash() { if (!location.hash) return; var el = document.getElementById(location.hash.slice(1)); if (el && el.tagName === 'DETAILS') { el.open = true; el.scrollIntoView(); } } openHash(); window.addEventListener('hashchange', openHash); })();</script>
 </body>
+
 </html>
