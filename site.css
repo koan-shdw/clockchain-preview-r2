@@ -193,6 +193,12 @@ body.cw-dismissed .cw-dock{display:none;}
 .svc-acc-body{padding:0 24px 22px 24px;}
 .svc-acc-body>p{color:var(--fg-2);max-width:64ch;margin-bottom:12px;}
 .svc-acc-body .ps-list{margin:0;}
+/* merged services page: whole box is the link */
+a.svc-acc{display:block;color:inherit;text-decoration:none;cursor:pointer;}
+a.svc-acc:hover{border-color:var(--accent-line);}
+a.svc-acc .svc-acc-head{display:flex;align-items:center;gap:18px;padding:20px 24px;font-family:var(--f-display);}
+a.svc-acc .svc-go-label{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:500;margin-top:14px;}
+a.svc-acc .svc-go-label svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;}
 
 /* ===== HOW: link row ===== */
 .how-more{display:flex;justify-content:center;margin-top:40px;}
