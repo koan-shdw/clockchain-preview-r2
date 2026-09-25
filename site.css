@@ -259,19 +259,27 @@ a.svc-acc .svc-go-label svg{width:16px;height:16px;fill:none;stroke:currentColor
 .cmp-verify.yes::before{content:"\2713 ";}
 .cmp-verify.no::before{content:"\2715 ";}
 /* R2 #7: mobile, the two boxes stack centered */
+.cmp-card{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:16px;
+  box-shadow:var(--shadow);padding:20px 22px;
+}
 @media(max-width:860px){
   .compare .container{padding-left:0;padding-right:0;}
   .compare-grid{grid-template-columns:1fr;justify-items:center;gap:24px;}
   .cmp-card{width:100%;max-width:600px;min-width:0;}
 }
 @media(max-width:640px){
+  .cw-card{zoom:0.7}
   .cmp-card{padding:16px 14px;}
   .cmp-t-time .cw-row,.cmp-t-chain .cw-row{font-size:10.5px;gap:6px;}
+   .compare{
+    padding:10px;
+  }
 }
-.cmp-card{
-  background:var(--surface);border:1px solid var(--line-2);border-radius:16px;
-  box-shadow:var(--shadow);padding:20px 22px;
+@media(max-width:440px){
+  .cmp-card{padding:8px; zoom: 0.7}
 }
+
 .cmp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;}
 .cmp-title{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--fg);}
 .cmp-note{font-size:12.5px;color:var(--fg-2);margin-top:12px;line-height:1.5;}
