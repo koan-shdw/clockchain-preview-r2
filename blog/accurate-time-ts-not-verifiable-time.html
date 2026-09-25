@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accurate Time Is Not Verifiable Time · Clockchain</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon-512.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Base site styles for tokens (colors, type) + nav/footer -->
+  <link rel="stylesheet" href="../blog-base.css" />
+
+  <!-- Article-specific styles -->
+  <style>
+    /* ========== Article scaffold ========== */
+    .article-page {
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+    }
+
+    .article-back {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: color-mix(in oklab, var(--bg), transparent 30%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-back-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .article-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--fg-2);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 200ms ease;
+    }
+
+    .article-back-link:hover {
+      color: var(--fg);
+    }
+
+    .article-back-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .article-back-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    /* ========== Header ========== */
+    .article-header {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 88px 32px 48px;
+    }
+
+    .article-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--f-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--acc);
+      margin-bottom: 32px;
+    }
+
+    .article-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--acc);
+      box-shadow: 0 0 12px var(--acc);
+    }
+
+    .article-eyebrow .sep {
+      color: var(--fg-3);
+    }
+
+    .article-title {
+      font-family: var(--f-display);
+      font-size: clamp(40px, 6.2vw, 78px);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+      margin: 0 0 28px;
+      color: var(--fg);
+    }
+
+    .article-title em {
+      font-family: var(--f-display);
+      font-style: normal;
+      font-weight: 500;
+      color: var(--acc);
+      letter-spacing: -0.01em;
+    }
+
+    .article-dek {
+      font-size: 22px;
+      line-height: 1.45;
+      color: var(--fg-2);
+      max-width: 680px;
+      margin: 0 0 40px;
+      text-wrap: pretty;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-family: var(--f-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .article-meta .author {
+      color: var(--fg-2);
+    }
+
+    .article-meta .sep {
+      color: var(--fg-3);
+      opacity: 0.5;
+    }
+
+    /* ========== Hero image ========== */
+    .hero-figure {
+      max-width: 1400px;
+      margin: 0 auto 50px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+
+    .hero-figure-frame {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #000;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero-figure-frame img {
+      height: auto;
+      display: block;
+      filter: contrast(1.05) brightness(0.96);
+    }
+
+    .hero-figure-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+    }
+
+    .hero-caption {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-caption .cap-no {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--acc);
+      padding-top: 2px;
+    }
+
+    .hero-caption .cap-text {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--fg-2);
+      max-width: 720px;
+    }
+
+    .hero-caption .cap-text strong {
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* ========== Intro (unused; kept in case of future restoration) ========== */
+    .article-intro {
+      max-width: 760px;
+      margin: 0 auto 120px;
+      padding: 0 32px;
+    }
+
+    .article-intro p {
+      font-family: var(--f-display);
+      font-size: 26px;
+      line-height: 1.45;
+      letter-spacing: -0.005em;
+      color: var(--fg);
+      margin: 0 0 24px;
+      text-wrap: pretty;
+    }
+
+    .article-intro p.lead-cap::first-letter {
+      font-family: var(--f-display);
+      font-size: 5.2em;
+      float: left;
+      line-height: 0.86;
+      padding: 8px 14px 0 0;
+      color: var(--acc);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* Inline intro figure: small, floats right so text wraps around */
+    .intro-figure {
+      float: right;
+      width: 240px;
+      margin: 6px 0 18px 28px;
+      shape-outside: margin-box;
+    }
+
+    .intro-figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      filter: contrast(1.05) saturate(0.92);
+      box-shadow: 0 12px 36px -16px color-mix(in oklab, var(--acc), transparent 60%);
+    }
+
+    .intro-figure figcaption {
+      margin-top: 8px;
+      font-family: var(--f-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      text-align: right;
+    }
+
+    /* ========== Timeline ========== */
+    .timeline-wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 32px 30px;
+    }
+
+    /* Era heading: left-rail label, no editorial title */
+    .era {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: baseline;
+      padding: 56px 0 18px;
+      border-top: 1px solid var(--line);
+      position: relative;
+    }
+
+    .era:first-child {
+      border-top: 0;
+      padding-top: 24px;
+    }
+
+    .era-label {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-2);
+      position: sticky;
+      top: 88px;
+    }
+
+    .era-label .era-num {
+      display: block;
+      color: var(--acc);
+      font-size: 11px;
+      margin-bottom: 6px;
+      opacity: 0.7;
+    }
+
+    /* Entries: vertical rail */
+    .entries {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      margin-bottom: 16px;
+    }
+
+    .entry {
+      grid-column: 2;
+      display: block;
+      padding: 32px 0 40px;
+      position: relative;
+    }
+
+    .entry+.entry {
+      border-top: 1px dashed var(--line);
+    }
+
+    .entry-year {
+      font-family: var(--f-display);
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.012em;
+      font-weight: 600;
+      color: var(--fg);
+      margin: 0 0 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* .entry-year::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--acc);
+      box-shadow: 0 0 0 5px color-mix(in oklab, var(--acc), transparent 80%);
+      flex-shrink: 0;
+    } */
+
+    .entry-body {
+      font-size: 18px;
+      line-height: 1.62;
+      color: var(--fg);
+      margin: 0;
+      text-wrap: pretty;
+    }
+
+    .entry-body em {
+      font-style: italic;
+      color: var(--fg);
+    }
+
+    /* Inline image: full entry width */
+    .entry-img-wide {
+      margin: 24px 0 0;
+      max-width: 760px;
+    }
+
+    .entry-img-wide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #000;
+    }
+
+    .entry-img-wide figcaption {
+      margin-top: 10px;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    /* Paired images (2-up) */
+    .entry-img-pair {
+      margin: 24px 0 0;
+      max-width: 760px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .entry-img-pair .pair-cell {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .entry-img-pair .pair-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .entry-img-pair figcaption {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    /* Featured entry: image on left, text on right */
+    .entry.featured {
+      padding: 36px 0 44px;
+    }
+
+    .entry.featured .featured-grid {
+      display: grid;
+      gap: 36px;
+      align-items: start;
+    }
+
+
+
+    .entry.featured.featured-grow {
+      grid-column: 1 / -1;
+    }
+
+    .entry.featured .featured-img {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .entry.featured .featured-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: contrast(1.04);
+    }
+
+    .entry.featured .featured-img-cap {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-top: 10px;
+    }
+
+    /* Climax: 2026 entry */
+    .entry.climax {
+      margin-top: 32px;
+      padding: 44px;
+      border: 1px solid color-mix(in oklab, var(--acc), transparent 60%);
+      border-radius: 16px;
+      background:
+        radial-gradient(120% 100% at 0% 0%, color-mix(in oklab, var(--acc), transparent 92%), transparent 60%),
+        color-mix(in oklab, var(--bg-elev), transparent 0%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .entry.climax+.entry {
+      border-top: 0;
+    }
+
+    .entry.climax::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--acc), transparent);
+      opacity: 0.6;
+    }
+
+    .entry.climax .climax-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .entry.climax .entry-year {
+      color: var(--acc);
+      font-size: 32px;
+    }
+
+    .entry.climax .entry-year::before {
+      width: 12px;
+      height: 12px;
+      box-shadow: 0 0 0 6px color-mix(in oklab, var(--acc), transparent 70%),
+        0 0 24px color-mix(in oklab, var(--acc), transparent 50%);
+    }
+
+    .entry.climax .entry-body {
+      font-size: 19px;
+      color: var(--fg);
+    }
+
+    .entry.climax .climax-img {
+      margin: 0;
+      border: 1px solid color-mix(in oklab, var(--acc), transparent 70%);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 12px 48px -16px color-mix(in oklab, var(--acc), transparent 60%);
+    }
+
+    .entry.climax .climax-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .entry.climax .climax-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 24px;
+      padding: 12px 22px;
+      border: 1px solid var(--acc);
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--acc), transparent 90%);
+      color: var(--fg);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 220ms ease, transform 220ms ease;
+    }
+
+    .entry.climax .climax-cta:hover {
+      background: color-mix(in oklab, var(--acc), transparent 75%);
+      transform: translateX(4px);
+    }
+
+    .entry.climax .climax-cta svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ========== Closing ========== */
+    .article-foot {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 80px 32px 120px;
+      border-top: 1px solid var(--line);
+    }
+
+    .article-foot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .article-foot-block h5 {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin: 32px 0 14px;
+      font-weight: 500;
+    }
+
+    .article-foot-block p,
+    .article-foot-block a {
+      font-size: 15.5px;
+      line-height: 1.55;
+      color: var(--fg-2);
+    }
+
+    .article-foot-block a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--fg);
+      border-bottom: 1px solid color-mix(in oklab, var(--fg), transparent 70%);
+      padding-bottom: 1px;
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+
+    .article-foot-block a:hover {
+      color: var(--acc);
+      border-color: var(--acc);
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 900px) {
+      .article-header {
+        padding: 56px 22px 32px;
+      }
+
+      .article-title {
+        font-size: clamp(34px, 8vw, 52px);
+      }
+
+      .article-dek {
+        font-size: 18px;
+      }
+
+      .hero-figure {
+        margin-bottom: 64px;
+      }
+
+      .timeline-wrap {
+        padding: 0 22px 20px;
+      }
+
+      .era {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 40px 0 12px;
+      }
+
+      .era-label {
+        position: static;
+      }
+
+      .entries {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-bottom: 8px;
+      }
+
+      .entry {
+        grid-column: 1;
+        padding: 24px 0 32px;
+      }
+
+      .entry-year {
+        font-size: 22px;
+        gap: 12px;
+      }
+
+      .entry-body {
+        font-size: 16.5px;
+      }
+
+      .entry-img-wide,
+      .entry-img-pair {
+        max-width: 100%;
+      }
+
+      .entry.featured .featured-grid {
+
+        gap: 20px;
+      }
+
+      .entry.featured.featured-grow .featured-grid {
+
+        gap: 20px;
+      }
+
+      .entry.climax {
+        padding: 28px 22px;
+      }
+
+      .entry.climax .climax-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .entry.climax .entry-year {
+        font-size: 26px;
+      }
+
+      .entry.climax .entry-body {
+        font-size: 17px;
+      }
+
+      .article-foot {
+        padding: 56px 22px 80px;
+      }
+
+      .article-foot-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .article-back-inner {
+        padding: 14px 22px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .article-back-inner {
+        padding: 12px 18px;
+      }
+
+      .article-back-link {
+        font-size: 11.5px;
+      }
+
+      .article-back-logo img {
+        height: 28px;
+      }
+
+      .article-header {
+        padding: 44px 18px 28px;
+      }
+
+      .article-eyebrow {
+        margin-bottom: 22px;
+        font-size: 11px;
+        flex-wrap: wrap;
+      }
+
+      .article-title {
+        font-size: clamp(30px, 8.5vw, 40px);
+        margin-bottom: 20px;
+      }
+
+      .article-dek {
+        font-size: 17px;
+        margin-bottom: 26px;
+      }
+
+      .article-meta {
+        gap: 8px 12px;
+        padding-top: 20px;
+        font-size: 11.5px;
+      }
+
+      .hero-figure {
+        margin-bottom: 48px;
+      }
+
+      .hero-caption {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .timeline-wrap {
+        padding: 0 18px 15px;
+      }
+
+      .era {
+        padding: 32px 0 10px;
+      }
+
+      .entry {
+        padding: 22px 0 28px;
+      }
+
+      /* let long year labels wrap instead of pushing the page sideways */
+      .entry-year {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        font-size: 21px;
+        gap: 12px;
+      }
+
+      .entry-body {
+        font-size: 16px;
+      }
+
+      .entry-img-pair {
+        gap: 10px;
+      }
+
+      .entry.climax {
+        padding: 24px 18px;
+        border-radius: 14px;
+      }
+
+      .entry.climax .entry-year {
+        font-size: 24px;
+      }
+
+      .entry.climax .climax-cta {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .article-foot {
+        padding: 48px 18px 72px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .entry-img-pair {
+        grid-template-columns: 1fr;
+      }
+
+      .entry-img-pair .pair-cell {
+        aspect-ratio: 16 / 10;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="article-page">
+
+  <!-- Sticky back nav -->
+  <div class="article-back">
+    <div class="article-back-inner">
+      <a class="article-back-link" href="../newsroom.html#blog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Back to blog
+      </a>
+      <a class="article-back-logo" href="../index.html" aria-label="Clockchain home">
+        <img src="../assets/clockchain-logo-full.png" alt="Clockchain" />
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Hero image ===== -->
+
+
+  <!-- ===== Article Header ===== -->
+  <header class="article-header">
+    <div class="article-meta">
+      <span class="author">Clockchain Team</span>
+      <span class="sep">·</span>
+      <span>Sep 25, 2026</span>
+      <span class="sep">·</span>
+      <span>8 min read</span>
+    </div>
+    <figure class="hero-figure article-meta"
+      style="flex-direction: row; display: flex; align-items: unset; flex-wrap: unset;">
+      <div class="hero-figure-frame">
+        <img style="width:668px; margin-bottom: 10px;" src="../assets/blog/common-timestamps.jpg"
+          alt="Accurate time (presumably)" />
+        <span class="author">Accurate time (presumably)</span> <br>
+        <span>An accurate timestamp records a time</span>
+      </div>
+      <div class="hero-figure-frame">
+        <img style="margin-bottom: 10px" src="../assets/blog/clockchain-timestamp.jpg" alt="Verifiable time" />
+        <span class="author">Verifiable time</span><br>
+        <span>A verifiable timestamp provides evidence others can examine.</span>
+      </div>
+    </figure>
+    <h1 class="article-title"> Accurate Time Is Not Verifiable Time.</h1>
+  </header>
+
+
+
+  <!-- ===== Timeline ===== -->
+  <main class="timeline-wrap">
+    <div class="entries">
+      <article class="entry featured featured-grow">
+        <div class="featured-grid">
+          <div>
+            <div class="entry-year">Our digital systems know the time with remarkable precision. The harder question is
+              whether we can trust the timestamps they produce.</div>
+            <p class="entry-body">
+              Imagine that a company approves a transaction at 10:00 and executes it at 10:01. Its
+              internal logs show that everything happened in the right order. Months later, the sequence
+              is challenged. Its clocks were accurate, but the company must now answer a different
+              question: how can it prove that those records existed in that form at the times claimed?
+            </p>
+            <br>
+            <p class="entry-body">That is the difference between accurate time and verifiable time.</p>
+            <br>
+            <p class="entry-body">Financial markets measure time in fractions of a second. Communications networks
+              depend on precise synchronization. Servers and applications automatically attach
+              timestamps to countless events each day. These capabilities are essential, but a
+              timestamp generated and stored within a company’s own system is still a record made by
+              that system. Its precision alone cannot show an outside party that the record has remained
+              unchanged. </p> <br>
+            <p class="entry-body">This becomes especially important when activity crosses organizational boundaries. A
+              payment may involve several institutions. A digital asset may pass through multiple
+              owners. An automated process may act on information supplied by another platform. Each
+              party can maintain accurate records, yet they still need a shared way to establish the order
+              in which records were created. </p> <br>
+            <div class="entry-year">From a time value to time evidence.</div>
+            <p class="entry-body"> Verifiable time adds an independent point of reference. Instead of relying solely on
+              an
+              internal log, an organization can connect a record to a timestamp that others can examine.
+              That evidence can help show that the record was registered by a particular time and has
+              not been quietly altered since.</p> <br>
+            <p class="entry-body"> This distinction matters for audits, chain of custody, provenance and the
+              reconstruction of
+              complex transactions. It can also support compliance efforts where an organization must
+              demonstrate what it knew, approved or recorded at any given point. A verifiable timestamp
+              does not, by itself, prove that an underlying event happened exactly as described or that
+              every regulatory obligation was met. It can, however, provide stronger evidence about the
+              existence and sequence of the records associated with that event.</p> <br>
+            <p class="entry-body">Clockchain is being built to make that evidence available across systems. Its network
+              draws on multiple independent time sources to establish a UTC-aligned reference.
+              Distributed validators reach consensus on that reference, which is recorded on the
+              Clockchain ledger every second. Organizations can use it to anchor records to a
+              chronology that can be independently examined. </p> <br>
+            <p class="entry-body">The goal is straightforward: when the timing of a record matters, its timestamp should
+              be
+              more than a claim made by the system that created it. </p> <br>
+            <p class="entry-body">For centuries, progress in timekeeping helped people measure time more precisely and
+              share it more widely. Today, accurate and synchronized clocks are part of the digital world’s
+              basic infrastructure. As more consequential activity takes place across separate systems,
+              we need another capability alongside them: a way to verify the chronology of the records
+              those systems produce. </p> <br>
+            <p class="entry-body">The next major advance in digital timekeeping will not be defined by greater
+              precision. It will
+              be defined by the ability to independently verify when records were registered and to
+              establish their place in a sequence of events. Clockchain is building that missing layer: a
+              shared, verifiable chronology that anyone can examine. </p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- ===== Foot ===== -->
+  <footer class="article-foot">
+    <div class="article-foot-grid">
+      <div class="article-foot-block">
+        <h5>About the author</h5>
+        <p>Written by the Clockchain team, building the new global standard for verifiable time.</p>
+      </div>
+      <div class="article-foot-block">
+        <h5>Keep reading</h5>
+        <a href="../index.html#what">
+          What is Clockchain?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+        <br /><br />
+        <a href="../newsroom.html#news">
+          Latest press releases
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

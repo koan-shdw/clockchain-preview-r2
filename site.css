@@ -5,6 +5,7 @@
    ============================================================ */
 
 /* ===== Nav socials (Connect dropdown removed) ===== */
+.cursor-pointer{cursor: pointer;}
 .nav-socials{display:flex;align-items:center;gap:14px;margin-right:6px;}
 .nav-socials a{display:inline-flex;width:18px;height:18px;color:var(--fg-2);transition:color .2s ease;}
 .nav-socials a:hover{color:var(--fg);}
